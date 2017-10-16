@@ -1,0 +1,292 @@
+<resources>
+    <string name="app_name">Let\'s App Builder</string>
+    <string name="login_success">Login success</string>
+    <string name="login">LOGIN</string>
+    <string name="Email">Email</string>
+    <string name="Dashboard">Dashboard</string>
+    <string name="Portfolio">Portfolio</string>
+    <string name="About">About</string>
+    <string name="Contact">Contact</string>
+    <string name="OurWork">Our Work</string>
+    <string name="Map">Map</string>
+    <string name="Chat">Chat</string>
+    <string name="Share">Share</string>
+    <string name="facebook_app_id" translatable="false">1602562923093064</string>
+    <string name="Feedback">Feedback</string>
+    <string name="QRCode">QR Code</string>
+    <string name="Quiz">Quiz</string>
+    <string name="Survey">Survey</string>
+    <string name="Document">Document</string>
+    <string name="Video">Video</string>
+    <string name="forgot_your_password">Forgot your password ?</string>
+    <string name="go">GO</string>
+    <string name="repeat_password">Repeat Password</string>
+    <string name="next">NEXT</string>
+    <string name="register">REGISTER</string>
+    <string name="action_settings">Settings</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="fullname">Full Name</string>
+    <string name="city">Enter City</string>
+    <string name="address">Living Address</string>
+    <string name="faboptions_vector_overflow_path">M 6 12 L 6 12.1 M 12 12.1 L 12 12 M 18 12.1 L 18 12</string>
+    <string name="faboptions_vector_close_path">M 6 6 L 18 18, M 12 12 L 12 12, M 6 18 L 18 6</string>
+    <string name="chat_room_message">Enter Message</string>
+    <string name="chat_room_send">Send</string>
+    <string name="notify_to_customer">NOTIFY TO CUSTOMER</string>
+    <string name="sendall">Send to All</string>
+    <string name="send_one">Send to One</string>
+    <string name="message_title">Enter Message Title</string>
+    <string name="message_body">Enter Message</string>
+    <string name="send">SEND</string>
+    <string name="change_password">CHANGE PASSWORD</string>
+    <string name="new_password">Enter New Password</string>
+    <string name="retype_password">Retype Password</string>
+    <string name="Letsapp_label">L e t \'s A p p</string>
+    <string name="letsapp_label" translatable="false">L E T \'S A P P</string>
+    <string name="forgot_password">FORGOT PASSWORD</string>
+    <string name="email_address">Enter Email address</string>
+    <string name="app_settings">App Settings</string>
+    <string name="app_name_designtwo">App Name</string>
+    <string name="app_theme_color">App Theme Color</string>
+    <string name="text_settings">Text Settings</string>
+    <string name="no_apps_available">No Apps available</string>
+    <string name="create_app">CREATE  APP</string>
+    <string name="no_apps">No Apps available</string>
+    <string name="change_passwords">Change password ?</string>
+    <string name="app_publication">APP PUBLICATION</string>
+    <string name="subscribe_information">Subscribe now to get your app online. reachable by millions of users. Choose one of the subscription.</string>
+    <string name="month1">Monthly Subscription</string>
+    <string name="month3">3 Month Subscription</string>
+    <string name="month6">6 Month Subscription</string>
+    <string name="year1">Yearly Subscription</string>
+    <string name="year5">5 Year Subscription</string>
+    <string name="year10">10 Year Subscription</string>
+    <string name="payment_successful">PAYMENT SUCCESSFUL</string>
+    <string name="enter_app_name">Enter App Name</string>
+    <string name="intro_skin">S K I P</string>
+    <string name="skip">S K I P</string>
+    <string name="about_title">About</string>
+    <string name="edt1a_hint">Add Description</string>
+    <string name="edt1b_hint">Enter Designation</string>
+    <string name="edt1c_hint">What\'s your mission</string>
+    <string name="edt1d_hint">Enter your vision</string>
+    <string name="edt1e_hint">Awards description</string>
+    <string name="edt1f_hint">Add your website URL</string>
+    <string name="edt1g_hint">Enter your facebook page URL</string>
+    <string name="edt1h_hint">Add Twitter profile URL</string>
+    <string name="edt1i_hint">Add play store app URL</string>
+    <string name="edt1j_hint">Add your youtube channel URL</string>
+    <string name="edt1k_hint">Add Instagram page URL</string>
+    <string name="edt1l_hint">Add copyright information</string>
+    <string name="chat_title">Chat</string>
+    <string name="contactus_title">Contact Us</string>
+    <string name="edt2a_hint">Enter your name</string>
+    <string name="edt2b_hint">Add calling details</string>
+    <string name="edt2c_hint">Enter SMS details</string>
+    <string name="edt2d_hint">Enter email address</string>
+    <string name="edt2e_hint">Enter Skype Details</string>
+    <string name="edt2f_hint">Enter full address</string>
+    <string name="edt2g_hint">Add your website url</string>
+    <string name="dashboard_title">Dashboard</string>
+    <string name="add_promotional_banner_hint">Add promotional banner</string>
+    <string name="title_dealsoftheday">e.g(DEALS OF THE DAY…)</string>
+    <string name="title_discountsforyou">e.g(OUR COMPANY PROVIDES…)</string>
+    <string name="title_colorful_card">e.g(Our Works…)</string>
+    <string name="document_title">Document</string>
+    <string name="title_feedback">Feedback</string>
+    <string name="title_map">Map</string>
+    <string name="colorful_title_card">Title</string>
+    <string name="colorful_subtitle_card">Subtitle</string>
+    <string name="card_save">save</string>
+    <string name="card_main_title">Main Title</string>
+    <string name="card_main_subtitle">Subtitle</string>
+    <string name="ourwork_title">Our Works</string>
+    <string name="edt4a_hint">Enter your works details</string>
+    <string name="title_portfolio">Portfolio</string>
+    <string name="title_qrcode">QR Code</string>
+    <string name="edt9a_hint">Enter url or detail for generating QR Code</string>
+    <string name="title_share">Share</string>
+    <string name="edt7a_hint">Which information would like to share?</string>
+    <string name="dialog_change_password">CHANGE PASSWORD</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_profile">Profile</string>
+    <string name="nave_draft">Draft Apps</string>
+    <string name="nav_myapp">My Apps</string>
+    <string name="nav_chat">Chat</string>
+    <string name="nav_upgrade">Upgrade Plan</string>
+    <string name="nav_communicate">Communicate</string>
+    <string name="nav_share">Share</string>
+    <string name="nav_feedback">Feedback</string>
+    <string name="nav_logout">Log out</string>
+    <string name="title_quiz">Quiz</string>
+    <string name="quiz_hint">Add Quiz questionairy Url</string>
+    <string name="title_video">Video</string>
+    <string name="video_hint">Enter Youtube channel ID</string>
+    <string name="title_survey">Survey</string>
+    <string name="survey_hint">Add Survey taker questionairy url</string>
+    <string name="qrcode_savw_notice">QR Code successfully saved to SD Card</string>
+    <string name="feedback_notice">Help,Support and Feedback feature is ON</string>
+    <string name="chat_feature_on">Chat feature is on for your app</string>
+    <string name="chat_feature_off">Chat feature is off for your app</string>
+    <string name="document_url_notice">URL is properly entered by owner, So please contact them</string>
+    <string name="imagedashboardarray_minimu_notice">One image is necessary. If you don\'t want then made this feature temporary Turn off</string>
+    <string name="empty_productname_notice">Product name should not be empty</string>
+    <string name="empty_sellingprice_notice">Selling price shold noy be empty</string>
+    <string name="empty_titlename_notice">Title name should not be empty</string>
+    <string name="empty_subtitle_notice">Sub-Title name should not be empty</string>
+    <string name="card_minimum_notice_adapter">Atleast one card is required</string>
+    <string name="empty_doc_notice">Document name should not be empty</string>
+    <string name="empty_docurl_notice">Document URL should not be empty</string>
+    <string name="toolbar_notification" translatable="false">N O T I F I C A T I O N</string>
+    <string name="progress_loading">Loading…</string>
+    <string name="camera_dialog_take_photo">Take Photo</string>
+    <string name="camera_dialog_choose_library">Choose from Library</string>
+    <string name="camera_dialog_cancel">Cancel</string>
+    <string name="camera_dialog_title">Add Photo!</string>
+    <string name="gallery_select_file">Select File</string>
+    <string name="upload_dialog_photo">Upload Photo</string>
+    <string name="upload_dialog_cancel">Cancel</string>
+    <string name="upload_dialog_title">Add Photo!</string>
+    <string name="error_something_went_wrong">Something went wrong</string>
+    <string name="error_upload_picture">Error occurred while uploading profile picture</string>
+    <string name="progress_uploading">Uploading…</string>
+    <string name="progress_getting">Getting…</string>
+    <string name="message_turn_on_internet">Turn on internet connection</string>
+    <string name="toolbar_design1">D E S I G N  - I</string>
+    <string name="subtitle_name">Subtitle name</string>
+    <string name="title_name">Title name</string>
+    <string name="attendence_example">Attendance of January</string>
+    <string name="progress_updating">Updating…</string>
+    <string name="message_data_save_success">Data saved successfully…</string>
+    <string name="message_minimum_requirement">Atleast one requirement is mendatory</string>
+    <string name="message_image_upload_success">Uploading done successfully</string>
+    <string name="message_image_upload_error">Error in uploading</string>
+    <string name="message_please_try_later">Please try again later</string>
+    <string name="category_dialog_title">Add New Categories ?</string>
+    <string name="category_dialog_message">" Categories has been added to your app"</string>
+    <string name="message_page_already_available">This page already available in App</string>
+    <string name="toolbar_design2" translatable="false">D E S I G N  -  I I</string>
+    <string name="message_appname_not_empty">App name should not be empty</string>
+    <string name="color_dialog_title">Choose your Color</string>
+    <string name="toolbar_draftapps" translatable="false">D R A F T  A P P S</string>
+    <string name="not_yet_published">Not yet Published</string>
+    <string name="message_app_success_delete">Your app was successfully deleted</string>
+    <string name="toolbar_dahsboard">D A S H B O A R D</string>
+    <string name="toolbar_myapps" translatable="false">M Y  A P P S</string>
+    <string name="last_update_concate">Last Update :</string>
+    <string name="referid_concate">"REFER ID: "</string>
+    <string name="upgrade_dialog_title">Plan Expiration Notice !</string>
+    <string name="myapps_left_concat">"Your app named "</string>
+    <string name="myapps_right_concat">" was expired. Immediately renew the plan to edit your apps and publishing."</string>
+    <string name="myapp_share_left_concat">Hey !! We made an app named -</string>
+    <string name="myapp_share_right_concat" translatable="false">" available on play Store freely at https://play.google.com/store/apps/details?id=telugu.hitsongs \n\n Download now !!!! \n Use Publish ID :"</string>
+    <string name="share_intent_title">Share Your Friends</string>
+    <string name="message_something_went_wrong">Something went wrong</string>
+    <string name="toolbar_chat">C H A T</string>
+    <string name="progrss_registering">Registering…</string>
+    <string name="toolbar_upgrade" translatable="false">U P G R A D E</string>
+    <string name="toolbar_profile" translatable="false">P R O F I L E</string>
+    <string name="password_not_match">Both password does not match</string>
+    <string name="message_new_password_updated">New password has been successfully updated</string>
+    <string name="toolbar_upgrade_plan" translatable="false">U P G R A D E   P L A N</string>
+    <string name="payment_in_progress">Your payment is in progress</string>
+    <string name="message_payment_not_updated">Payment was successful but not updated</string>
+    <string name="toolbar_payment" translatable="false">P A Y M E N T</string>
+    <string name="personalization">"Create your own app if you are running any product or service based business. Spread the word with your app, let more people know and avail of your products and services. "</string>
+    <string name="ecommerce">This app would help you to update users with the latest trends in fashion, promote your latest collection in your store, create an online brochure or catalog, help people shop online and offer loyalty coupons.</string>
+    <string name="wallpaper">Give yourself the right opportunity to increase your influence and become more popular and connect with more and more people with the app.</string>
+    <string name="visiting_card">"Want to spread more information about business or share some tips and ideas? "</string>
+    <string name="resume">Advertise your books, articles and blogs with the app and allow your fans to connect to you directly. Offer convenience to your reader base by making all your reading collection available at one place through the app.</string>
+    <string name="channel">Are you a celebrity? Or you think you can make a good celeb? Then this app is the best medium for you to connect to your fans. Share photos, videos and audios. Also keep them posted on important dates with event calendars. This app helps you share not just your talent but also all the tidbits about your life and lifestyle.\n</string>
+    <string name="news">Do you want to educate, inform or advice your users? If so then this category is ideal for you. Keep your users updated with the latest news, events, gossip and happenings on their favorite topics of interest.</string>
+    <string name="conference">Do you have a City CRA or any other agency around town? It is easy to create an app to keep your users informed about what is going on in the area you serve.</string>
+    <string name="wedding">Create apps to plan for weddings. The App can help you design and send invites, create a marketplace or directory, create event calendars,build an online store, help build photo repository, and much more.</string>
+    <string name="casino">Own a casino? Create an app to create a buzz. Update your gamblers with the top addictive techniques and all the fun from the casino world.</string>
+    <string name="fitness">If you are a fitness guru or owner of a fitness center, then create an app that will assist in promoting your expertise</string>
+    <string name="travel">Are you a travel agent or own a travel company? If yes, then create an app to let customers know about the latest offers on flight tickets, tour packages, hotel bookings.</string>
+    <string name="sport">If you are in anyway associated with Sports, then keep your fans and followers updated on the teams’ schedule, rosters or other events for your sports team/club, through this app.</string>
+    <string name="blog">Advertise your books, articles and blogs with the app and allow your fans to connect to you directly. Offer convenience to your reader base by making all your reading collection available at one place through the app.</string>
+    <string name="finance">Now let your clients manage all their financial and business matters in a hassle free manner from their smart phones. If you belong to the above category then go ahead and create an app that describes your services best.</string>
+    <string name="music">Whether it’s a live performance or a new album to be released, let your fans know of all the latest happenings. We have made it easy for you to create an app for your fans and keep them updated round the clock.</string>
+    <string name="transportation">Are you a travel agent or own a travel company? If yes, then create an app to let customers know about the latest offers on flight tickets, tour packages, hotel bookings, popular tourist destinations and much more.</string>
+    <string name="festival">Whether it’s a live performance or a new album to be released, let your fans know of all the latest happenings.</string>
+    <string name="birthday">Create apps to plan for bitrhday memories. The App can help you design and send invites, create a marketplace or directory, create event calendars</string>
+    <string name="fashion">Do you own a clothing company or are a retailer with one of the finest clothing line? Or do you enjoy following the latest fashion trends? If yes, then this app is best suited for your business. This app would help you to update users with the latest trends in fashion, promote your latest collection in your store, create an online brochure or catalog, help people shop online and offer loyalty coupons.</string>
+    <string name="organization">Make it easy for your app users to book your talent. Let them know who is available on which dates.</string>
+    <string name="hire_cab">Do you have your own cab or taxi service? Want more people to know about your services? Then create an app for your business.</string>
+    <string name="insurance">Create an app to extend insurance schemes to new customers and keep your existing customers engaged.</string>
+    <string name="law_firm">If you are an attorney or own a law firm then an app is the instant link for users to connect at the time of an emergency.</string>
+    <string name="worship">Create an app for your temple, church, and your followers.</string>
+    <string name="health">If you are a doctor, dentist, veterinarian or chiropractor or practice any other medical services, then create an app and create more awareness about your services.</string>
+    <string name="photography">Do you enjoy photography? Do you own a photography company? Create an app and share your work with the world. This app will help you to connect with other photographic enthusiast.</string>
+    <string name="online_business">Create an app to showcase your business and products you offer. Attract more buyers and engage your existing buyers with your latest range of business offerings.</string>
+    <string name="remote_work">Create a buzz for your charity and let more people get involved. The app would help more and more people take note of your charity work.</string>
+    <string name="business">A business needs better awareness to attract more customers. Create your own app if you are running any product or service based business.</string>
+    <string name="information">Do you want to educate, inform or advice your users? If so then this category is ideal for you.</string>
+    <string name="restaurant">Create an app that can take orders and reservations, publish your menu and even offer a map so that your clients can easily find you with GPS enabled directions. With customer reviews and ratings, give potential customers</string>
+    <string name="education">"Create an app for a college or a university to create awareness about courses, facilities, faculty and academic achievements. "</string>
+    <string name="construction">Do you offer electrician, plumber, roofing, flooring or HVAC services? Then create an app and promote your business to all the people in your locality and neighboring areas.</string>
+    <string name="real_estate">If you are a realtor or a real estate agent, create an app for your real estate company and showcase the property listings with high end photos and videos to increase your sales.</string>
+    <string name="chat">If you are in anyway associated with Sports, then keep your fans and followers updated on the teams’ schedule, rosters or other events for your sports team/club, through this app.</string>
+    <string name="toolbar_selection1" translatable="false">S E L E C T I O N  - I</string>
+    <string name="select_minimum_category_notice">Select Atleast One Category</string>
+    <string name="category_dialog_selected_message">" category has been selected."</string>
+    <string name="toolbar_selection2" translatable="false">S E L E C T I O N  -  I I</string>
+    <string name="category_selectiontwo_message">" has been selected."</string>
+    <string name="select_minimum_theme_notice">Choose Atleast One Theme</string>
+    <string name="theme_dialog_title">Want to add Theme ?</string>
+    <string name="theme_dialog_message">" has been added to your android app."</string>
+    <string name="permission_dialog_title">Permission necessary</string>
+    <string name="permission_dialog_message">External storage permission is necessary</string>
+    <string name="email_empty">Email address should not be empty</string>
+    <string name="email_valid">Enter valid email address</string>
+    <string name="password_valid">Please enter valid Password</string>
+    <string name="retypepassword_valid" translatable="false">Retype password</string>
+    <string name="progress_signin">Sign in…</string>
+    <string name="message_emal_send_success">Your current password was successfully send to your email address</string>
+    <string name="message_email_not_exist">Email address does not exists</string>
+    <string name="invalid_uname_password">Invalid username and password</string>
+    <string name="intent_share_message">Hey !! Let\'s App Builder -Apps available on play Store freely at https://play.google.com/store/apps/details?id=com.letsappbuilder  \n\n Create your own app, No coding Needed. By using three steps you create your own app. Download now !!!!</string>
+    <string name="intent_send_mail">Send Email</string>
+    <string name="name_valid">Enter valid name</string>
+    <string name="register_done">Registration Done Successfully</string>
+    <string name="Password">Password</string>
+    <string name="message_data_saved" translatable="false">Data saved successfully…</string>
+    <string name="switch0a_hint" translatable="false">Promotional banner</string>
+    <string name="switch0b_hint" translatable="false">Card with image,text</string>
+    <string name="switch0d_hint" translatable="false">Card with only text</string>
+    <string name="switch1a_hint" translatable="false">Description</string>
+    <string name="switch1b_hint" translatable="false">Designation</string>
+    <string name="switch1c_hint" translatable="false">Mission</string>
+    <string name="switch1d_hint" translatable="false">Vision</string>
+    <string name="switch1e_hint" translatable="false">Awards</string>
+    <string name="switch1f_hint" translatable="false">Website</string>
+    <string name="switch1g_hint" translatable="false">Facebook page</string>
+    <string name="switch1h_hint" translatable="false">Twitter page</string>
+    <string name="switch1i_hint" translatable="false">Play store url</string>
+    <string name="switch1j_hint" translatable="false">Youtube page</string>
+    <string name="switch1k_hint" translatable="false">Instagram url</string>
+    <string name="switch1l_hint" translatable="false">Copyright details</string>
+    <string name="switch2a_hint" translatable="false">Contact name</string>
+    <string name="switch2b_hint" translatable="false">Calling detail</string>
+    <string name="switch2c_hint" translatable="false">SMS details</string>
+    <string name="switch2d_hint" translatable="false">Email</string>
+    <string name="switch2e_hint" translatable="false">Skype details</string>
+    <string name="switch2f_hint" translatable="false">Address details</string>
+    <string name="switch2g_hint" translatable="false">Website url</string>
+    <string name="free_trial1day">1 day trial - free</string>
+    <string name="delete_dialog_title">Want to Delete App ?</string>
+    <string name="delete_dialog_message">This action is permanent ,it can\'t ne undone</string>
+    <string name="nav_rateus" translatable="false">Rate us</string>
+    <string name="flat_button_text">Thanks for your rating</string>
+    <string name="rate_us_title" translatable="false">Rate us</string>
+    <string name="show_rate_title" translatable="false">Show your love on playstore</string>
+    <string name="rate_dialog_title" translatable="false">Thanks for your rating</string>
+    <string name="label_install" translatable="false">INSTALL</string>
+    <string name="nav_tutorial" translatable="false">Tutorial Video</string>
+    <string name="message_email_sent_spam" translatable="false">Congratulation !! We have sent your App to your registered email id. Don\'t forget to check in spam folder.</string>
+    <string name="message_request_not_complete">Sign-in request could not be completed</string>
+    <string name="message_email_already_registered">Email address already registered.Kindly Login with registered email id</string>
+
+</resources>

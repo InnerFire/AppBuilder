@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/group_items"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home"
+            android:title="@string/nav_home" />
+
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/user"
+            android:title="@string/nav_profile" />
+
+        <item
+            android:id="@+id/nav_draft_apps"
+            android:icon="@drawable/draft"
+            android:title="@string/nave_draft" />
+        <item
+            android:id="@+id/nav_myapps"
+            android:icon="@drawable/my_apps"
+            android:title="@string/nav_myapp" />
+        <item
+            android:id="@+id/nav_chat"
+            android:icon="@drawable/chat_filled"
+            android:title="@string/nav_chat" />
+        <item
+            android:id="@+id/nav_upgrade"
+            android:icon="@drawable/upgrade_plan"
+            android:title="@string/nav_upgrade" />
+
+        <item
+            android:id="@+id/nav_rateus"
+            android:icon="@drawable/rating"
+            android:title="@string/nav_rateus" />
+        <item
+            android:id="@+id/nav_tutorialmode"
+            android:icon="@drawable/videolist"
+            android:title="@string/nav_tutorial" />
+
+    </group>
+
+    <item android:title="@string/nav_communicate" >
+        <menu android:checkableBehavior="single">
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/menu_share"
+                android:title="@string/nav_share" />
+            <item
+                android:id="@+id/nav_feedback"
+                android:icon="@drawable/menu_send"
+                android:title="@string/nav_feedback" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/logout_icon"
+                android:title="@string/nav_logout" />
+
+        </menu>
+    </item>
+
+</menu>

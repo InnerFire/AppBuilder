@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/about_cardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardElevation="6dp"
+        card_view:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:id="@+id/frame_backgroung_design"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:gravity="center"
+                    android:text="@string/about_title"
+                    android:textColor="#ffffff"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/img_add_design"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="top|end"
+                    android:layout_margin="5dp"
+                    android:src="@drawable/plus" />
+
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:id="@+id/about_llout_visibility"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp">
+
+                    <Switch
+                        android:id="@+id/switch_1A"
+                        android:layout_width="wrap_content"
+                        android:hint="@string/switch1a_hint"
+                        android:textColorHint="#ffffff"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center_vertical"
+                        android:backgroundTint="@color/white"
+                        android:checked="false"
+                        android:foregroundTint="@color/white" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/edt1A"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:backgroundTint="#ffffff"
+                            android:focusableInTouchMode="true"
+                            android:gravity="center"
+                            android:hint="@string/edt1a_hint"
+                            android:textColor="#ffffff"
+                            android:textSize="14sp"
+                            android:visibility="gone" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp">
+
+                    <Switch
+                        android:id="@+id/switch_1B"
+                        android:hint="@string/switch1b_hint"
+                        android:textColorHint="#ffffff"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center_vertical"
+                        android:backgroundTint="@color/white"
+                        android:checked="false"
+                        android:foregroundTint="@color/white" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/edt1B"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:backgroundTint="#ffffff"
+                            android:focusableInTouchMode="true"
+                            android:gravity="center"
+                            android:hint="@string/edt1b_hint"
+                            android:textColor="#ffffff"
+                            android:textSize="14sp"
+                            android:visibility="gone" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp">
+
+                    <Switch
+                        android:id="@+id/switch_1C"
+                        android:layout_width="wrap_content"
+                        android:textColorHint="#ffffff"
+                        android:hint="@string/switch1c_hint"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center_vertical"
+                        android:backgroundTint="@color/white"
+                        android:checked="false"
+                        android:foregroundTint="@color/white" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/edt1C"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:backgroundTint="#ffffff"
+                            android:focusableInTouchMode="true"
+                            android:gravity="center"
+                            android:hint="@string/edt1c_hint"
+                            android:textColor="#ffffff"
+                            android:textSize="14sp"
+                            android:visibility="gone" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp">
+
+                    <Switch
+                        android:id="@+id/switch_1D"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColorHint="#ffffff"
+                        android:hint="@string/switch1d_hint"
+                        android:layout_gravity="left|center_vertical"
+                        android:backgroundTint="@color/white"
+                        android:checked="false"
+                        android:foregroundTint="@color/white" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/edt1D"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:backgroundTint="#ffffff"
+                            android:focusableInTouchMode="true"
+                            android:gravity="center"
+                            android:hint="@string/edt1d_hint"
+                            android:textColor="#ffffff"
+                            android:textSize="14sp"
+                            android:visibility="gone" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp">
+
+                    <Switch
+                        android:id="@+id/switch_1E"
+                        android:textColorHint="#ffffff"
+                        android:hint="@string/switch1e_hint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center_vertical"
+                        android:backgroundTint="@color/white"
+                        android:checked="false"
+                        android:foregroundTint="@color/white" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/edt1E"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:backgroundTint="#ffffff"
+                            android:focusableInTouchMode="true"
+                            android:gravity="center"
+                            android:hint="@string/edt1e_hint"
+                            android:textColor="#ffffff"
+                            android:textSize="14sp"
+                            android:visibility="gone" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp">
+
+                    <Switch
+                        android:id="@+id/switch_1F"
+                        android:layout_width="wrap_content"
+                        android:hint="@string/switch1f_hint"
+                        android:textColorHint="#ffffff"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center_vertical"
+                        android:backgroundTint="@color/white"
+                        android:checked="false"
+                        android:foregroundTint="@color/white" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/edt1F"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:backgroundTint="#ffffff"
+                            android:focusableInTouchMode="true"
+                            android:gravity="center"
+                            android:hint="@string/edt1f_hint"
+                            android:textColor="#ffffff"
+                            android:textSize="14sp"
+                            android:visibility="gone" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp">
+
+                    <Switch
+                        android:id="@+id/switch_1G"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/switch1g_hint"
+                        android:textColorHint="#ffffff"
+                        android:layout_gravity="left|center_vertical"
+                        android:backgroundTint="@color/white"
+                        android:checked="false"
+                        android:foregroundTint="@color/white" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/edt1G"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:backgroundTint="#ffffff"
+                            android:focusableInTouchMode="true"
+                            android:gravity="center"
+                            android:hint="@string/edt1g_hint"
+                            android:textColor="#ffffff"
+                            android:textSize="14sp"
+                            android:visibility="gone" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp">
+
+                    <Switch
+                        android:id="@+id/switch_1H"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/switch1h_hint"
+                        android:textColorHint="#ffffff"
+                        android:layout_gravity="left|center_vertical"
+                        android:backgroundTint="@color/white"
+                        android:checked="false"
+                        android:foregroundTint="@color/white" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/edt1H"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:backgroundTint="#ffffff"
+                            android:focusableInTouchMode="true"
+                            android:gravity="center"
+                            android:hint="@string/edt1h_hint"
+                            android:textColor="#ffffff"
+                            android:textSize="14sp"
+                            android:visibility="gone" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp">
+
+                    <Switch
+                        android:id="@+id/switch_1I"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center_vertical"
+                        android:backgroundTint="@color/white"
+                        android:hint="@string/switch1i_hint"
+                        android:textColorHint="#ffffff"
+                        android:checked="false"
+                        android:foregroundTint="@color/white" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/edt1I"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:backgroundTint="#ffffff"
+                            android:focusableInTouchMode="true"
+                            android:gravity="center"
+                            android:hint="@string/edt1i_hint"
+                            android:textColor="#ffffff"
+                            android:textSize="14sp"
+                            android:visibility="gone" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp">
+
+                    <Switch
+                        android:id="@+id/switch_1J"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/switch1j_hint"
+                        android:textColorHint="#ffffff"
+                        android:layout_gravity="left|center_vertical"
+                        android:backgroundTint="@color/white"
+                        android:checked="false"
+                        android:foregroundTint="@color/white" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/edt1J"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:backgroundTint="#ffffff"
+                            android:focusableInTouchMode="true"
+                            android:gravity="center"
+                            android:hint="@string/edt1j_hint"
+                            android:textColor="#ffffff"
+                            android:textSize="14sp"
+                            android:visibility="gone" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp">
+
+                    <Switch
+                        android:id="@+id/switch_1K"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center_vertical"
+                        android:textColorHint="#ffffff"
+                        android:hint="@string/switch1k_hint"
+                        android:backgroundTint="@color/white"
+                        android:checked="false"
+                        android:foregroundTint="@color/white" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/edt1K"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:backgroundTint="#ffffff"
+                            android:focusableInTouchMode="true"
+                            android:gravity="center"
+                            android:hint="@string/edt1k_hint"
+                            android:textColor="#ffffff"
+                            android:textSize="14sp"
+                            android:visibility="gone" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp">
+
+                    <Switch
+                        android:id="@+id/switch_1L"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColorHint="#ffffff"
+                        android:hint="@string/switch1l_hint"
+                        android:layout_gravity="left|center_vertical"
+                        android:backgroundTint="@color/white"
+                        android:checked="false"
+                        android:foregroundTint="@color/white" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/edt1L"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:backgroundTint="#ffffff"
+                            android:focusableInTouchMode="true"
+                            android:gravity="center"
+                            android:hint="@string/edt1l_hint"
+                            android:textColor="#ffffff"
+                            android:textSize="14sp"
+                            android:visibility="gone" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/img_delete_design"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="5dp"
+                android:src="@drawable/delete_white" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>
