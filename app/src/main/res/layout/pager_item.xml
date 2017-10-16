@@ -4,12 +4,12 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:padding="6dp"
         android:id="@+id/image"
-        android:layout_marginTop="15sp"
         android:layout_width="225dp"
         android:layout_height="300dp"
         android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginTop="15sp"
+        android:padding="6dp"
         android:scaleType="fitXY" />
 
 </FrameLayout>

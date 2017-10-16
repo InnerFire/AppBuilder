@@ -46,6 +46,10 @@ import java.io.UnsupportedEncodingException;
 import cz.msebera.android.httpclient.Header;
 
 public class fragment_purchase extends Fragment {
+    //   App billing
+    private static final String TAG = "InAppBilling";
+    //  static final String ITEM_SKU = "wallpaper.changer";
+    public String ITEM_SKU;
     ImageView imgAppIcon;
     TextView txtAppName;
     Common common;
@@ -54,11 +58,50 @@ public class fragment_purchase extends Fragment {
     AppPrefs appPrefs;
     String PLAN_TYPE;
     Button btnmonth1, btnmonth3, btnmonth6, btnyear1, btnyear5, btnyear10;
-    //   App billing
-    private static final String TAG = "InAppBilling";
     IabHelper mHelper;
-    //  static final String ITEM_SKU = "wallpaper.changer";
-    public String ITEM_SKU ;
+    //  **************** Call Update_Details API ******************************//
+    AsyncHttpClient callAppDetailsAPIRequest;
+    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener =
+            new IabHelper.OnConsumeFinishedListener() {
+                @Override
+                public void onConsumeFinished(Purchase purchase, IabResult result) {
+                    if (result.isSuccess()) {
+                        if (common.isConnected()) {
+                            common.showProgressDialog(getString(R.string.payment_in_progress));
+                            CallAppDetailsApi(appPrefs.getUserId(), dbHelper.SelectAttributeviseData(appPrefs.getAPP_ID(), DbHelper.APP_ID), PLAN_TYPE);
+                        } else {
+                            Snackbar snackbar = Snackbar.make(rootPurchase, R.string.message_turn_on_internet, Snackbar.LENGTH_LONG);
+                            snackbar.getView().setBackgroundColor(getResources().getColor(R.color.firstColor));
+                            snackbar.show();
+                        }
+                    }
+                }
+            };
+    IabHelper.QueryInventoryFinishedListener mReceivedInventoryListener
+            = new IabHelper.QueryInventoryFinishedListener() {
+        @Override
+        public void onQueryInventoryFinished(IabResult result,
+                                             Inventory inventory) {
+
+            if (result.isFailure()) {
+                Toast.makeText(getActivity(), R.string.message_please_try_later, Toast.LENGTH_SHORT).show();
+            } else {
+                mHelper.consumeAsync(inventory.getPurchase(ITEM_SKU),
+                        mConsumeFinishedListener);
+            }
+        }
+    };
+    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener
+            = new IabHelper.OnIabPurchaseFinishedListener() {
+        public void onIabPurchaseFinished(IabResult result,
+                                          Purchase purchase) {
+            if (result.isFailure()) {
+                Toast.makeText(getActivity(), R.string.message_something_went_wrong, Toast.LENGTH_SHORT).show();
+            } else if (purchase.getSku().equals(ITEM_SKU)) {
+                consumeItem();
+            }
+        }
+    };
 
     @Nullable
     @Override
@@ -129,8 +172,8 @@ public class fragment_purchase extends Fragment {
         btnmonth1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PLAN_TYPE ="1M";
-                ITEM_SKU="new_month1_upgrade";
+                PLAN_TYPE = "1M";
+                ITEM_SKU = "new_month1_upgrade";
                 if (mHelper != null) {
                     try {
                         mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU, 10001,
@@ -145,8 +188,8 @@ public class fragment_purchase extends Fragment {
         btnmonth3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PLAN_TYPE ="3M";
-                ITEM_SKU="new_month3_upgrade";
+                PLAN_TYPE = "3M";
+                ITEM_SKU = "new_month3_upgrade";
 
                 if (mHelper != null) {
                     try {
@@ -162,8 +205,8 @@ public class fragment_purchase extends Fragment {
         btnmonth6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PLAN_TYPE ="6M";
-                ITEM_SKU="new_month6_upgrade";
+                PLAN_TYPE = "6M";
+                ITEM_SKU = "new_month6_upgrade";
 
                 if (mHelper != null) {
                     try {
@@ -179,8 +222,8 @@ public class fragment_purchase extends Fragment {
         btnyear1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PLAN_TYPE ="1Y";
-                ITEM_SKU="new_year1_upgrade";
+                PLAN_TYPE = "1Y";
+                ITEM_SKU = "new_year1_upgrade";
 
                 if (mHelper != null) {
                     try {
@@ -196,8 +239,8 @@ public class fragment_purchase extends Fragment {
         btnyear5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PLAN_TYPE ="5Y";
-                ITEM_SKU="new_year5_upgrade";
+                PLAN_TYPE = "5Y";
+                ITEM_SKU = "new_year5_upgrade";
                 if (mHelper != null) {
                     try {
                         mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU, 10001,
@@ -212,8 +255,8 @@ public class fragment_purchase extends Fragment {
         btnyear10.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PLAN_TYPE ="10Y";
-                ITEM_SKU="new_year10_upgrade";
+                PLAN_TYPE = "10Y";
+                ITEM_SKU = "new_year10_upgrade";
                 if (mHelper != null) {
                     try {
                         mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU, 10001,
@@ -228,19 +271,6 @@ public class fragment_purchase extends Fragment {
         return v;
     }
 
-
-    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener
-            = new IabHelper.OnIabPurchaseFinishedListener() {
-        public void onIabPurchaseFinished(IabResult result,
-                                          Purchase purchase) {
-            if (result.isFailure()) {
-                Toast.makeText(getActivity(), R.string.message_something_went_wrong, Toast.LENGTH_SHORT).show();
-            } else if (purchase.getSku().equals(ITEM_SKU)) {
-                consumeItem();
-            }
-        }
-    };
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (!mHelper.handleActivityResult(requestCode,
@@ -253,47 +283,12 @@ public class fragment_purchase extends Fragment {
         mHelper.queryInventoryAsync(mReceivedInventoryListener);
     }
 
-    IabHelper.QueryInventoryFinishedListener mReceivedInventoryListener
-            = new IabHelper.QueryInventoryFinishedListener() {
-        @Override
-        public void onQueryInventoryFinished(IabResult result,
-                                             Inventory inventory) {
-
-            if (result.isFailure()) {
-                Toast.makeText(getActivity(), R.string.message_please_try_later, Toast.LENGTH_SHORT).show();
-            } else {
-                mHelper.consumeAsync(inventory.getPurchase(ITEM_SKU),
-                        mConsumeFinishedListener);
-            }
-        }
-    };
-
-    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener =
-            new IabHelper.OnConsumeFinishedListener() {
-                @Override
-                public void onConsumeFinished(Purchase purchase, IabResult result) {
-                    if (result.isSuccess()) {
-                        if (common.isConnected()) {
-                            common.showProgressDialog(getString(R.string.payment_in_progress));
-                            CallAppDetailsApi(appPrefs.getUserId(), dbHelper.SelectAttributeviseData(appPrefs.getAPP_ID(), DbHelper.APP_ID),PLAN_TYPE);
-                        } else {
-                            Snackbar snackbar = Snackbar.make(rootPurchase, R.string.message_turn_on_internet, Snackbar.LENGTH_LONG);
-                            snackbar.getView().setBackgroundColor(getResources().getColor(R.color.firstColor));
-                            snackbar.show();
-                        }
-                    }
-                }
-            };
-
     @Override
     public void onDestroy() {
         super.onDestroy();
         if (mHelper != null) mHelper.dispose();
         mHelper = null;
     }
-
-    //  **************** Call Update_Details API ******************************//
-    AsyncHttpClient callAppDetailsAPIRequest;
 
     public void CallAppDetailsApi(String UID, String APP_ID, String PLAN_TYPE) {
         if (callAppDetailsAPIRequest != null) {
@@ -336,7 +331,7 @@ public class fragment_purchase extends Fragment {
                             fragmentManager.beginTransaction()
                                     .replace(R.id.frame_layout_main, fragment).setCustomAnimations(R.anim.slide_up, android.R.anim.fade_out).commit();
                         } else {
-                          //  Log.e("Home", "Error in creating fragment");
+                            //  Log.e("Home", "Error in creating fragment");
                         }
                     } else {
                         Snackbar snackbar = Snackbar.make(rootPurchase, R.string.message_payment_not_updated, Snackbar.LENGTH_LONG);

@@ -28,7 +28,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
     private ArrayList<Message> messages;
 
     //Constructor
-    public ThreadAdapter(Context context, ArrayList<Message> messages, String userId){
+    public ThreadAdapter(Context context, ArrayList<Message> messages, String userId) {
         this.userId = userId;
         this.messages = messages;
         this.context = context;
@@ -71,7 +71,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
         //Adding messages to the views
         Message message = messages.get(position);
         holder.textViewMessage.setText(message.getMessage());
-        holder.textViewTime.setText(message.getName()+", "+message.getSentAt());
+        holder.textViewTime.setText(message.getName() + ", " + message.getSentAt());
     }
 
 

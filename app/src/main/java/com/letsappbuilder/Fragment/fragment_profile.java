@@ -22,12 +22,12 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.letsappbuilder.MainActivity;
 import com.letsappbuilder.R;
 import com.letsappbuilder.Response.SignUpResponse;
 import com.letsappbuilder.Utils.AppPrefs;
 import com.letsappbuilder.Utils.Common;
-import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -58,11 +58,12 @@ public class fragment_profile extends Fragment {
     Common common;
     Dialog dialog;
     Bitmap UniversalBitmap;
-    private int REQUEST_CAMERA = 112, SELECT_FILE = 115;
     String imagepath;
     DisplayImageOptions options;
     ImageLoader imageLoader;
     ScrollView rootProfile;
+    AsyncHttpClient callChangePasswordAPIRequest;
+    private int REQUEST_CAMERA = 112, SELECT_FILE = 115;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -225,13 +226,13 @@ public class fragment_profile extends Fragment {
                     params.put("random_id", saltString);
                     params.put("uploaded_file", getStringImage(UniversalBitmap));
 
-                  //  Log.e("!!!", params.toString());
+                    //  Log.e("!!!", params.toString());
                     client.post("http://fadootutorial.com/appgenerator/updateprofileicon.php", params, new AsyncHttpResponseHandler() {
                         @Override
                         public void onStart() {
                             super.onStart();
                             common.showProgressDialog(getString(R.string.progress_uploading));
-                           // Log.e("$$$", "start");
+                            // Log.e("$$$", "start");
                         }
 
                         @Override
@@ -241,7 +242,7 @@ public class fragment_profile extends Fragment {
                             try {
                                 str = new String(responseBody, "UTF-8");
                                 SignUpResponse response = new Gson().fromJson(str, SignUpResponse.class);
-                              //  Log.e("****SignUp*****", "" + response.result);
+                                //  Log.e("****SignUp*****", "" + response.result);
                                 if (response.result.equals("success")) {
                                     prefs.setPROFILEPICTURE("uploads/" + saltString + ".png");
                                     imageLoader.displayImage(Utility.PROFILE_DIR_IMAGE_DOWNLOAD_PATH + prefs.getPROFILEPICTURE(), imgProfile, options, new SimpleImageLoadingListener() {
@@ -312,6 +313,7 @@ public class fragment_profile extends Fragment {
 
     }
 
+    /* **************  Call Change Password API   *************************  */
 
     public void clicklistner() {
 
@@ -385,10 +387,6 @@ public class fragment_profile extends Fragment {
             }
         });
     }
-
-    /* **************  Call Change Password API   *************************  */
-
-    AsyncHttpClient callChangePasswordAPIRequest;
 
     public void CallChangePasswordAPI(String uid, String email, String password) {
         if (callChangePasswordAPIRequest != null) {

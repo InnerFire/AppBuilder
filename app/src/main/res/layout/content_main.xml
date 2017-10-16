@@ -14,8 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:visibility="gone"
-        android:padding="5dp">
+        android:padding="5dp"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/prev_main"
@@ -53,8 +53,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:visibility="gone"
-        android:padding="5dp">
+        android:padding="5dp"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/prev_main_second"

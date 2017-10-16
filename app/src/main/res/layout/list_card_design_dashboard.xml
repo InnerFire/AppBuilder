@@ -63,16 +63,15 @@
                     android:layout_height="wrap_content">
 
                     <Switch
-                        android:layout_margin="2dp"
                         android:id="@+id/switch_0A"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
                         android:backgroundTint="@color/white"
                         android:checked="false"
-                        android:hint="@string/switch0a_hint"
-                        android:textColorHint="#ffffff"
                         android:foregroundTint="@color/white"
-                         />
+                        android:hint="@string/switch0a_hint"
+                        android:textColorHint="#ffffff" />
 
                     <LinearLayout
                         android:id="@+id/llout_recyclerHorizontal"
@@ -104,15 +103,14 @@
 
                     <Switch
                         android:id="@+id/switch_0B"
-                        android:layout_margin="2dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
                         android:backgroundTint="@color/white"
                         android:checked="false"
-                        android:hint="@string/switch0b_hint"
-                        android:textColorHint="#ffffff"
                         android:foregroundTint="@color/white"
-                         />
+                        android:hint="@string/switch0b_hint"
+                        android:textColorHint="#ffffff" />
 
                     <LinearLayout
                         android:id="@+id/llout_recycler_deals_of_the_day"
@@ -156,13 +154,12 @@
                         android:id="@+id/switch_0C"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
                         android:backgroundTint="@color/white"
                         android:checked="false"
-                        android:layout_margin="2dp"
-                        android:hint="@string/switch0b_hint"
-                        android:textColorHint="#ffffff"
                         android:foregroundTint="@color/white"
-                         />
+                        android:hint="@string/switch0b_hint"
+                        android:textColorHint="#ffffff" />
 
                     <LinearLayout
                         android:id="@+id/llout_recycler_discount_for_you"
@@ -203,17 +200,16 @@
                     android:layout_height="wrap_content">
 
                     <Switch
-                        android:textColor="#ffffff"
                         android:id="@+id/switch_0D"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
                         android:backgroundTint="@color/white"
                         android:checked="false"
-                        android:layout_margin="2dp"
-                        android:hint="@string/switch0d_hint"
-                        android:textColorHint="#ffffff"
                         android:foregroundTint="@color/white"
-                         />
+                        android:hint="@string/switch0d_hint"
+                        android:textColor="#ffffff"
+                        android:textColorHint="#ffffff" />
 
                     <LinearLayout
                         android:id="@+id/llout_recycler_colorful_card"

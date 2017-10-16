@@ -34,17 +34,20 @@ import butterknife.InjectView;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    private static final int PLUS_ONE_REQUEST_CODE = 0;
     @InjectView(R.id.fab)
     FloatingActionButton fab;
     @InjectView(R.id.cv_add)
     CardView cvAdd;
-
     EditText edtEmail, edtPwd, edtrePwd, edtFullName;
     Button btnNext;
     Common common;
     PlusOneButton mPlusOneButton;
-    private static final int PLUS_ONE_REQUEST_CODE = 0;
     String APP_URL = "https://play.google.com/store/apps/details?id=com.letsappbuilder";
+    // ******************************    Enter edtEmail, edtPwd, edtRepeatPwd, edtUname, edtAge, edtContactno, edtCity, edtAddress;
+    AsyncHttpClient callSignUpAPIRequest;
+    // ###################  Check First time Registration is done API  ######################## //
+    AsyncHttpClient callCheckFirstSignUpAPIRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +95,6 @@ public class RegisterActivity extends AppCompatActivity {
         mPlusOneButton.initialize(APP_URL, PLUS_ONE_REQUEST_CODE);
     }
 
-
     private void clickHandler() {
         // TODO Auto-generated method stub
 
@@ -126,9 +128,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    // ******************************    Enter edtEmail, edtPwd, edtRepeatPwd, edtUname, edtAge, edtContactno, edtCity, edtAddress;
-    AsyncHttpClient callSignUpAPIRequest;
-
     public void CallSignUpApi(String email, String pass, String name, String refer) {
         if (callSignUpAPIRequest != null) {
             callSignUpAPIRequest.cancelRequests(getApplicationContext(), true);
@@ -148,48 +147,6 @@ public class RegisterActivity extends AppCompatActivity {
         return params;
     }
 
-    public class SignUp_result extends AsyncHttpResponseHandler {
-
-
-        @Override
-        public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
-            //  Log.e("$$$", "On Success");
-            common.hideProgressDialog();
-            try {
-                String str = new String(responseBody, "UTF-8");
-                //  Log.e("***********", "response is" + str);
-
-                if (str != null) {
-                    SignUpResponse response = new Gson().fromJson(str, SignUpResponse.class);
-                    //  Log.e("****SignUp*****", "" + response.result);
-
-                    if (response.result.equals("success")) {
-                        Toast.makeText(getApplicationContext(), R.string.register_done, Toast.LENGTH_SHORT).show();
-                        animateRevealClose();
-                    } else {
-                        Toast.makeText(getApplicationContext(), R.string.message_please_try_later, Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        @Override
-        public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
-            common.hideProgressDialog();
-            Toast.makeText(getApplicationContext(), R.string.message_something_went_wrong, Toast.LENGTH_SHORT).show();
-
-        }
-
-
-    }
-
-    // ###################  Check First time Registration is done API  ######################## //
-    AsyncHttpClient callCheckFirstSignUpAPIRequest;
-
     public void CallCheckFirstSignUpApi(String email) {
         if (callCheckFirstSignUpAPIRequest != null) {
             callCheckFirstSignUpAPIRequest.cancelRequests(getApplicationContext(), true);
@@ -203,50 +160,6 @@ public class RegisterActivity extends AppCompatActivity {
         params.put("email", email);
         return params;
     }
-
-    public class CheckFirstSignUp_result extends AsyncHttpResponseHandler {
-
-
-        @Override
-        public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
-            //  Log.e("$$$", "On Success");
-            common.hideProgressDialog();
-            try {
-                String str = new String(responseBody, "UTF-8");
-             //   Log.e("***********", "response is" + str);
-
-                if (str != null) {
-                    SignUpResponse response = new Gson().fromJson(str, SignUpResponse.class);
-                    //  Log.e("****SignUp*****", "" + response.result);
-
-                    if (response.result.trim().equals("error")) {
-                        if (common.isConnected()) {
-                            common.showProgressDialog(getString(R.string.progrss_registering));
-                            CallSignUpApi(edtEmail.getText().toString(), edtPwd.getText().toString(), edtFullName.getText().toString(), getSaltString());
-                        } else {
-                            Toast.makeText(getApplicationContext(), R.string.message_turn_on_internet, Toast.LENGTH_LONG).show();
-                        }
-                    } else {
-                        Toast.makeText(getApplicationContext(), R.string.message_email_already_registered, Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        @Override
-        public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
-            common.hideProgressDialog();
-            Toast.makeText(getApplicationContext(), R.string.message_something_went_wrong, Toast.LENGTH_SHORT).show();
-
-        }
-
-
-    }
-
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void ShowEnterAnimation() {
@@ -335,5 +248,87 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         animateRevealClose();
+    }
+
+    public class SignUp_result extends AsyncHttpResponseHandler {
+
+
+        @Override
+        public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+            //  Log.e("$$$", "On Success");
+            common.hideProgressDialog();
+            try {
+                String str = new String(responseBody, "UTF-8");
+                //  Log.e("***********", "response is" + str);
+
+                if (str != null) {
+                    SignUpResponse response = new Gson().fromJson(str, SignUpResponse.class);
+                    //  Log.e("****SignUp*****", "" + response.result);
+
+                    if (response.result.equals("success")) {
+                        Toast.makeText(getApplicationContext(), R.string.register_done, Toast.LENGTH_SHORT).show();
+                        animateRevealClose();
+                    } else {
+                        Toast.makeText(getApplicationContext(), R.string.message_please_try_later, Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        @Override
+        public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+            common.hideProgressDialog();
+            Toast.makeText(getApplicationContext(), R.string.message_something_went_wrong, Toast.LENGTH_SHORT).show();
+
+        }
+
+
+    }
+
+    public class CheckFirstSignUp_result extends AsyncHttpResponseHandler {
+
+
+        @Override
+        public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+            //  Log.e("$$$", "On Success");
+            common.hideProgressDialog();
+            try {
+                String str = new String(responseBody, "UTF-8");
+                //   Log.e("***********", "response is" + str);
+
+                if (str != null) {
+                    SignUpResponse response = new Gson().fromJson(str, SignUpResponse.class);
+                    //  Log.e("****SignUp*****", "" + response.result);
+
+                    if (response.result.trim().equals("error")) {
+                        if (common.isConnected()) {
+                            common.showProgressDialog(getString(R.string.progrss_registering));
+                            CallSignUpApi(edtEmail.getText().toString(), edtPwd.getText().toString(), edtFullName.getText().toString(), getSaltString());
+                        } else {
+                            Toast.makeText(getApplicationContext(), R.string.message_turn_on_internet, Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(), R.string.message_email_already_registered, Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        @Override
+        public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+            common.hideProgressDialog();
+            Toast.makeText(getApplicationContext(), R.string.message_something_went_wrong, Toast.LENGTH_SHORT).show();
+
+        }
+
+
     }
 }

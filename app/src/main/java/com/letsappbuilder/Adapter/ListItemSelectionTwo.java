@@ -6,6 +6,8 @@ package com.letsappbuilder.Adapter;
 public class ListItemSelectionTwo {
     public String imagePath;
     public String name;
+    public int color;
+    public int view_type;
 
     public String getImagePath() {
         return imagePath;
@@ -23,8 +25,6 @@ public class ListItemSelectionTwo {
         this.name = name;
     }
 
-    public int color;
-
     public int getColor() {
         return color;
     }
@@ -32,7 +32,6 @@ public class ListItemSelectionTwo {
     public void setColor(int color) {
         this.color = color;
     }
-    public int view_type;
 
     public int getView_type() {
         return view_type;

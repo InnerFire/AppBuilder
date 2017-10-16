@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     android:id="@+id/root_purchase_allappdetails"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -70,6 +70,7 @@
                 android:textSize="15sp"
                 android:textStyle="normal"
                 tools:ignore="RtlCompat" />
+
             <Button
                 android:id="@+id/bt_trial1day"
                 android:layout_width="match_parent"
@@ -88,20 +89,19 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:textColor="@color/firstColor"
                 android:background="@drawable/bt_shape"
                 android:stateListAnimator="@drawable/state_list_animator_z"
                 android:text="@string/month1"
-                 />
+                android:textColor="@color/firstColor" />
 
             <Button
                 android:id="@+id/bt_month3"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginTop="15dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
                 android:background="@drawable/bt_shape"
                 android:stateListAnimator="@drawable/state_list_animator_z"
                 android:text="@string/month3"

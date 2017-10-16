@@ -11,7 +11,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,16 +40,18 @@ import pl.bclogic.pulsator4droid.library.PulsatorLayout;
  * Created by Savaliya Imfotech on 24-05-2016.
  */
 public class fragment_main extends Fragment {
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
-    private RecyclerView.Adapter adapter;
-    private FloatingActionButton fab_create_new_app;
-    private FrameLayout rootFragmentMain;
     String[] image = {"http://media.appypie.com/appypie-slider-video/images/first.jpg", "http://media.appypie.com/appypie-slider-video/images/church.jpg", "http://media.appypie.com/appypie-slider-video/images/radio.jpg", "http://media.appypie.com/appypie-slider-video/images/restaurant.jpg", "http://media.appypie.com/appypie-slider-video/images/business.jpg", "http://media.appypie.com/appypie-slider-video/images/realEstate.jpg", "http://media.appypie.com/appypie-slider-video/images/marriage.jpg", "http://media.appypie.com/appypie-slider-video/images/work.jpg"};
     DbHelper dbHelper;
     AppPrefs appPrefs;
     Common common;
     PulsatorLayout pulsatorLayout;
+    //  **************** Call FETCH_All_APP_DETAILS API ******************************//
+    AsyncHttpClient callFetchAppDetailsAPIRequest;
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView.Adapter adapter;
+    private FloatingActionButton fab_create_new_app;
+    private FrameLayout rootFragmentMain;
 
     public String getSaltString() {
         String SALTCHARS = "1234567890";
@@ -64,7 +65,6 @@ public class fragment_main extends Fragment {
         return saltStr;
     }
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,7 +72,7 @@ public class fragment_main extends Fragment {
         MainActivity.secondframeToolbar.setVisibility(View.VISIBLE);
         MainActivity.frameToolbar.setVisibility(View.GONE);
 
-      //  Log.e("@@@", "on create view");
+        //  Log.e("@@@", "on create view");
         common = new Common(getActivity());
         pulsatorLayout = (PulsatorLayout) v.findViewById(R.id.pulsator);
         pulsatorLayout.start();
@@ -95,7 +95,7 @@ public class fragment_main extends Fragment {
             public void onClick(View view) {
                 appPrefs.setIS_NEW_APP("true");
                 appPrefs.setAPP_ID(getSaltString());
-              //  Log.e("***Main", appPrefs.getAPP_ID());
+                //  Log.e("***Main", appPrefs.getAPP_ID());
                 Fragment fragment = new fragment_selection_one();
                 if (fragment != null) {
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -103,7 +103,7 @@ public class fragment_main extends Fragment {
                             .replace(R.id.frame_layout_main, fragment).setCustomAnimations(R.anim.slide_up, android.R.anim.fade_out).commit();
 
                 } else {
-                  //  Log.e("Home", "Error in creating fragment");
+                    //  Log.e("Home", "Error in creating fragment");
                 }
 
             }
@@ -126,12 +126,6 @@ public class fragment_main extends Fragment {
         recyclerView.setAdapter(adapter);
 */
         return v;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_main, menu);
-
     }
 
 /*
@@ -235,8 +229,11 @@ public class fragment_main extends Fragment {
     }
 */
 
-    //  **************** Call FETCH_All_APP_DETAILS API ******************************//
-    AsyncHttpClient callFetchAppDetailsAPIRequest;
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+
+    }
 
     public void CallFetchAppDetailsApi(String UID, String APP_ID) {
         if (callFetchAppDetailsAPIRequest != null) {
@@ -260,7 +257,7 @@ public class fragment_main extends Fragment {
             common.hideProgressDialog();
             try {
                 String str = new String(responseBody, "UTF-8");
-              //  Log.e("$$$", str);
+                //  Log.e("$$$", str);
                 if (str != null) {
                     FetchAllDetailsResponse response = new Gson().fromJson(str, FetchAllDetailsResponse.class);
                     if (!response.APP_ID.equals("ERROR")) {
@@ -305,7 +302,7 @@ public class fragment_main extends Fragment {
 
                     } else {
                         // error in creating fragment
-                      //  Log.e("Home", "Error in creating fragment");
+                        //  Log.e("Home", "Error in creating fragment");
                     }
                 }
             } catch (UnsupportedEncodingException e) {

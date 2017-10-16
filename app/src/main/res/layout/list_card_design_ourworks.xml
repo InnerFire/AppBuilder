@@ -85,10 +85,10 @@
                             android:backgroundTint="#ffffff"
                             android:focusableInTouchMode="true"
                             android:gravity="center"
-                            android:inputType="textCapSentences"
                             android:hint="@string/edt4a_hint"
-                            android:textColorHint="#ffffff"
+                            android:inputType="textCapSentences"
                             android:textColor="#ffffff"
+                            android:textColorHint="#ffffff"
                             android:textSize="14sp"
                             android:visibility="gone" />
                     </android.support.design.widget.TextInputLayout>

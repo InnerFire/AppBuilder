@@ -6,6 +6,7 @@ package com.letsappbuilder.Adapter;
 public class ListIetem {
     public String imagePath;
     public String name;
+    public int viewtype;
 
     public String getImagePath() {
         return imagePath;
@@ -22,8 +23,6 @@ public class ListIetem {
     public void setName(String name) {
         this.name = name;
     }
-
-    public int viewtype;
 
     public int getViewtype() {
         return viewtype;

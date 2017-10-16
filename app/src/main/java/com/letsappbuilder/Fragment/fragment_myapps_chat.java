@@ -51,13 +51,16 @@ public class fragment_myapps_chat extends Fragment {
     DbHelper dbHelper;
     TextView tvErrorMsg;
     AppPrefs appPrefs;
+    Common common;
+    int[] color = {R.color.firstColor, R.color.secondColor, R.color.thirdColor, R.color.fourthColor, R.color.fifthColor, R.color.sixthColor};
+    //  ####################   Token Register Api   ###################
+    AsyncHttpClient callTokenRegisterAPIRequest;
+    //  **************** Call MY_All_APP_DETAILS API ******************************//
+    AsyncHttpClient callMYAppDetailsAPIRequest;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
     private FrameLayout rootFragmetnMyApps;
-
-    Common common;
-    int[] color = {R.color.firstColor, R.color.secondColor, R.color.thirdColor, R.color.fourthColor, R.color.fifthColor, R.color.sixthColor};
 
     @Nullable
     @Override
@@ -91,6 +94,39 @@ public class fragment_myapps_chat extends Fragment {
         return v;
     }
 
+    public void CallTokenRegisterApi(String appid, String userid, String name, String email, String token) {
+        if (callTokenRegisterAPIRequest != null) {
+            callTokenRegisterAPIRequest.cancelRequests(getActivity(), true);
+        }
+        callTokenRegisterAPIRequest = new AsyncHttpClient();
+        callTokenRegisterAPIRequest.post("http://fadootutorial.com/FcmExample/RegisterDevice.php", RequestTokenRegister(appid, userid, name, email, token), new RequestToken_result());
+    }
+
+    public RequestParams RequestTokenRegister(String appid, String userid, String name, String email, String token) {
+        RequestParams params = new RequestParams();
+
+        params.put("app_id", appid);
+        params.put("user_id", userid);
+        params.put("name", name);
+        params.put("email", email);
+        params.put("token", token);
+
+        return params;
+    }
+
+    public void CallMYFetchAppDetailsApi(String UID) {
+        if (callMYAppDetailsAPIRequest != null) {
+            callMYAppDetailsAPIRequest.cancelRequests(getActivity(), true);
+        }
+        callMYAppDetailsAPIRequest = new AsyncHttpClient();
+        callMYAppDetailsAPIRequest.post("http://fadootutorial.com/appgenerator/myappslist.php", RequestFetchAppDetailsParams(UID), new FETCH_All_APP_DETAILS_result());
+    }
+
+    public RequestParams RequestFetchAppDetailsParams(String UID) {
+        RequestParams params = new RequestParams();
+        params.put("UID", UID);
+        return params;
+    }
 
     public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
@@ -160,7 +196,7 @@ public class fragment_myapps_chat extends Fragment {
 
                                             } else {
                                                 // error in creating fragment
-                                              //  Log.e("Home", "Error in creating fragment");
+                                                //  Log.e("Home", "Error in creating fragment");
                                             }
                                         } else {
                                             Snackbar snackbar = Snackbar.make(rootFragmetnMyApps, R.string.message_turn_on_internet, Snackbar.LENGTH_LONG);
@@ -281,52 +317,28 @@ public class fragment_myapps_chat extends Fragment {
         }
     }
 
-
-    //  ####################   Token Register Api   ###################
-    AsyncHttpClient callTokenRegisterAPIRequest;
-
-    public void CallTokenRegisterApi(String appid, String userid, String name, String email, String token) {
-        if (callTokenRegisterAPIRequest != null) {
-            callTokenRegisterAPIRequest.cancelRequests(getActivity(), true);
-        }
-        callTokenRegisterAPIRequest = new AsyncHttpClient();
-        callTokenRegisterAPIRequest.post("http://fadootutorial.com/FcmExample/RegisterDevice.php", RequestTokenRegister(appid, userid, name, email, token), new RequestToken_result());
-    }
-
-    public RequestParams RequestTokenRegister(String appid, String userid, String name, String email, String token) {
-        RequestParams params = new RequestParams();
-
-        params.put("app_id", appid);
-        params.put("user_id", userid);
-        params.put("name", name);
-        params.put("email", email);
-        params.put("token", token);
-
-        return params;
-    }
-
     public class RequestToken_result extends AsyncHttpResponseHandler {
         @Override
         public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
             common.hideProgressDialog();
-          //  Log.e("$$$", "On Success");
+            //  Log.e("$$$", "On Success");
             try {
                 String str = new String(responseBody, "UTF-8");
-               // Log.e("***********", "response is" + str);
+                // Log.e("***********", "response is" + str);
 
                 if (str != null) {
                     SignUpResponse response = new Gson().fromJson(str, SignUpResponse.class);
-                  //  Log.e("****SignUp*****", "" + response.result);
+                    //  Log.e("****SignUp*****", "" + response.result);
 
                     if (!response.result.equals("error")) {
-                       // Log.e("###", "Token registered succesfully");
+                        // Log.e("###", "Token registered succesfully");
                         Fragment fragment = new fragment_chat();
                         if (fragment != null) {
                             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                             fragmentManager.beginTransaction()
                                     .replace(R.id.frame_layout_main, fragment).setCustomAnimations(R.anim.slide_up, android.R.anim.fade_out).commit();
                         } else {
-                          //  Log.e("Home", "Error in creating fragment");
+                            //  Log.e("Home", "Error in creating fragment");
                         }
                     }
                 }
@@ -338,27 +350,9 @@ public class fragment_myapps_chat extends Fragment {
 
         @Override
         public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
-          //  Log.e("###", "Something went wrong");
+            //  Log.e("###", "Something went wrong");
             common.hideProgressDialog();
         }
-    }
-
-
-    //  **************** Call MY_All_APP_DETAILS API ******************************//
-    AsyncHttpClient callMYAppDetailsAPIRequest;
-
-    public void CallMYFetchAppDetailsApi(String UID) {
-        if (callMYAppDetailsAPIRequest != null) {
-            callMYAppDetailsAPIRequest.cancelRequests(getActivity(), true);
-        }
-        callMYAppDetailsAPIRequest = new AsyncHttpClient();
-        callMYAppDetailsAPIRequest.post("http://fadootutorial.com/appgenerator/myappslist.php", RequestFetchAppDetailsParams(UID), new FETCH_All_APP_DETAILS_result());
-    }
-
-    public RequestParams RequestFetchAppDetailsParams(String UID) {
-        RequestParams params = new RequestParams();
-        params.put("UID", UID);
-        return params;
     }
 
     public class FETCH_All_APP_DETAILS_result extends AsyncHttpResponseHandler {
@@ -368,7 +362,7 @@ public class fragment_myapps_chat extends Fragment {
             common.hideProgressDialog();
             try {
                 String str = new String(responseBody, "UTF-8");
-              //  Log.e("$$$", str);
+                //  Log.e("$$$", str);
                 if (str != null) {
                     MyAppResponse response = new Gson().fromJson(str, MyAppResponse.class);
                     if (!response.myAppLists.get(0).APP_ID.equals("ERROR")) {

@@ -61,6 +61,11 @@ import cz.msebera.android.httpclient.Header;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
+    // Google Login
+    private static final String TAG = "SignInActivity";
+    private static final int RC_SIGN_IN = 9001;
+    public GoogleApiClient mGoogleApiClient;
+    public GoogleSignInOptions gso;
     @InjectView(R.id.et_email)
     EditText etUsername;
     @InjectView(R.id.et_password)
@@ -72,27 +77,26 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     @InjectView(R.id.fab)
     FloatingActionButton fab;
     AppPrefs appPrefs;
-    private EditText et_username,et_password;
-    private Button btn_go;
-    private TextView tvForgotPassword;
-    private RelativeLayout root_snackbar;
-    private ImageView imgGoogleLogin,imgFacebookLogin;
     Dialog dialog;
     Common common;
-
-    // Google Login
-    private static final String TAG = "SignInActivity";
-    private static final int RC_SIGN_IN = 9001;
-    public GoogleApiClient mGoogleApiClient;
-    public GoogleSignInOptions gso;
-
     // Facebook Login
     CallbackManager callbackManager;
     AccessTokenTracker accessTokenTracker;
     AccessToken accessToken;
     ProfileTracker profileTracker;
-
-    String EMAIL,NAME,PASSWORD;
+    String EMAIL, NAME, PASSWORD;
+    AsyncHttpClient callForgotPasswordAPIRequest;
+    //  **************** Call Login API ******************************
+    AsyncHttpClient callLoginAPIRequest;
+    AsyncHttpClient callSignUpAPIRequest;
+    AsyncHttpClient callSocialLoginAPIRequest;
+    // ###################  Check First time Registration is done API  ######################## //
+    AsyncHttpClient callCheckFirstSignUpAPIRequest;
+    private EditText et_username, et_password;
+    private Button btn_go;
+    private TextView tvForgotPassword;
+    private RelativeLayout root_snackbar;
+    private ImageView imgGoogleLogin, imgFacebookLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,9 +128,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         }
-        et_username = (EditText)findViewById(R.id.et_email);
-        et_password = (EditText)findViewById(R.id.et_password);
-        tvForgotPassword = (TextView)findViewById(R.id.txtForgotPassword);
+        et_username = (EditText) findViewById(R.id.et_email);
+        et_password = (EditText) findViewById(R.id.et_password);
+        tvForgotPassword = (TextView) findViewById(R.id.txtForgotPassword);
         btn_go = (Button) findViewById(R.id.bt_go);
         /*   Facebook Integration ********** */
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -216,8 +220,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     @Override
-    public void onActivityResult(int requestCode,int resultCode,Intent data) {
-        super.onActivityResult(requestCode,resultCode,data);
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
@@ -236,7 +240,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 PASSWORD = getSaltString();
                 EMAIL = acct.getEmail();
                 NAME = acct.getDisplayName();
-                Log.e("$$$",PASSWORD+""+EMAIL+NAME);
+                Log.e("$$$", PASSWORD + "" + EMAIL + NAME);
             }
 
             if (common.isConnected()) {
@@ -267,6 +271,40 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     }
 
+/*
+    public static String printKeyHash(Activity context) {
+        PackageInfo packageInfo;
+        String key = null;
+        try {
+            //getting application package name, as defined in manifest
+            String packageName = context.getApplicationContext().getPackageName();
+
+            //Retriving package info
+            packageInfo = context.getPackageManager().getPackageInfo(packageName,
+                    PackageManager.GET_SIGNATURES);
+
+            Log.e("Package Name=", context.getApplicationContext().getPackageName());
+
+            for (android.content.pm.Signature signature : packageInfo.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toString().getBytes());
+                key = new String(Base64.encode(md.digest(), 0));
+
+                // String key = new String(Base64.encodeBytes(md.digest()));
+                Log.e("Key Hash=", key);
+            }
+        } catch (PackageManager.NameNotFoundException e1) {
+            Log.e("Name not found", e1.toString());
+        } catch (NoSuchAlgorithmException e) {
+            Log.e("No such an algorithm", e.toString());
+        } catch (Exception e) {
+            Log.e("Exception", e.toString());
+        }
+
+        return key;
+    }
+*/
+/* **************  Call Forgot Password API   *************************  */
 
     @Override
     public void onDestroy() {
@@ -309,7 +347,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     startActivity(new Intent(this, MainActivity.class));
                 }
                 break;
-*/        }
+*/
+        }
     }
 
     private void clickHandler() {
@@ -389,43 +428,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         super.onStart();
     }
 
-/*
-    public static String printKeyHash(Activity context) {
-        PackageInfo packageInfo;
-        String key = null;
-        try {
-            //getting application package name, as defined in manifest
-            String packageName = context.getApplicationContext().getPackageName();
-
-            //Retriving package info
-            packageInfo = context.getPackageManager().getPackageInfo(packageName,
-                    PackageManager.GET_SIGNATURES);
-
-            Log.e("Package Name=", context.getApplicationContext().getPackageName());
-
-            for (android.content.pm.Signature signature : packageInfo.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toString().getBytes());
-                key = new String(Base64.encode(md.digest(), 0));
-
-                // String key = new String(Base64.encodeBytes(md.digest()));
-                Log.e("Key Hash=", key);
-            }
-        } catch (PackageManager.NameNotFoundException e1) {
-            Log.e("Name not found", e1.toString());
-        } catch (NoSuchAlgorithmException e) {
-            Log.e("No such an algorithm", e.toString());
-        } catch (Exception e) {
-            Log.e("Exception", e.toString());
-        }
-
-        return key;
-    }
-*/
-/* **************  Call Forgot Password API   *************************  */
-
-    AsyncHttpClient callForgotPasswordAPIRequest;
-
     public void CallForgotPasswordAPI(String email) {
         if (callForgotPasswordAPIRequest != null) {
             callForgotPasswordAPIRequest.cancelRequests(getApplicationContext(), true);
@@ -446,6 +448,70 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     }
 
+    public void CallLoginApi(String email, String pass) {
+        if (callLoginAPIRequest != null) {
+            callLoginAPIRequest.cancelRequests(getApplicationContext(), true);
+        }
+        callLoginAPIRequest = new AsyncHttpClient();
+        callLoginAPIRequest.post("http://fadootutorial.com/appgenerator/login.php", RequestLogin(email, pass), new Login_result());
+    }
+
+    // ##################  Call Register API  ##################### //
+
+    public RequestParams RequestLogin(String email, String pass) {
+        RequestParams params = new RequestParams();
+        params.put("email", email);
+        params.put("password", pass);
+        return params;
+    }
+
+    public void CallSocialSignUpApi(String email, String pass, String name, String refer) {
+        if (callSignUpAPIRequest != null) {
+            callSignUpAPIRequest.cancelRequests(getApplicationContext(), true);
+        }
+        callSignUpAPIRequest = new AsyncHttpClient();
+        callSignUpAPIRequest.post("http://fadootutorial.com/appgenerator/socialregister.php", RequestSign(email, pass, name, refer), new SignUp_result());
+    }
+
+    public RequestParams RequestSign(String email, String pass, String name, String refer) {
+        RequestParams params = new RequestParams();
+
+        params.put("email", email);
+        params.put("password", pass);
+        params.put("name", name);
+        params.put("refer", refer);
+
+        return params;
+    }
+
+    public void CallSocialLoginApi(String email) {
+        if (callSocialLoginAPIRequest != null) {
+            callSocialLoginAPIRequest.cancelRequests(getApplicationContext(), true);
+        }
+        callSocialLoginAPIRequest = new AsyncHttpClient();
+        callSocialLoginAPIRequest.post("http://fadootutorial.com/appgenerator/sociallogin.php", RequestSocialLogin(email), new SocialLogin_result());
+    }
+    // ##################  Call Social Login API  ##################### //
+
+    public RequestParams RequestSocialLogin(String email) {
+        RequestParams params = new RequestParams();
+        params.put("email", email);
+        return params;
+    }
+
+    public void CallCheckFirstSignUpApi(String email) {
+        if (callCheckFirstSignUpAPIRequest != null) {
+            callCheckFirstSignUpAPIRequest.cancelRequests(getApplicationContext(), true);
+        }
+        callCheckFirstSignUpAPIRequest = new AsyncHttpClient();
+        callCheckFirstSignUpAPIRequest.post("http://fadootutorial.com/appgenerator/checkfirsttime.php", RequestCheckFirstSign(email), new CheckFirstSignUp_result());
+    }
+
+    public RequestParams RequestCheckFirstSign(String email) {
+        RequestParams params = new RequestParams();
+        params.put("email", email);
+        return params;
+    }
 
     public class Forgot_Password_Result extends AsyncHttpResponseHandler {
         @Override
@@ -474,24 +540,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             common.hideProgressDialog();
             Snackbar.make(root_snackbar, R.string.message_something_went_wrong, Snackbar.LENGTH_LONG).show();
         }
-    }
-
-    //  **************** Call Login API ******************************
-    AsyncHttpClient callLoginAPIRequest;
-
-    public void CallLoginApi(String email, String pass) {
-        if (callLoginAPIRequest != null) {
-            callLoginAPIRequest.cancelRequests(getApplicationContext(), true);
-        }
-        callLoginAPIRequest = new AsyncHttpClient();
-        callLoginAPIRequest.post("http://fadootutorial.com/appgenerator/login.php", RequestLogin(email, pass), new Login_result());
-    }
-
-    public RequestParams RequestLogin(String email, String pass) {
-        RequestParams params = new RequestParams();
-        params.put("email", email);
-        params.put("password", pass);
-        return params;
     }
 
     public class Login_result extends AsyncHttpResponseHandler {
@@ -527,9 +575,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             startActivity(i2, oc2.toBundle());
                             finish();
                         } else {
-                      */      startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                            finish();
-                       // }
+                      */
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        finish();
+                        // }
                     }
                 }
             } catch (UnsupportedEncodingException e) {
@@ -542,29 +591,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             common.hideProgressDialog();
             Toast.makeText(getApplicationContext(), R.string.message_something_went_wrong, Toast.LENGTH_SHORT).show();
         }
-    }
-
-    // ##################  Call Register API  ##################### //
-
-    AsyncHttpClient callSignUpAPIRequest;
-
-    public void CallSocialSignUpApi(String email, String pass, String name, String refer) {
-        if (callSignUpAPIRequest != null) {
-            callSignUpAPIRequest.cancelRequests(getApplicationContext(), true);
-        }
-        callSignUpAPIRequest = new AsyncHttpClient();
-        callSignUpAPIRequest.post("http://fadootutorial.com/appgenerator/socialregister.php", RequestSign(email, pass, name, refer), new SignUp_result());
-    }
-
-    public RequestParams RequestSign(String email, String pass, String name, String refer) {
-        RequestParams params = new RequestParams();
-
-        params.put("email", email);
-        params.put("password", pass);
-        params.put("name", name);
-        params.put("refer", refer);
-
-        return params;
     }
 
     public class SignUp_result extends AsyncHttpResponseHandler {
@@ -601,9 +627,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             startActivity(i2, oc2.toBundle());
                             finish();
                         } else {
-                         */   startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                            finish();
-                     //   }
+                         */
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        finish();
+                        //   }
                     }
                 }
             } catch (UnsupportedEncodingException e) {
@@ -617,23 +644,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             Toast.makeText(getApplicationContext(), R.string.message_something_went_wrong, Toast.LENGTH_SHORT).show();
         }
 
-    }
- // ##################  Call Social Login API  ##################### //
-
-    AsyncHttpClient callSocialLoginAPIRequest;
-
-    public void CallSocialLoginApi(String email) {
-        if (callSocialLoginAPIRequest != null) {
-            callSocialLoginAPIRequest.cancelRequests(getApplicationContext(), true);
-        }
-        callSocialLoginAPIRequest = new AsyncHttpClient();
-        callSocialLoginAPIRequest.post("http://fadootutorial.com/appgenerator/sociallogin.php", RequestSocialLogin(email), new SocialLogin_result());
-    }
-
-    public RequestParams RequestSocialLogin(String email) {
-        RequestParams params = new RequestParams();
-        params.put("email", email);
-        return params;
     }
 
     public class SocialLogin_result extends AsyncHttpResponseHandler {
@@ -670,9 +680,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             startActivity(i2, oc2.toBundle());
                             finish();
                         } else {*/
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                            finish();
-                       // }
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        finish();
+                        // }
                     }
                 }
             } catch (UnsupportedEncodingException e) {
@@ -686,23 +696,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             Toast.makeText(getApplicationContext(), R.string.message_something_went_wrong, Toast.LENGTH_SHORT).show();
         }
 
-    }
-
-    // ###################  Check First time Registration is done API  ######################## //
-    AsyncHttpClient callCheckFirstSignUpAPIRequest;
-
-    public void CallCheckFirstSignUpApi(String email) {
-        if (callCheckFirstSignUpAPIRequest != null) {
-            callCheckFirstSignUpAPIRequest.cancelRequests(getApplicationContext(), true);
-        }
-        callCheckFirstSignUpAPIRequest = new AsyncHttpClient();
-        callCheckFirstSignUpAPIRequest.post("http://fadootutorial.com/appgenerator/checkfirsttime.php", RequestCheckFirstSign(email), new CheckFirstSignUp_result());
-    }
-
-    public RequestParams RequestCheckFirstSign(String email) {
-        RequestParams params = new RequestParams();
-        params.put("email", email);
-        return params;
     }
 
     public class CheckFirstSignUp_result extends AsyncHttpResponseHandler {

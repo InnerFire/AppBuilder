@@ -16,7 +16,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,6 +31,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.letsappbuilder.Adapter.ListItemSelectionOne;
 import com.letsappbuilder.MainActivity;
 import com.letsappbuilder.R;
@@ -39,7 +39,6 @@ import com.letsappbuilder.Response.SignUpResponse;
 import com.letsappbuilder.Utils.AppPrefs;
 import com.letsappbuilder.Utils.Common;
 import com.letsappbuilder.Utils.DbHelper;
-import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -62,9 +61,8 @@ import cz.msebera.android.httpclient.Header;
  * Created by Savaliya Imfotech on 24-05-2016.
  */
 public class fragment_selection_one extends Fragment {
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
-    private GridLayoutManager lLayout;
+    public static String[] name = {"Personalization", "Ecommerce", "Wallpaper", "Visiting Card", "Resume", "Channel", "News", "Conference", "Wedding", "Casino", "Fitness", "Travel", "Sport", "Blog", "Finance", "Music", "Transportation", "Festival", "Birthday", "Fashion", "Organization", "Hire Cab", "Insurance", "Law Firm", "Worship", "Health", "Photography", "Online Business", "Remote Work", "Business", "Information", "Restaurant", "Education", "Construction", "Real Estate", "Chat"};
+    public String[] category_description_set;
     DbHelper dbHelper;
     AppPrefs appPrefs;
     ScrollView rootSelectionOne;
@@ -77,10 +75,13 @@ public class fragment_selection_one extends Fragment {
     DisplayImageOptions options;
     ImageLoader imageLoader;
     String APP_ID, APP_NAME, APP_ICON, SPLASH_ICON, APP_CATEGORY, APP_THEME, THEME_COLOR, TEXT_COLOR, PUBLISH_ID, APP_PAGE, APP_PAGES_ID;
-    public static String[] name = {"Personalization", "Ecommerce", "Wallpaper", "Visiting Card", "Resume", "Channel", "News", "Conference", "Wedding", "Casino", "Fitness", "Travel", "Sport", "Blog", "Finance", "Music", "Transportation", "Festival", "Birthday", "Fashion", "Organization", "Hire Cab", "Insurance", "Law Firm", "Worship", "Health", "Photography", "Online Business", "Remote Work", "Business", "Information", "Restaurant", "Education", "Construction", "Real Estate", "Chat"};
     int[] image = {R.drawable.personalization, R.drawable.ecommerce, R.drawable.wallpaper, R.drawable.visit_card, R.drawable.resume, R.drawable.channel, R.drawable.news, R.drawable.conference, R.drawable.wedding, R.drawable.casino, R.drawable.fitness, R.drawable.travel, R.drawable.sport, R.drawable.blog, R.drawable.finance, R.drawable.musician, R.drawable.transportation, R.drawable.festival, R.drawable.birthday, R.drawable.fashion, R.drawable.organization, R.drawable.hire_cab, R.drawable.insurance, R.drawable.law_firm, R.drawable.worship, R.drawable.health, R.drawable.photography, R.drawable.online_business, R.drawable.remote_working, R.drawable.business, R.drawable.information, R.drawable.restaurant, R.drawable.education, R.drawable.consruction, R.drawable.real_estate, R.drawable.chat_filled};
     int[] color = {R.color.firstColor, R.color.secondColor, R.color.thirdColor, R.color.fourthColor, R.color.fifthColor, R.color.sixthColor, R.color.firstColor, R.color.secondColor, R.color.thirdColor, R.color.fourthColor, R.color.fifthColor, R.color.sixthColor};
-    public String[] category_description_set;
+    //  **************** Call All_App_Details API ******************************//
+    AsyncHttpClient callEachPhaseAppDetailsAPIRequest;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private GridLayoutManager lLayout;
 
     @Nullable
     @Override
@@ -126,7 +127,7 @@ public class fragment_selection_one extends Fragment {
 
         adapter = new CardAdapter(name, image, color);
         recyclerView.setAdapter(adapter);
-      //  Log.e("***One", appPrefs.getAPP_ID());
+        //  Log.e("***One", appPrefs.getAPP_ID());
         if (dbHelper.isNewApp(appPrefs.getAPP_ID())) {
             edtAppName.setText(dbHelper.SelectAttributeviseData(appPrefs.getAPP_ID(), DbHelper.APP_NAME));
             tv_status_selection_one.setVisibility(View.VISIBLE);
@@ -151,7 +152,7 @@ public class fragment_selection_one extends Fragment {
                     MainActivity.frameToolbar.setBackgroundColor(getResources().getColor(R.color.firstColor));
 
                 } else {
-                  //  Log.e("Home", "Error in creating fragment");
+                    //  Log.e("Home", "Error in creating fragment");
                 }
             }
         });
@@ -210,7 +211,7 @@ public class fragment_selection_one extends Fragment {
                                         .replace(R.id.frame_layout_main, fragment).setCustomAnimations(R.anim.slide_up, android.R.anim.fade_out).commit();
 
                             } else {
-                              //  Log.e("Home", "Error in creating fragment");
+                                //  Log.e("Home", "Error in creating fragment");
                             }
                         }
                     } else {
@@ -231,7 +232,7 @@ public class fragment_selection_one extends Fragment {
                                     .replace(R.id.frame_layout_main, fragment).setCustomAnimations(R.anim.slide_up, android.R.anim.fade_out).commit();
 
                         } else {
-                           // Log.e("Home", "Error in creating fragment");
+                            // Log.e("Home", "Error in creating fragment");
                         }
                     }
 
@@ -251,6 +252,146 @@ public class fragment_selection_one extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_main, menu);
         //  MainActivity.loadProgressMenuItem(menu, 40);
+    }
+
+    private void chooseTheme(final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+        builder.setTitle(getString(R.string.category_dialog_title));
+        builder.setMessage(name[position] + getString(R.string.category_dialog_message));
+
+        String positiveText = getString(android.R.string.ok);
+        builder.setPositiveButton(positiveText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        appcategory = name[position];
+                        POSITION = position;
+                        tv_status_selection_one.setVisibility(View.VISIBLE);
+                        tv_status_selection_one.setText(appcategory + getString(R.string.category_dialog_selected_message));
+                        if (edtAppName.getText().toString().isEmpty()) {
+                            edtAppName.setError(getString(R.string.enter_app_name));
+                        } else if (appcategory != null) {
+                            if (dbHelper.isNewApp(appPrefs.getAPP_ID())) {
+                                dbHelper.UpdateSelectionOnePhasedata(appPrefs.getAPP_ID(), edtAppName.getText().toString(), appcategory);
+                                if (appPrefs.getIS_NEW_APP().equals("false")) {
+                                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+                                    try {
+                                        String query = "SELECT * FROM " + DbHelper.TABLE_NAME + " WHERE " + DbHelper.APP_ID + " = '" + appPrefs.getAPP_ID() + "'";
+                                        Cursor resultset = db.rawQuery(query, null);
+
+                                        if (resultset != null) {
+                                            //  Log.e("in function%%", resultset.getCount() + "");
+                                            while (resultset.moveToNext()) {
+                                                APP_ID = resultset.getString(resultset.getColumnIndex(DbHelper.APP_ID));
+                                                APP_NAME = resultset.getString(resultset.getColumnIndex(DbHelper.APP_NAME));
+                                                APP_ICON = resultset.getString(resultset.getColumnIndex(DbHelper.APP_ICON));
+                                                SPLASH_ICON = resultset.getString(resultset.getColumnIndex(DbHelper.SPLASH_ICON));
+                                                APP_CATEGORY = resultset.getString(resultset.getColumnIndex(DbHelper.APP_CATEGORY));
+                                                APP_THEME = resultset.getString(resultset.getColumnIndex(DbHelper.APP_THEME));
+                                                THEME_COLOR = resultset.getString(resultset.getColumnIndex(DbHelper.THEME_COLOR));
+                                                TEXT_COLOR = resultset.getString(resultset.getColumnIndex(DbHelper.TEXT_COLOR));
+                                                PUBLISH_ID = resultset.getString(resultset.getColumnIndex(DbHelper.PUBLISH_ID));
+                                                APP_PAGE = resultset.getString(resultset.getColumnIndex(DbHelper.APP_PAGES));
+                                                APP_PAGES_ID = resultset.getString(resultset.getColumnIndex(DbHelper.APP_PAGES_ID));
+                                                resultset.close();
+                                            }
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    if (common.isConnected()) {
+                                        common.showProgressDialog(getString(R.string.progress_updating));
+                                        CallEachPhaseAppDetailsApi(appPrefs.getUserId(), APP_ID, APP_NAME, APP_ICON, SPLASH_ICON, APP_CATEGORY, APP_THEME, THEME_COLOR, TEXT_COLOR, PUBLISH_ID, APP_PAGE, APP_PAGES_ID);
+                                    } else {
+                                        Snackbar snackbar = Snackbar.make(rootSelectionOne, R.string.message_turn_on_internet, Snackbar.LENGTH_LONG);
+                                        snackbar.getView().setBackgroundColor(getResources().getColor(R.color.secondColor));
+                                        snackbar.show();
+                                    }
+                                } else {
+                                    Fragment fragment = new fragment_selection_two();
+                                    if (fragment != null) {
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                                            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                                            getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getActivity(), R.color.secondColor));
+                                        }
+                                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                        fragmentManager.beginTransaction()
+                                                .replace(R.id.frame_layout_main, fragment).setCustomAnimations(R.anim.slide_up, android.R.anim.fade_out).commit();
+
+                                    } else {
+                                        //  Log.e("Home", "Error in creating fragment");
+                                    }
+                                }
+                            } else {
+                                Fragment fragment = new fragment_selection_two();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("APP_NAME", edtAppName.getText().toString());
+                                bundle.putString("APP_CATEGORY", appcategory);
+                                bundle.putString("POSITION", String.valueOf(POSITION));
+                                fragment.setArguments(bundle);
+                                if (fragment != null) {
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                                        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                                        getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getActivity(), R.color.secondColor));
+                                    }
+                                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                    fragmentManager.beginTransaction()
+                                            .replace(R.id.frame_layout_main, fragment).setCustomAnimations(R.anim.slide_up, android.R.anim.fade_out).commit();
+
+                                } else {
+                                    // Log.e("Home", "Error in creating fragment");
+                                }
+                            }
+
+                        } else {
+                            Snackbar snackbar = Snackbar.make(rootSelectionOne, R.string.select_minimum_category_notice, Snackbar.LENGTH_LONG);
+                            snackbar.getView().setBackgroundColor(getResources().getColor(R.color.secondColor));
+                            snackbar.show();
+
+                        }
+
+                    }
+                });
+
+        String negativeText = getString(android.R.string.cancel);
+        builder.setNegativeButton(negativeText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.setCancelable(false);
+        dialog.show();
+    }
+
+    public void CallEachPhaseAppDetailsApi(String UID, String APP_ID, String APP_NAME, String APP_ICON, String SPLASH_ICON, String APP_CATEGORY, String APP_THEME, String THEME_COLOR, String TEXT_COLOR, String PUBLISH_ID, String APP_PAGE, String APP_PAGES_ID) {
+        if (callEachPhaseAppDetailsAPIRequest != null) {
+            callEachPhaseAppDetailsAPIRequest.cancelRequests(getActivity(), true);
+        }
+        callEachPhaseAppDetailsAPIRequest = new AsyncHttpClient();
+        callEachPhaseAppDetailsAPIRequest.post("http://fadootutorial.com/appgenerator/eachphaseappdetails.php", RequestAppDetailsParams(UID, APP_ID, APP_NAME, APP_ICON, SPLASH_ICON, APP_CATEGORY, APP_THEME, THEME_COLOR, TEXT_COLOR, PUBLISH_ID, APP_PAGE, APP_PAGES_ID), new All_APP_DETAILS_result());
+    }
+
+    public RequestParams RequestAppDetailsParams(String UID, String APP_ID, String APP_NAME, String APP_ICON, String SPLASH_ICON, String APP_CATEGORY, String APP_THEME, String THEME_COLOR, String TEXT_COLOR, String PUBLISH_ID, String APP_PAGE, String APP_PAGES_ID) {
+        RequestParams params = new RequestParams();
+        params.put("UID", UID);
+        params.put("APP_ID", APP_ID);
+        params.put("APP_NAME", APP_NAME);
+        params.put("APP_ICON", APP_ICON);
+        params.put("SPLASH_ICON", SPLASH_ICON);
+        params.put("APP_CATEGORY", APP_CATEGORY);
+        params.put("APP_THEME", APP_THEME);
+        params.put("THEME_COLOR", THEME_COLOR);
+        params.put("TEXT_COLOR", TEXT_COLOR);
+        params.put("PUBLISH_ID", PUBLISH_ID);
+        params.put("APP_PAGE", APP_PAGE);
+        params.put("APP_PAGES_ID", APP_PAGES_ID);
+        return params;
     }
 
     public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
@@ -276,7 +417,7 @@ public class fragment_selection_one extends Fragment {
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.list_card_selection_one, parent, false);
-          //  Log.e("$$$", "" + viewType);
+            //  Log.e("$$$", "" + viewType);
             ViewHolder viewHolder = new ViewHolder(v);
             return viewHolder;
         }
@@ -347,8 +488,8 @@ public class fragment_selection_one extends Fragment {
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
-            CardView cardView;
             public TextView textViewName;
+            CardView cardView;
             ImageView imgList, imgAbout;
             RelativeLayout relativeLayout;
             CheckBox checkBox_select_one;
@@ -365,150 +506,6 @@ public class fragment_selection_one extends Fragment {
         }
     }
 
-    private void chooseTheme(final int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
-        builder.setTitle(getString(R.string.category_dialog_title));
-        builder.setMessage(name[position] + getString(R.string.category_dialog_message));
-
-        String positiveText = getString(android.R.string.ok);
-        builder.setPositiveButton(positiveText,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        appcategory = name[position];
-                        POSITION = position;
-                        tv_status_selection_one.setVisibility(View.VISIBLE);
-                        tv_status_selection_one.setText(appcategory + getString(R.string.category_dialog_selected_message));
-                        if (edtAppName.getText().toString().isEmpty()) {
-                            edtAppName.setError(getString(R.string.enter_app_name));
-                        } else if (appcategory != null) {
-                            if (dbHelper.isNewApp(appPrefs.getAPP_ID())) {
-                                dbHelper.UpdateSelectionOnePhasedata(appPrefs.getAPP_ID(), edtAppName.getText().toString(), appcategory);
-                                if (appPrefs.getIS_NEW_APP().equals("false")) {
-                                    SQLiteDatabase db = dbHelper.getWritableDatabase();
-                                    try {
-                                        String query = "SELECT * FROM " + DbHelper.TABLE_NAME + " WHERE " + DbHelper.APP_ID + " = '" + appPrefs.getAPP_ID() + "'";
-                                        Cursor resultset = db.rawQuery(query, null);
-
-                                        if (resultset != null) {
-                                            //  Log.e("in function%%", resultset.getCount() + "");
-                                            while (resultset.moveToNext()) {
-                                                APP_ID = resultset.getString(resultset.getColumnIndex(DbHelper.APP_ID));
-                                                APP_NAME = resultset.getString(resultset.getColumnIndex(DbHelper.APP_NAME));
-                                                APP_ICON = resultset.getString(resultset.getColumnIndex(DbHelper.APP_ICON));
-                                                SPLASH_ICON = resultset.getString(resultset.getColumnIndex(DbHelper.SPLASH_ICON));
-                                                APP_CATEGORY = resultset.getString(resultset.getColumnIndex(DbHelper.APP_CATEGORY));
-                                                APP_THEME = resultset.getString(resultset.getColumnIndex(DbHelper.APP_THEME));
-                                                THEME_COLOR = resultset.getString(resultset.getColumnIndex(DbHelper.THEME_COLOR));
-                                                TEXT_COLOR = resultset.getString(resultset.getColumnIndex(DbHelper.TEXT_COLOR));
-                                                PUBLISH_ID = resultset.getString(resultset.getColumnIndex(DbHelper.PUBLISH_ID));
-                                                APP_PAGE = resultset.getString(resultset.getColumnIndex(DbHelper.APP_PAGES));
-                                                APP_PAGES_ID = resultset.getString(resultset.getColumnIndex(DbHelper.APP_PAGES_ID));
-                                                resultset.close();
-                                            }
-                                        }
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                    if (common.isConnected()) {
-                                        common.showProgressDialog(getString(R.string.progress_updating));
-                                        CallEachPhaseAppDetailsApi(appPrefs.getUserId(), APP_ID, APP_NAME, APP_ICON, SPLASH_ICON, APP_CATEGORY, APP_THEME, THEME_COLOR, TEXT_COLOR, PUBLISH_ID, APP_PAGE, APP_PAGES_ID);
-                                    } else {
-                                        Snackbar snackbar = Snackbar.make(rootSelectionOne, R.string.message_turn_on_internet, Snackbar.LENGTH_LONG);
-                                        snackbar.getView().setBackgroundColor(getResources().getColor(R.color.secondColor));
-                                        snackbar.show();
-                                    }
-                                } else {
-                                    Fragment fragment = new fragment_selection_two();
-                                    if (fragment != null) {
-                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                                            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                                            getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getActivity(), R.color.secondColor));
-                                        }
-                                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                                        fragmentManager.beginTransaction()
-                                                .replace(R.id.frame_layout_main, fragment).setCustomAnimations(R.anim.slide_up, android.R.anim.fade_out).commit();
-
-                                    } else {
-                                      //  Log.e("Home", "Error in creating fragment");
-                                    }
-                                }
-                            } else {
-                                Fragment fragment = new fragment_selection_two();
-                                Bundle bundle = new Bundle();
-                                bundle.putString("APP_NAME", edtAppName.getText().toString());
-                                bundle.putString("APP_CATEGORY", appcategory);
-                                bundle.putString("POSITION", String.valueOf(POSITION));
-                                fragment.setArguments(bundle);
-                                if (fragment != null) {
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                                        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                                        getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getActivity(), R.color.secondColor));
-                                    }
-                                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                                    fragmentManager.beginTransaction()
-                                            .replace(R.id.frame_layout_main, fragment).setCustomAnimations(R.anim.slide_up, android.R.anim.fade_out).commit();
-
-                                } else {
-                                   // Log.e("Home", "Error in creating fragment");
-                                }
-                            }
-
-                        } else {
-                            Snackbar snackbar = Snackbar.make(rootSelectionOne, R.string.select_minimum_category_notice, Snackbar.LENGTH_LONG);
-                            snackbar.getView().setBackgroundColor(getResources().getColor(R.color.secondColor));
-                            snackbar.show();
-
-                        }
-
-                    }
-                });
-
-        String negativeText = getString(android.R.string.cancel);
-        builder.setNegativeButton(negativeText,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-        AlertDialog dialog = builder.create();
-        dialog.setCancelable(false);
-        dialog.show();
-    }
-
-
-    //  **************** Call All_App_Details API ******************************//
-    AsyncHttpClient callEachPhaseAppDetailsAPIRequest;
-
-    public void CallEachPhaseAppDetailsApi(String UID, String APP_ID, String APP_NAME, String APP_ICON, String SPLASH_ICON, String APP_CATEGORY, String APP_THEME, String THEME_COLOR, String TEXT_COLOR, String PUBLISH_ID, String APP_PAGE, String APP_PAGES_ID) {
-        if (callEachPhaseAppDetailsAPIRequest != null) {
-            callEachPhaseAppDetailsAPIRequest.cancelRequests(getActivity(), true);
-        }
-        callEachPhaseAppDetailsAPIRequest = new AsyncHttpClient();
-        callEachPhaseAppDetailsAPIRequest.post("http://fadootutorial.com/appgenerator/eachphaseappdetails.php", RequestAppDetailsParams(UID, APP_ID, APP_NAME, APP_ICON, SPLASH_ICON, APP_CATEGORY, APP_THEME, THEME_COLOR, TEXT_COLOR, PUBLISH_ID, APP_PAGE, APP_PAGES_ID), new All_APP_DETAILS_result());
-    }
-
-    public RequestParams RequestAppDetailsParams(String UID, String APP_ID, String APP_NAME, String APP_ICON, String SPLASH_ICON, String APP_CATEGORY, String APP_THEME, String THEME_COLOR, String TEXT_COLOR, String PUBLISH_ID, String APP_PAGE, String APP_PAGES_ID) {
-        RequestParams params = new RequestParams();
-        params.put("UID", UID);
-        params.put("APP_ID", APP_ID);
-        params.put("APP_NAME", APP_NAME);
-        params.put("APP_ICON", APP_ICON);
-        params.put("SPLASH_ICON", SPLASH_ICON);
-        params.put("APP_CATEGORY", APP_CATEGORY);
-        params.put("APP_THEME", APP_THEME);
-        params.put("THEME_COLOR", THEME_COLOR);
-        params.put("TEXT_COLOR", TEXT_COLOR);
-        params.put("PUBLISH_ID", PUBLISH_ID);
-        params.put("APP_PAGE", APP_PAGE);
-        params.put("APP_PAGES_ID", APP_PAGES_ID);
-        return params;
-    }
-
     public class All_APP_DETAILS_result extends AsyncHttpResponseHandler {
 
         @Override
@@ -516,7 +513,7 @@ public class fragment_selection_one extends Fragment {
             common.hideProgressDialog();
             try {
                 String str = new String(responseBody, "UTF-8");
-              //  Log.e("###", str);
+                //  Log.e("###", str);
                 if (str != null) {
                     SignUpResponse response = new Gson().fromJson(str, SignUpResponse.class);
                     if (response.result.equals("success")) {
@@ -534,11 +531,11 @@ public class fragment_selection_one extends Fragment {
                                     .replace(R.id.frame_layout_main, fragment).setCustomAnimations(R.anim.slide_up, android.R.anim.fade_out).commit();
 
                         } else {
-                          //  Log.e("Home", "Error in creating fragment");
+                            //  Log.e("Home", "Error in creating fragment");
                         }
 
                     } else {
-                      //  Log.e("###", "Some thing went");
+                        //  Log.e("###", "Some thing went");
                     }
                 }
             } catch (UnsupportedEncodingException e) {

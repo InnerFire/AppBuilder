@@ -42,6 +42,12 @@ import java.util.Date;
  * Created by Savaliya Imfotech on 16-12-2016.
  */
 public class fragment_chat extends Fragment implements View.OnClickListener {
+    AppPrefs appPrefs;
+    Common common;
+    //  ####################   Token Register Api   ###################
+    AsyncHttpClient callTokenRegisterAPIRequest;
+    //  ####################   Send Messages Api   ###################  //
+    AsyncHttpClient callSendMessageAPIRequest;
     //Broadcast receiver to receive broadcasts
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private RelativeLayout rootChat;
@@ -49,17 +55,18 @@ public class fragment_chat extends Fragment implements View.OnClickListener {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
-
     //ArrayList of messages to store the thread messages
     private ArrayList<Message> messages;
-
     //Button to send new message on the thread
     private ImageView buttonSend;
-
     //EditText to send new message on the thread
     private EditText editTextMessage;
-    AppPrefs appPrefs;
-    Common common;
+
+    //This method will return current timestamp
+    public static String getTimeStamp() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return format.format(new Date());
+    }
 
     @Nullable
     @Override
@@ -99,7 +106,7 @@ public class fragment_chat extends Fragment implements View.OnClickListener {
                     String name = intent.getStringExtra("name");
                     String message = intent.getStringExtra("message");
                     String id = intent.getStringExtra("id");
-                  //  Log.e("###123=>", name + message + id);
+                    //  Log.e("###123=>", name + message + id);
                     //processing the message to add it in current thread
                     processMessage(name, message, id);
                 }
@@ -109,9 +116,6 @@ public class fragment_chat extends Fragment implements View.OnClickListener {
 
         return v;
     }
-
-    //  ####################   Token Register Api   ###################
-    AsyncHttpClient callTokenRegisterAPIRequest;
 
     public void CallFetchApi(String appid) {
         if (callTokenRegisterAPIRequest != null) {
@@ -128,57 +132,6 @@ public class fragment_chat extends Fragment implements View.OnClickListener {
 
         return params;
     }
-
-
-    public class RequestToken_result extends AsyncHttpResponseHandler {
-
-
-        @Override
-        public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
-           // Log.e("$$$", "On Success");
-            common.hideProgressDialog();
-            try {
-                String str = new String(responseBody, "UTF-8");
-              //  Log.e("***********", "response is" + str);
-
-                if (str != null) {
-                    JSONObject res = new JSONObject(str);
-                    JSONArray thread = res.getJSONArray("messages");
-                    for (int i = 0; i < thread.length(); i++) {
-                        JSONObject obj = thread.getJSONObject(i);
-                        String userId = obj.getString("userid");
-                      //  Log.e("&&&", userId);
-                        String message = obj.getString("message");
-                        String name = obj.getString("name");
-                        String sentAt = obj.getString("sentat");
-                        Message messagObject = new Message(userId, message, sentAt, name);
-                        messages.add(messagObject);
-                    }
-
-                    adapter = new ThreadAdapter(getActivity(), messages, appPrefs.getUserId());
-                    recyclerView.setAdapter(adapter);
-                    scrollToBottom();
-
-                }
-            } catch (UnsupportedEncodingException | JSONException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        @Override
-        public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
-          //  Log.e("###", "Something went wrong");
-            common.hideProgressDialog();
-
-        }
-
-
-    }
-
-
-    //  ####################   Send Messages Api   ###################  //
-    AsyncHttpClient callSendMessageAPIRequest;
 
     public void CallSendMessageApi(String uid, String name, String email, String message, String appid) {
         if (callSendMessageAPIRequest != null) {
@@ -198,31 +151,6 @@ public class fragment_chat extends Fragment implements View.OnClickListener {
         params.put("app_id", appid);
 
         return params;
-    }
-
-
-    public class RequestSendMessages_result extends AsyncHttpResponseHandler {
-
-
-        @Override
-        public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
-          //  Log.e("$$$", "On Success");
-            try {
-                String str = new String(responseBody, "UTF-8");
-              //  Log.e("***********", "response is" + str);
-
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        @Override
-        public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
-          //  Log.e("###", "Something went wrong");
-        }
-
-
     }
 
     //This method will fetch all the messages of the thread
@@ -270,12 +198,6 @@ public class fragment_chat extends Fragment implements View.OnClickListener {
             recyclerView.getLayoutManager().smoothScrollToPosition(recyclerView, null, adapter.getItemCount() - 1);
     }
 
-    //This method will return current timestamp
-    public static String getTimeStamp() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return format.format(new Date());
-    }
-
     //Registering broadcast receivers
     @Override
     public void onResume() {
@@ -285,7 +207,6 @@ public class fragment_chat extends Fragment implements View.OnClickListener {
                 new IntentFilter(Constants.PUSH_NOTIFICATION));
     }
 
-
     //Unregistering receivers
     @Override
     public void onPause() {
@@ -294,7 +215,6 @@ public class fragment_chat extends Fragment implements View.OnClickListener {
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mRegistrationBroadcastReceiver);
     }
 
-
     //Sending message onclick
     @Override
     public void onClick(View v) {
@@ -302,6 +222,76 @@ public class fragment_chat extends Fragment implements View.OnClickListener {
             if (!editTextMessage.getText().toString().isEmpty())
                 sendMessage();
         }
+    }
+
+    public class RequestToken_result extends AsyncHttpResponseHandler {
+
+
+        @Override
+        public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+            // Log.e("$$$", "On Success");
+            common.hideProgressDialog();
+            try {
+                String str = new String(responseBody, "UTF-8");
+                //  Log.e("***********", "response is" + str);
+
+                if (str != null) {
+                    JSONObject res = new JSONObject(str);
+                    JSONArray thread = res.getJSONArray("messages");
+                    for (int i = 0; i < thread.length(); i++) {
+                        JSONObject obj = thread.getJSONObject(i);
+                        String userId = obj.getString("userid");
+                        //  Log.e("&&&", userId);
+                        String message = obj.getString("message");
+                        String name = obj.getString("name");
+                        String sentAt = obj.getString("sentat");
+                        Message messagObject = new Message(userId, message, sentAt, name);
+                        messages.add(messagObject);
+                    }
+
+                    adapter = new ThreadAdapter(getActivity(), messages, appPrefs.getUserId());
+                    recyclerView.setAdapter(adapter);
+                    scrollToBottom();
+
+                }
+            } catch (UnsupportedEncodingException | JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        @Override
+        public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+            //  Log.e("###", "Something went wrong");
+            common.hideProgressDialog();
+
+        }
+
+
+    }
+
+    public class RequestSendMessages_result extends AsyncHttpResponseHandler {
+
+
+        @Override
+        public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+            //  Log.e("$$$", "On Success");
+            try {
+                String str = new String(responseBody, "UTF-8");
+                //  Log.e("***********", "response is" + str);
+
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        @Override
+        public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+            //  Log.e("###", "Something went wrong");
+        }
+
+
     }
 
 }

@@ -34,8 +34,8 @@
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 android:layout_gravity="center|start"
-                android:background="@drawable/image_border"
                 android:layout_margin="10dp"
+                android:background="@drawable/image_border"
                 android:scaleType="fitXY" />
 
             <TextView

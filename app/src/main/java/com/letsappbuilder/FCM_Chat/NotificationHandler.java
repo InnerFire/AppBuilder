@@ -21,30 +21,12 @@ import java.util.List;
  * Created by Ravi on 01/06/15.
  */
 public class NotificationHandler {
-    private Context mContext;
     long[] v = {500, 1000};
     Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+    private Context mContext;
 
     public NotificationHandler(Context mContext) {
         this.mContext = mContext;
-    }
-
-    //This method would display the notification
-    public void showNotificationMessage(final String title, final String message) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
-        builder.setSmallIcon(R.mipmap.ic_launcher1);
-        Intent intent = new Intent(mContext, MainActivity.class);
-        intent.putExtra("CHAT","OK");
-        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
-        builder.setContentIntent(pendingIntent);
-        builder.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_launcher1));
-        builder.setContentTitle(title);
-        builder.setContentText(message);
-        builder.setVibrate(v).setSound(uri);
-        builder.setSmallIcon(R.drawable.notification);
-        builder.setAutoCancel(true);
-        NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(mContext.NOTIFICATION_SERVICE);
-        notificationManager.notify(Constants.NOTIFICATION_ID, builder.build());
     }
 
     //This method will check whether the app is in background or not
@@ -71,6 +53,24 @@ public class NotificationHandler {
         }
 
         return isInBackground;
+    }
+
+    //This method would display the notification
+    public void showNotificationMessage(final String title, final String message) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
+        builder.setSmallIcon(R.mipmap.ic_launcher1);
+        Intent intent = new Intent(mContext, MainActivity.class);
+        intent.putExtra("CHAT", "OK");
+        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
+        builder.setContentIntent(pendingIntent);
+        builder.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_launcher1));
+        builder.setContentTitle(title);
+        builder.setContentText(message);
+        builder.setVibrate(v).setSound(uri);
+        builder.setSmallIcon(R.drawable.notification);
+        builder.setAutoCancel(true);
+        NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(mContext.NOTIFICATION_SERVICE);
+        notificationManager.notify(Constants.NOTIFICATION_ID, builder.build());
     }
 
 }

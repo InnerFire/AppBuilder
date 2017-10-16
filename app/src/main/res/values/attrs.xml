@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Joaquim Ley 2016. All Rights Reserved.
   ~ <p/>
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,12 +18,12 @@
     <declare-styleable name="FabOptions">
         <attr name="button_menu" format="reference" type="menu" />
     </declare-styleable>
-  <declare-styleable name="FButton">
-    <attr name="shadowEnabled" format="boolean" />
-    <attr name="buttonColor" format="color" />
-    <attr name="shadowColor" format="color" />
-    <attr name="shadowHeight" format="dimension" />
-    <attr name="cornerRadius" format="dimension" />
-  </declare-styleable>
+    <declare-styleable name="FButton">
+        <attr name="shadowEnabled" format="boolean" />
+        <attr name="buttonColor" format="color" />
+        <attr name="shadowColor" format="color" />
+        <attr name="shadowHeight" format="dimension" />
+        <attr name="cornerRadius" format="dimension" />
+    </declare-styleable>
 
 </resources>

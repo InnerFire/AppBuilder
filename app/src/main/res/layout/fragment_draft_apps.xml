@@ -19,8 +19,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
         android:text="@string/no_apps_available"
-        android:textStyle="bold"
         android:textSize="20sp"
+        android:textStyle="bold"
         android:visibility="visible" />
 
 

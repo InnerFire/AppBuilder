@@ -77,12 +77,12 @@
                         android:visibility="gone">
 
                         <Spinner
-                            android:layout_gravity="center_horizontal"
                             android:id="@+id/portfolio_spinner_card"
                             android:layout_width="wrap_content"
-                            android:gravity="center"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
                             android:dropDownSelector="#ffffff"
-                            android:layout_height="wrap_content" />
+                            android:gravity="center" />
 
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/recyclerHorizontal"

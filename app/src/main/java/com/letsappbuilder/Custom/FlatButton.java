@@ -20,6 +20,7 @@ import com.letsappbuilder.R;
 
 public class FlatButton extends Button implements View.OnTouchListener {
 
+    boolean isShadowColorDefined = false;
     private boolean isShadowEnabled = true;
     private int mButtonColor;
     private int mShadowColor;
@@ -31,8 +32,6 @@ public class FlatButton extends Button implements View.OnTouchListener {
     private int mPaddingBottom;
     private Drawable pressedDrawable;
     private Drawable unpressedDrawable;
-
-    boolean isShadowColorDefined = false;
 
     public FlatButton(Context context) {
         super(context);
@@ -97,6 +96,7 @@ public class FlatButton extends Button implements View.OnTouchListener {
         mShadowHeight = resources.getDimensionPixelSize(R.dimen.fbutton_default_shadow_height);
         mCornerRadius = resources.getDimensionPixelSize(R.dimen.fbutton_default_conner_radius);
     }
+
     @SuppressWarnings("ResourceType")
     private void parseAttrs(Context context, AttributeSet attrs) {
         //Load from custom attributes
@@ -204,33 +204,6 @@ public class FlatButton extends Button implements View.OnTouchListener {
         return layerDrawable;
     }
 
-    public void setShadowEnabled(boolean isShadowEnabled) {
-        this.isShadowEnabled = isShadowEnabled;
-        setShadowHeight(0);
-        refresh();
-    }
-
-    public void setButtonColor(int buttonColor) {
-        this.mButtonColor = buttonColor;
-        refresh();
-    }
-
-    public void setShadowColor(int shadowColor) {
-        this.mShadowColor = shadowColor;
-        isShadowColorDefined = true;
-        refresh();
-    }
-
-    public void setShadowHeight(int shadowHeight) {
-        this.mShadowHeight = shadowHeight;
-        refresh();
-    }
-
-    public void setCornerRadius(int cornerRadius) {
-        this.mCornerRadius = cornerRadius;
-        refresh();
-    }
-
     public void setFButtonPadding(int left, int top, int right, int bottom) {
         mPaddingLeft = left;
         mPaddingRight = right;
@@ -250,20 +223,47 @@ public class FlatButton extends Button implements View.OnTouchListener {
         return isShadowEnabled;
     }
 
+    public void setShadowEnabled(boolean isShadowEnabled) {
+        this.isShadowEnabled = isShadowEnabled;
+        setShadowHeight(0);
+        refresh();
+    }
+
     public int getButtonColor() {
         return mButtonColor;
+    }
+
+    public void setButtonColor(int buttonColor) {
+        this.mButtonColor = buttonColor;
+        refresh();
     }
 
     public int getShadowColor() {
         return mShadowColor;
     }
 
+    public void setShadowColor(int shadowColor) {
+        this.mShadowColor = shadowColor;
+        isShadowColorDefined = true;
+        refresh();
+    }
+
     public int getShadowHeight() {
         return mShadowHeight;
     }
 
+    public void setShadowHeight(int shadowHeight) {
+        this.mShadowHeight = shadowHeight;
+        refresh();
+    }
+
     public int getCornerRadius() {
         return mCornerRadius;
+    }
+
+    public void setCornerRadius(int cornerRadius) {
+        this.mCornerRadius = cornerRadius;
+        refresh();
     }
 }
 

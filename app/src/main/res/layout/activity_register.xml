@@ -153,17 +153,15 @@
                 </LinearLayout>
 
 
-
-                <com.google.android.gms.plus.PlusOneButton
-                    xmlns:plus="http://schemas.android.com/apk/lib/com.google.android.gms.plus"
+                <com.google.android.gms.plus.PlusOneButton xmlns:plus="http://schemas.android.com/apk/lib/com.google.android.gms.plus"
                     android:id="@+id/plus_one_button"
                     android:layout_width="110dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="5dp"
                     android:layout_marginTop="8dp"
-                    plus:size="standard"
-                    plus:annotation="bubble" />
+                    plus:annotation="bubble"
+                    plus:size="standard" />
 
                 <Button
                     android:id="@+id/bt_next"

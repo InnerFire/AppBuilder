@@ -3,7 +3,7 @@ package com.letsappbuilder.FCM_Chat;
 /**
  * Created by Belal on 5/29/2016.
  */
-public class Message  {
+public class Message {
     private String usersId;
     private String message;
     private String sentAt;

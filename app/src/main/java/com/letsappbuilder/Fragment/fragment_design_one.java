@@ -103,9 +103,15 @@ import static com.letsappbuilder.R.id.design_one_frame_llout;
  */
 
 public class fragment_design_one extends Fragment {
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
-    private RecyclerView.Adapter adapter;
+    public static final int DASHBOARD = 0, ABOUT = 1, CONTACT = 2, PORTPOLIO = 3, OUR_WORK = 4, MAP = 5, CHAT = 6, SHARE = 7, FEEDBACK = 8, QR_CODE = 9, QUIZ = 10, SURVEY = 11, DOCUMENT = 12, VIDEO = 13;
+    private static final int REQUEST_PLACE_PICKER = 22;
+    public static ArrayList<Integer> list_viewType;
+    public RecyclerView recyclerViewRight;
+    public RecyclerView.LayoutManager layoutManagerright;
+    public RecyclerView.Adapter adapterright;
+    public String[] name;
+    public int[] image = {R.drawable.about_white, R.drawable.contactus_white, R.drawable.portfolio_white, R.drawable.our_works_white, R.drawable.location, R.drawable.chat_filled, R.drawable.menu_share, R.drawable.menu_send, R.drawable.qr_code, R.drawable.quiz, R.drawable.survey, R.drawable.document, R.drawable.video_list};
+    public int[] color = {R.color.firstColor, R.color.secondColor, R.color.thirdColor, R.color.fourthColor, R.color.fifthColor, R.color.sixthColor, R.color.firstColor, R.color.secondColor, R.color.thirdColor, R.color.fourthColor, R.color.fifthColor};
     FrameLayout design_one_framellout;
     StringBuilder splitString;
     AppPrefs appPrefs;
@@ -114,17 +120,10 @@ public class fragment_design_one extends Fragment {
     Boolean isOnImagePressedCheck = false;
     String WhoseAdapter;
     Bitmap UniversalBitmap;
-    private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
-    private static final int REQUEST_PLACE_PICKER = 22;
     ImageLoader imageLoader;
     LinearLayout rootDesignOne;
-
-    public RecyclerView recyclerViewRight;
-    public RecyclerView.LayoutManager layoutManagerright;
-    public RecyclerView.Adapter adapterright;
     CardPortfolioAdapter MaincardPortfolioAdapter;
     List<String> AttributeCheckList;
-
     // Dashboard identifier
     List<String> imageDashboardArray, imagePortfolioArray;
     List<ProductDetailsAdapter> Adapter_Dashboard_Deals_of_the_day;
@@ -133,58 +132,46 @@ public class fragment_design_one extends Fragment {
     CardDashBoardAdapter MaincardDashboardAdapter;
     CardDashBoard_Deals_of_Adapter MaincardDashboard_Dealofday_Adapter;
     CardDashBoard_Discount_for_you_Adapter MaincardDashboard_Discountforyou_Adapter;
-
     String edttitle0B, edttitle0C, edttitle0D;
     String spinnertitle0B, spinnertitle0C, spinnertitle0D;
     int[] orientationtheme = {R.drawable.spinner_portfolio_theme3, R.drawable.spinner_portfolio_theme2, R.drawable.spinner_portfolio_theme1};
-
     // Document identifier
     List<DocumentAdapter> Adapter_Documents;
     String spinnertitle12A;
-
     //  About us identifier //
     String edtAbout1A, edtAbout1B, edtAbout1C, edtAbout1D, edtAbout1E, edtAbout1F, edtAbout1G, edtAbout1H, edtAbout1I, edtAbout1J, edtAbout1K, edtAbout1L;
     //  Contact us identifier //
     String edtContact2A, edtContact2B, edtContact2C, edtContact2D, edtContact2E, edtContact2F, edtContact2G;
     //  Map identifier //
     UserLocation userLocation;
-
     // Our Works identifier
     String edtOurWorks4A;
-
     // Chat identifier //
     Boolean IsChatFeatureON = false;
-
     // Share identifier //
     String edtShare7A;
-
     // VIDEO identifier //
     String edtVideo13A;
-
     // Quiz identifier
     String edtQuiz10A;
-
     // Survey identifier
     String edtSurvey11A;
     // QR Code identifier //
     String edtQRCode9A = "https://play.google.com/store/apps/details?id=bhojpuri.hitsongs";
-
     // Feedback identifier //
     Boolean IsFeedbackFeatureON = false;
-
     // Portfolio identifier //
     String edttitle3A;
     int[] imageSpinnerthemelist = {R.drawable.spinner_portfolio_theme1, R.drawable.spinner_portfolio_theme2, R.drawable.spinner_portfolio_theme3};
-
-    public static final int DASHBOARD = 0, ABOUT = 1, CONTACT = 2, PORTPOLIO = 3, OUR_WORK = 4, MAP = 5, CHAT = 6, SHARE = 7, FEEDBACK = 8, QR_CODE = 9, QUIZ = 10, SURVEY = 11, DOCUMENT = 12, VIDEO = 13;
-    public String[] name;
-    public int[] image = {R.drawable.about_white, R.drawable.contactus_white, R.drawable.portfolio_white, R.drawable.our_works_white, R.drawable.location, R.drawable.chat_filled, R.drawable.menu_share, R.drawable.menu_send, R.drawable.qr_code, R.drawable.quiz, R.drawable.survey, R.drawable.document, R.drawable.video_list};
-    public int[] color = {R.color.firstColor, R.color.secondColor, R.color.thirdColor, R.color.fourthColor, R.color.fifthColor, R.color.sixthColor, R.color.firstColor, R.color.secondColor, R.color.thirdColor, R.color.fourthColor, R.color.fifthColor};
     int[] viewType = {DASHBOARD, ABOUT, CONTACT, PORTPOLIO, OUR_WORK, MAP, CHAT, SHARE};
-
-    public static ArrayList<Integer> list_viewType;
     DbHelper dbHelper;
     String APP_ID, APP_NAME, APP_ICON, SPLASH_ICON, APP_CATEGORY, APP_THEME, THEME_COLOR, TEXT_COLOR, PUBLISH_ID, APP_PAGE, APP_PAGES_ID;
+    //  **************** Call All_App_Details API ******************************//
+    AsyncHttpClient callEachPhaseAppDetailsAPIRequest;
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView.Adapter adapter;
+    private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
 
     public JSONObject getDASHBOARD_0AString() {
         JSONObject jsonObject = new JSONObject();
@@ -770,7 +757,6 @@ public class fragment_design_one extends Fragment {
         return jsonObject;
     }
 
-
     public JSONObject get_SHARE_7AString() {
         JSONObject jsonObject = new JSONObject();
         JSONArray jsonArray = new JSONArray();
@@ -892,7 +878,6 @@ public class fragment_design_one extends Fragment {
         }
         return jsonObject;
     }
-
 
     @Nullable
     @Override
@@ -1525,7 +1510,7 @@ public class fragment_design_one extends Fragment {
                                 snackbar.getView().setBackgroundColor(getResources().getColor(R.color.thirdColor));
                                 snackbar.show();
                             } else {
-                              //  Log.e("Home", "Error in creating fragment");
+                                //  Log.e("Home", "Error in creating fragment");
                             }
 
                         }
@@ -1560,7 +1545,7 @@ public class fragment_design_one extends Fragment {
                     fragmentManager.beginTransaction()
                             .replace(R.id.frame_layout_main, fragment).setCustomAnimations(R.anim.slide_up, android.R.anim.fade_out).commit();
                 } else {
-                  //  Log.e("Home", "Error in creating fragment");
+                    //  Log.e("Home", "Error in creating fragment");
                 }
 
             }
@@ -1576,7 +1561,7 @@ public class fragment_design_one extends Fragment {
             startActivityForResult(builder.build(getActivity()), REQUEST_PLACE_PICKER);
 
         } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
-          //  Log.e("Google Play", e.toString(), e);
+            //  Log.e("Google Play", e.toString(), e);
         }
     }
 
@@ -1719,7 +1704,6 @@ public class fragment_design_one extends Fragment {
         builder.show();
     }
 
-
     private void galleryIntent() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -1792,13 +1776,13 @@ public class fragment_design_one extends Fragment {
                     final String saltString = getSaltString();
                     params.put("random_id", saltString);
 
-                  //  Log.e("!!!", params.toString());
+                    //  Log.e("!!!", params.toString());
                     client.post("http://fadootutorial.com/appgenerator/imgupload.php", params, new AsyncHttpResponseHandler() {
                         @Override
                         public void onStart() {
                             super.onStart();
                             common.showProgressDialog(getString(R.string.progress_uploading));
-                          //  Log.e("$$$", "start");
+                            //  Log.e("$$$", "start");
                         }
 
                         @Override
@@ -1809,7 +1793,7 @@ public class fragment_design_one extends Fragment {
                                 str = new String(responseBody, "UTF-8");
                                 // Log.e("***********", "response is" + str);
                                 SignUpResponse response = new Gson().fromJson(str, SignUpResponse.class);
-                               // Log.e("****SignUp*****", "" + response.result);
+                                // Log.e("****SignUp*****", "" + response.result);
 
                                 if (response.result.equals("success")) {
                                     if (WhoseAdapter.equals("PORTFOLIO")) {
@@ -1826,11 +1810,11 @@ public class fragment_design_one extends Fragment {
                                         //  bitmapDashboardArray.add(savePosition, UniversalBitmap);
                                         if (isOnImagePressedCheck) {
                                             imageDashboardArray.set(savePosition, saltString + ".png");
-                                         //   Log.e("###", "Pressed check");
+                                            //   Log.e("###", "Pressed check");
                                             MaincardDashboardAdapter.notifyItemChanged(savePosition);
                                         } else {
                                             imageDashboardArray.add(savePosition, saltString + ".png");
-                                           // Log.e("###", "Not Pressed");
+                                            // Log.e("###", "Not Pressed");
                                             MaincardDashboardAdapter.notifyItemInserted(savePosition);
                                             MaincardDashboardAdapter.notifyDataSetChanged();
                                         }
@@ -1884,7 +1868,6 @@ public class fragment_design_one extends Fragment {
         builder.show();
     }
 
-
     @SuppressWarnings("deprecation")
     private void onSelectFromGalleryResult(Intent data) {
 
@@ -1900,78 +1883,6 @@ public class fragment_design_one extends Fragment {
             }
         }
 
-    }
-
-    class CardAdapterRight extends RecyclerView.Adapter<CardAdapterRight.ViewHolder> {
-
-        List<ListItemSelectionOne> items;
-
-        public CardAdapterRight(String[] names, int[] image, int[] color) {
-            super();
-            items = new ArrayList<ListItemSelectionOne>();
-            for (int i = 0; i < names.length; i++) {
-                ListItemSelectionOne item = new ListItemSelectionOne();
-                item.setName(names[i]);
-                item.setImagePath(image[i]);
-                item.setColor(color[i % 6]);
-                items.add(item);
-            }
-        }
-
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.list_card_main_right_popup, parent, false);
-           // Log.e("$$$", "" + viewType);
-            return new ViewHolder(v);
-        }
-
-        @Override
-        public void onBindViewHolder(final ViewHolder holder, final int position) {
-            final ListItemSelectionOne list = items.get(position);
-
-            // holder.textViewName.setTag(image[position]);
-            holder.textViewName.setText(list.getName());
-            // holder.cardView.startAnimation(AnimationUtils.loadAnimation(getActivity(),R.anim.slide_up));
-            holder.imgList.setImageResource(image[position]);
-            //  holder.imgList.startAnimation(AnimationUtils.loadAnimation(, R.anim.slide_up));
-            holder.relativeLayout.setBackgroundResource(color[position % 6]);
-            holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    appPrefs.setAdditionalposition(position + "");
-                    showLocationDialog();
-                }
-            });
-            holder.imgRightAdd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    appPrefs.setAdditionalposition(position + "");
-                    showLocationDialog();
-                }
-            });
-
-        }
-
-        @Override
-        public int getItemCount() {
-            return items.size();
-        }
-
-        class ViewHolder extends RecyclerView.ViewHolder {
-            public TextView textViewName;
-            ImageView imgList;
-            RelativeLayout relativeLayout;
-            ImageView imgRightAdd;
-
-            public ViewHolder(View itemView) {
-                super(itemView);
-                imgList = (ImageView) itemView.findViewById(R.id.img_list_card);
-                textViewName = (TextView) itemView.findViewById(R.id.textViewName);
-                relativeLayout = (RelativeLayout) itemView.findViewById(R.id.selection_rrout);
-                imgRightAdd = (ImageView) itemView.findViewById(R.id.img_add_right_popup);
-            }
-        }
     }
 
     @Override
@@ -2039,6 +1950,106 @@ public class fragment_design_one extends Fragment {
         inflater.inflate(R.menu.menu_main, menu);
     }
 
+    public void CallEachPhaseAppDetailsApi(String UID, String APP_ID, String APP_NAME, String APP_ICON, String SPLASH_ICON, String APP_CATEGORY, String APP_THEME, String THEME_COLOR, String TEXT_COLOR, String PUBLISH_ID, String APP_PAGE, String APP_PAGES_ID) {
+        if (callEachPhaseAppDetailsAPIRequest != null) {
+            callEachPhaseAppDetailsAPIRequest.cancelRequests(getActivity(), true);
+        }
+        callEachPhaseAppDetailsAPIRequest = new AsyncHttpClient();
+        callEachPhaseAppDetailsAPIRequest.post("http://fadootutorial.com/appgenerator/eachphaseappdetails.php", RequestAppDetailsParams(UID, APP_ID, APP_NAME, APP_ICON, SPLASH_ICON, APP_CATEGORY, APP_THEME, THEME_COLOR, TEXT_COLOR, PUBLISH_ID, APP_PAGE, APP_PAGES_ID), new All_APP_DETAILS_result());
+    }
+
+    public RequestParams RequestAppDetailsParams(String UID, String APP_ID, String APP_NAME, String APP_ICON, String SPLASH_ICON, String APP_CATEGORY, String APP_THEME, String THEME_COLOR, String TEXT_COLOR, String PUBLISH_ID, String APP_PAGE, String APP_PAGES_ID) {
+        RequestParams params = new RequestParams();
+        params.put("UID", UID);
+        params.put("APP_ID", APP_ID);
+        params.put("APP_NAME", APP_NAME);
+        params.put("APP_ICON", APP_ICON);
+        params.put("SPLASH_ICON", SPLASH_ICON);
+        params.put("APP_CATEGORY", APP_CATEGORY);
+        params.put("APP_THEME", APP_THEME);
+        params.put("THEME_COLOR", THEME_COLOR);
+        params.put("TEXT_COLOR", TEXT_COLOR);
+        params.put("PUBLISH_ID", PUBLISH_ID);
+        params.put("APP_PAGE", APP_PAGE);
+        params.put("APP_PAGES_ID", APP_PAGES_ID);
+        return params;
+    }
+
+    ////////   DashBoard - Deals of the days   ////////////
+
+    class CardAdapterRight extends RecyclerView.Adapter<CardAdapterRight.ViewHolder> {
+
+        List<ListItemSelectionOne> items;
+
+        public CardAdapterRight(String[] names, int[] image, int[] color) {
+            super();
+            items = new ArrayList<ListItemSelectionOne>();
+            for (int i = 0; i < names.length; i++) {
+                ListItemSelectionOne item = new ListItemSelectionOne();
+                item.setName(names[i]);
+                item.setImagePath(image[i]);
+                item.setColor(color[i % 6]);
+                items.add(item);
+            }
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.list_card_main_right_popup, parent, false);
+            // Log.e("$$$", "" + viewType);
+            return new ViewHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(final ViewHolder holder, final int position) {
+            final ListItemSelectionOne list = items.get(position);
+
+            // holder.textViewName.setTag(image[position]);
+            holder.textViewName.setText(list.getName());
+            // holder.cardView.startAnimation(AnimationUtils.loadAnimation(getActivity(),R.anim.slide_up));
+            holder.imgList.setImageResource(image[position]);
+            //  holder.imgList.startAnimation(AnimationUtils.loadAnimation(, R.anim.slide_up));
+            holder.relativeLayout.setBackgroundResource(color[position % 6]);
+            holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    appPrefs.setAdditionalposition(position + "");
+                    showLocationDialog();
+                }
+            });
+            holder.imgRightAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    appPrefs.setAdditionalposition(position + "");
+                    showLocationDialog();
+                }
+            });
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return items.size();
+        }
+
+        class ViewHolder extends RecyclerView.ViewHolder {
+            public TextView textViewName;
+            ImageView imgList;
+            RelativeLayout relativeLayout;
+            ImageView imgRightAdd;
+
+            public ViewHolder(View itemView) {
+                super(itemView);
+                imgList = (ImageView) itemView.findViewById(R.id.img_list_card);
+                textViewName = (TextView) itemView.findViewById(R.id.textViewName);
+                relativeLayout = (RelativeLayout) itemView.findViewById(R.id.selection_rrout);
+                imgRightAdd = (ImageView) itemView.findViewById(R.id.img_add_right_popup);
+            }
+        }
+    }
+
+    ////////   DashBoard - Discounts for your Dashboard 0C ////////////
 
     public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
@@ -3388,7 +3399,7 @@ public class fragment_design_one extends Fragment {
                 if (userLocation != null) {
                     holder.switch_5A.setChecked(true);
                     holder.imgMap.setVisibility(View.VISIBLE);
-                  //  Log.e("###", userLocation.getLatitude() + "&" + userLocation.getLongitude());
+                    //  Log.e("###", userLocation.getLatitude() + "&" + userLocation.getLongitude());
                 }
 
                 holder.imgMap.setOnClickListener(new View.OnClickListener() {
@@ -3927,7 +3938,7 @@ public class fragment_design_one extends Fragment {
                 if (flag) {
                     holder.switch_3A.setChecked(true);
                     holder.llout_recycler_portfolio_visibility.setVisibility(View.VISIBLE);
-                 //   Log.e("@@@@", edttitle3A + "");
+                    //   Log.e("@@@@", edttitle3A + "");
                     if (edttitle3A != null) {
                         holder.spinnerPortfolioLayoutSelection.setSelection(Integer.parseInt(edttitle3A));
                     }
@@ -4131,9 +4142,9 @@ public class fragment_design_one extends Fragment {
             ImageView imgFeedback;
             ImageView imgadd, imgdelete;
             LinearLayout feedback_frameBackgroung;
-            private Switch switch_8A;
             CardView feedback_cardview;
             FrameLayout frame_feedback_llout;
+            private Switch switch_8A;
 
             public ViewFeedbackHolder(View itemView) {
                 super(itemView);
@@ -4149,6 +4160,9 @@ public class fragment_design_one extends Fragment {
 
 
         class ViewDashboardHolder extends ViewHolder {
+            EditText edt_dashboard_discount_for_you;
+            EditText edt_dashboard_colorful_card;
+            CardView dashboard_cardview;
             // For Dashboard -OA   //
             private RecyclerView recyclerDashboard;
             private RecyclerView.LayoutManager layoutDashboard;
@@ -4163,29 +4177,23 @@ public class fragment_design_one extends Fragment {
             private Switch switch_0B;
             private EditText edt_dashboard_deals_ofthe_day;
             private Spinner spinner_switch0B;
-
             // For Dashboard 0C //
             private RecyclerView recyclerDashboard_discount_for_you;
             private RecyclerView.LayoutManager layoutDashboard_discount_for_you;
             private RecyclerView.Adapter adapterDashboard_discount_for_you;
             private LinearLayout llout_recyclerDashboard_discount_for_you;
             private Switch switch_0C;
-            EditText edt_dashboard_discount_for_you;
             private Spinner spinner_switch0C;
-
             // For Dashboard 0D //
             private RecyclerView recyclerDashboard_colorful_card;
             private RecyclerView.LayoutManager layoutDashboard_colorful_card;
             private RecyclerView.Adapter adapterDashboard_colorful_card;
             private LinearLayout llout_recyclerDashboard_colorful_card;
             private Switch switch_0D;
-            EditText edt_dashboard_colorful_card;
             private Spinner spinner_switch0D;
-
             // Dashboard General variables
             private ImageView imgadd;
             private LinearLayout framellout_dashboard, dashboard_llout_visibility;
-            CardView dashboard_cardview;
 
             public ViewDashboardHolder(View itemView) {
                 super(itemView);
@@ -4223,6 +4231,7 @@ public class fragment_design_one extends Fragment {
 
         class ViewDocumentHolder extends ViewHolder {
 
+            CardView document_cardview;
             // For Document 12A //
             private RecyclerView recycler_Document;
             private RecyclerView.LayoutManager layout_Document;
@@ -4230,11 +4239,9 @@ public class fragment_design_one extends Fragment {
             private LinearLayout llout_recycler_document;
             private Switch switch_12A;
             private Spinner spinner_switch12A;
-
             // Dashboard General variables
             private ImageView imgadd, imgdelete, imggoogledrive;
             private LinearLayout framellout_document, document_llout_visibility;
-            CardView document_cardview;
 
             public ViewDocumentHolder(View itemView) {
                 super(itemView);
@@ -4255,13 +4262,13 @@ public class fragment_design_one extends Fragment {
 
         class ViewPortfolioHolder extends ViewHolder {
             public RecyclerView recyclerPortfolio;
+            CardView portfolio_cardview;
+            Spinner spinnerPortfolioLayoutSelection;
             private RecyclerView.LayoutManager layoutPortfolio;
             private RecyclerView.Adapter adapterPortfolio;
             private ImageView imgadd, imgdelete;
             private Switch switch_3A;
             private LinearLayout framellout_portpolio, portfolio_llout_visibility, llout_recycler_portfolio_visibility;
-            CardView portfolio_cardview;
-            Spinner spinnerPortfolioLayoutSelection;
 
             public ViewPortfolioHolder(View itemView) {
                 super(itemView);
@@ -4281,9 +4288,9 @@ public class fragment_design_one extends Fragment {
             ImageView imgMap;
             ImageView imgadd, imgdelete;
             LinearLayout map_frameBackgroung;
-            private Switch switch_5A;
             CardView map_cardview;
             FrameLayout frame_map_llout;
+            private Switch switch_5A;
 
             public ViewMapHolder(View itemView) {
                 super(itemView);
@@ -4301,9 +4308,9 @@ public class fragment_design_one extends Fragment {
             ImageView imgChat;
             ImageView imgadd, imgdelete;
             LinearLayout chat_frameBackgroung;
-            private Switch switch_6A;
             CardView chat_cardview;
             FrameLayout frame_chat_llout;
+            private Switch switch_6A;
 
             public ViewChatHolder(View itemView) {
                 super(itemView);
@@ -4439,8 +4446,6 @@ public class fragment_design_one extends Fragment {
         }
 
     }
-
-    ////////   DashBoard - Deals of the days   ////////////
 
     /* ######################################### Second Adapter  ############################################### */
     public class CardDashBoard_Deals_of_Adapter extends RecyclerView.Adapter<CardDashBoard_Deals_of_Adapter.ViewHolder> {
@@ -4583,8 +4588,6 @@ public class fragment_design_one extends Fragment {
         }
 
     }
-
-    ////////   DashBoard - Discounts for your Dashboard 0C ////////////
 
     /* ######################################### Second Adapter  ############################################### */
     public class CardDashBoard_Discount_for_you_Adapter extends RecyclerView.Adapter<CardDashBoard_Discount_for_you_Adapter.ViewHolder> {
@@ -4930,7 +4933,6 @@ public class fragment_design_one extends Fragment {
 
     }
 
-
     ///////////////////////////////////////////////////////////////////////////////
     public class CardPortfolioAdapter extends RecyclerView.Adapter<CardPortfolioAdapter.ViewHolder> {
         public CardPortfolioAdapter() {
@@ -5047,34 +5049,6 @@ public class fragment_design_one extends Fragment {
 
     }
 
-    //  **************** Call All_App_Details API ******************************//
-    AsyncHttpClient callEachPhaseAppDetailsAPIRequest;
-
-    public void CallEachPhaseAppDetailsApi(String UID, String APP_ID, String APP_NAME, String APP_ICON, String SPLASH_ICON, String APP_CATEGORY, String APP_THEME, String THEME_COLOR, String TEXT_COLOR, String PUBLISH_ID, String APP_PAGE, String APP_PAGES_ID) {
-        if (callEachPhaseAppDetailsAPIRequest != null) {
-            callEachPhaseAppDetailsAPIRequest.cancelRequests(getActivity(), true);
-        }
-        callEachPhaseAppDetailsAPIRequest = new AsyncHttpClient();
-        callEachPhaseAppDetailsAPIRequest.post("http://fadootutorial.com/appgenerator/eachphaseappdetails.php", RequestAppDetailsParams(UID, APP_ID, APP_NAME, APP_ICON, SPLASH_ICON, APP_CATEGORY, APP_THEME, THEME_COLOR, TEXT_COLOR, PUBLISH_ID, APP_PAGE, APP_PAGES_ID), new All_APP_DETAILS_result());
-    }
-
-    public RequestParams RequestAppDetailsParams(String UID, String APP_ID, String APP_NAME, String APP_ICON, String SPLASH_ICON, String APP_CATEGORY, String APP_THEME, String THEME_COLOR, String TEXT_COLOR, String PUBLISH_ID, String APP_PAGE, String APP_PAGES_ID) {
-        RequestParams params = new RequestParams();
-        params.put("UID", UID);
-        params.put("APP_ID", APP_ID);
-        params.put("APP_NAME", APP_NAME);
-        params.put("APP_ICON", APP_ICON);
-        params.put("SPLASH_ICON", SPLASH_ICON);
-        params.put("APP_CATEGORY", APP_CATEGORY);
-        params.put("APP_THEME", APP_THEME);
-        params.put("THEME_COLOR", THEME_COLOR);
-        params.put("TEXT_COLOR", TEXT_COLOR);
-        params.put("PUBLISH_ID", PUBLISH_ID);
-        params.put("APP_PAGE", APP_PAGE);
-        params.put("APP_PAGES_ID", APP_PAGES_ID);
-        return params;
-    }
-
     public class All_APP_DETAILS_result extends AsyncHttpResponseHandler {
 
         @Override
@@ -5085,7 +5059,7 @@ public class fragment_design_one extends Fragment {
                 if (str != null) {
                     SignUpResponse response = new Gson().fromJson(str, SignUpResponse.class);
                     if (response.result.equals("success")) {
-                      //  Log.e("###", "Successfully data saved");
+                        //  Log.e("###", "Successfully data saved");
 
                         Fragment fragment = new fragment_design_two();
                         if (fragment != null) {
@@ -5109,11 +5083,11 @@ public class fragment_design_one extends Fragment {
                             snackbar.show();
 
                         } else {
-                           // Log.e("Home", "Error in creating fragment");
+                            // Log.e("Home", "Error in creating fragment");
                         }
 
                     } else {
-                      //  Log.e("###", "Some thing went");
+                        //  Log.e("###", "Some thing went");
                     }
                 }
             } catch (UnsupportedEncodingException e) {

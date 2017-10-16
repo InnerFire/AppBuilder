@@ -16,7 +16,7 @@ public class UserLocation {
         address = place.getAddress().toString();
         latitude = place.getLatLng().latitude;
         longitude = place.getLatLng().longitude;
-       // Log.e("@@@",name+"&"+address+"&"+latitude+"&"+longitude);
+        // Log.e("@@@",name+"&"+address+"&"+latitude+"&"+longitude);
     }
 
     public double getLatitude() {

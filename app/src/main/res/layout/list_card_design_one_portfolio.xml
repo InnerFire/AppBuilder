@@ -25,25 +25,24 @@
                 android:id="@+id/img_list_card"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/splash"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:src="@drawable/splash" />
 
             <ImageView
                 android:id="@+id/img_add_design"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
-                android:layout_margin="5dp"
                 android:layout_gravity="top|end"
+                android:layout_margin="5dp"
                 android:src="@drawable/plus" />
 
             <ImageView
                 android:id="@+id/img_delete_design"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
-                android:layout_margin="5dp"
                 android:layout_gravity="bottom|end"
+                android:layout_margin="5dp"
                 android:src="@drawable/delete_white" />
-
 
 
         </FrameLayout>

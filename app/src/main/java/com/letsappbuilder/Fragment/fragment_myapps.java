@@ -55,19 +55,24 @@ import static com.letsappbuilder.R.id.img_app_backcover;
  * Created by Savaliya Imfotech on 14-12-2016.
  */
 public class fragment_myapps extends Fragment {
-    DbHelper dbHelper;
-    TextView tvErrorMsg;
-    AppPrefs appPrefs;
     public RecyclerView recyclerView;
     public RecyclerView.LayoutManager layoutManager;
     public RecyclerView.Adapter adapter;
     public ArrayList<MyAppResponse.MyAppList> items;
-    private FrameLayout rootFragmetnMyApps;
+    DbHelper dbHelper;
+    TextView tvErrorMsg;
+    AppPrefs appPrefs;
     String TEMP_APPID;
     int POSITION;
     Common common;
     int[] color = {R.color.firstColor, R.color.secondColor, R.color.thirdColor, R.color.fourthColor, R.color.fifthColor, R.color.sixthColor};
-
+    //  **************** Call DELETE MY APP API ******************************//
+    AsyncHttpClient callDeleteMyAppDetailsAPIRequest;
+    //  **************** Call FETCH_All_APP_DETAILS API ******************************//
+    AsyncHttpClient callSecondFetchAppDetailsAPIRequest;
+    //  **************** Call MY_All_APP_DETAILS API ******************************//
+    AsyncHttpClient callMYAppDetailsAPIRequest;
+    private FrameLayout rootFragmetnMyApps;
 
     @Nullable
     @Override
@@ -102,6 +107,61 @@ public class fragment_myapps extends Fragment {
         return v;
     }
 
+    public void navigate_to_fragment(String app_id) {
+        appPrefs.setIS_NEW_APP("false");
+        appPrefs.setAPP_ID(app_id);
+        if (common.isConnected()) {
+            common.showProgressDialog(getString(R.string.progress_loading));
+            CallSecondFetchAppDetailsApi(appPrefs.getUserId(), app_id);
+        } else {
+            Snackbar snackbar = Snackbar.make(rootFragmetnMyApps, R.string.message_turn_on_internet, Snackbar.LENGTH_SHORT);
+            snackbar.getView().setBackgroundColor(getResources().getColor(R.color.fourthColor));
+            snackbar.show();
+        }
+    }
+
+    public void CallDeleteAppDetailsApi(String APP_ID) {
+        if (callDeleteMyAppDetailsAPIRequest != null) {
+            callDeleteMyAppDetailsAPIRequest.cancelRequests(getActivity(), true);
+        }
+        callDeleteMyAppDetailsAPIRequest = new AsyncHttpClient();
+        callDeleteMyAppDetailsAPIRequest.post("http://fadootutorial.com/appgenerator/deletemyapp.php", RequestDeletetailsParams(APP_ID), new DELETE_MY_APP_DETAILS_result());
+    }
+
+    public RequestParams RequestDeletetailsParams(String APP_ID) {
+        RequestParams params = new RequestParams();
+        params.put("APP_ID", APP_ID);
+        return params;
+    }
+
+    public void CallSecondFetchAppDetailsApi(String UID, String APP_ID) {
+        if (callSecondFetchAppDetailsAPIRequest != null) {
+            callSecondFetchAppDetailsAPIRequest.cancelRequests(getActivity(), true);
+        }
+        callSecondFetchAppDetailsAPIRequest = new AsyncHttpClient();
+        callSecondFetchAppDetailsAPIRequest.post("http://fadootutorial.com/appgenerator/fetchappdetails.php", RequestFetchAppDetailsParams(UID, APP_ID), new SECOND_FETCH_All_APP_DETAILS_result());
+    }
+
+    public RequestParams RequestFetchAppDetailsParams(String UID, String APP_ID) {
+        RequestParams params = new RequestParams();
+        params.put("UID", UID);
+        params.put("APP_ID", APP_ID);
+        return params;
+    }
+
+    public void CallMYFetchAppDetailsApi(String UID) {
+        if (callMYAppDetailsAPIRequest != null) {
+            callMYAppDetailsAPIRequest.cancelRequests(getActivity(), true);
+        }
+        callMYAppDetailsAPIRequest = new AsyncHttpClient();
+        callMYAppDetailsAPIRequest.post("http://fadootutorial.com/appgenerator/myappslist.php", RequestFetchAppDetailsParams(UID), new FETCH_All_APP_DETAILS_result());
+    }
+
+    public RequestParams RequestFetchAppDetailsParams(String UID) {
+        RequestParams params = new RequestParams();
+        params.put("UID", UID);
+        return params;
+    }
 
     public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
@@ -336,36 +396,6 @@ public class fragment_myapps extends Fragment {
         }
     }
 
-    public void navigate_to_fragment(String app_id) {
-        appPrefs.setIS_NEW_APP("false");
-        appPrefs.setAPP_ID(app_id);
-        if (common.isConnected()) {
-            common.showProgressDialog(getString(R.string.progress_loading));
-            CallSecondFetchAppDetailsApi(appPrefs.getUserId(), app_id);
-        } else {
-            Snackbar snackbar = Snackbar.make(rootFragmetnMyApps, R.string.message_turn_on_internet, Snackbar.LENGTH_SHORT);
-            snackbar.getView().setBackgroundColor(getResources().getColor(R.color.fourthColor));
-            snackbar.show();
-        }
-    }
-
-    //  **************** Call DELETE MY APP API ******************************//
-    AsyncHttpClient callDeleteMyAppDetailsAPIRequest;
-
-    public void CallDeleteAppDetailsApi(String APP_ID) {
-        if (callDeleteMyAppDetailsAPIRequest != null) {
-            callDeleteMyAppDetailsAPIRequest.cancelRequests(getActivity(), true);
-        }
-        callDeleteMyAppDetailsAPIRequest = new AsyncHttpClient();
-        callDeleteMyAppDetailsAPIRequest.post("http://fadootutorial.com/appgenerator/deletemyapp.php", RequestDeletetailsParams(APP_ID), new DELETE_MY_APP_DETAILS_result());
-    }
-
-    public RequestParams RequestDeletetailsParams(String APP_ID) {
-        RequestParams params = new RequestParams();
-        params.put("APP_ID", APP_ID);
-        return params;
-    }
-
     public class DELETE_MY_APP_DETAILS_result extends AsyncHttpResponseHandler {
 
         @Override
@@ -402,24 +432,6 @@ public class fragment_myapps extends Fragment {
             snackbar.show();
 
         }
-    }
-
-    //  **************** Call FETCH_All_APP_DETAILS API ******************************//
-    AsyncHttpClient callSecondFetchAppDetailsAPIRequest;
-
-    public void CallSecondFetchAppDetailsApi(String UID, String APP_ID) {
-        if (callSecondFetchAppDetailsAPIRequest != null) {
-            callSecondFetchAppDetailsAPIRequest.cancelRequests(getActivity(), true);
-        }
-        callSecondFetchAppDetailsAPIRequest = new AsyncHttpClient();
-        callSecondFetchAppDetailsAPIRequest.post("http://fadootutorial.com/appgenerator/fetchappdetails.php", RequestFetchAppDetailsParams(UID, APP_ID), new SECOND_FETCH_All_APP_DETAILS_result());
-    }
-
-    public RequestParams RequestFetchAppDetailsParams(String UID, String APP_ID) {
-        RequestParams params = new RequestParams();
-        params.put("UID", UID);
-        params.put("APP_ID", APP_ID);
-        return params;
     }
 
     public class SECOND_FETCH_All_APP_DETAILS_result extends AsyncHttpResponseHandler {
@@ -494,24 +506,6 @@ public class fragment_myapps extends Fragment {
             snackbar.getView().setBackgroundColor(getResources().getColor(R.color.fourthColor));
             snackbar.show();
         }
-    }
-
-
-    //  **************** Call MY_All_APP_DETAILS API ******************************//
-    AsyncHttpClient callMYAppDetailsAPIRequest;
-
-    public void CallMYFetchAppDetailsApi(String UID) {
-        if (callMYAppDetailsAPIRequest != null) {
-            callMYAppDetailsAPIRequest.cancelRequests(getActivity(), true);
-        }
-        callMYAppDetailsAPIRequest = new AsyncHttpClient();
-        callMYAppDetailsAPIRequest.post("http://fadootutorial.com/appgenerator/myappslist.php", RequestFetchAppDetailsParams(UID), new FETCH_All_APP_DETAILS_result());
-    }
-
-    public RequestParams RequestFetchAppDetailsParams(String UID) {
-        RequestParams params = new RequestParams();
-        params.put("UID", UID);
-        return params;
     }
 
     public class FETCH_All_APP_DETAILS_result extends AsyncHttpResponseHandler {

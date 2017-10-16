@@ -42,12 +42,11 @@ public class fragment_draftapps extends Fragment {
     DbHelper dbHelper;
     TextView tvErrorMsg;
     AppPrefs appPrefs;
+    int[] color = {R.color.firstColor, R.color.secondColor, R.color.thirdColor, R.color.fourthColor, R.color.fifthColor, R.color.sixthColor};
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
     private FrameLayout rootDraftapps;
-    int[] color = {R.color.firstColor, R.color.secondColor, R.color.thirdColor, R.color.fourthColor, R.color.fifthColor, R.color.sixthColor};
-
 
     @Nullable
     @Override
@@ -80,6 +79,25 @@ public class fragment_draftapps extends Fragment {
         return v;
     }
 
+    public void navigate_to_fragment(String app_id) {
+        Fragment fragment = new fragment_selection_one();
+        appPrefs.setIS_NEW_APP("true");
+        appPrefs.setAPP_ID(app_id);
+        if (fragment != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getActivity(), R.color.secondColor));
+            }
+            MainActivity.frameToolbar.setBackgroundColor(getResources().getColor(R.color.secondColor));
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.frame_layout_main, fragment).setCustomAnimations(R.anim.slide_up, android.R.anim.fade_out).commit();
+
+        } else {
+            //  Log.e("Home", "Error in creating fragment");
+        }
+    }
 
     public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
@@ -246,26 +264,6 @@ public class fragment_draftapps extends Fragment {
                 frameLayoutDraftapp = (FrameLayout) itemView.findViewById(R.id.framellout_draft_apps);
                 imgBackcover = (ImageView) itemView.findViewById(R.id.img_app_backcover);
             }
-        }
-    }
-
-    public void navigate_to_fragment(String app_id) {
-        Fragment fragment = new fragment_selection_one();
-        appPrefs.setIS_NEW_APP("true");
-        appPrefs.setAPP_ID(app_id);
-        if (fragment != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getActivity(), R.color.secondColor));
-            }
-            MainActivity.frameToolbar.setBackgroundColor(getResources().getColor(R.color.secondColor));
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.frame_layout_main, fragment).setCustomAnimations(R.anim.slide_up, android.R.anim.fade_out).commit();
-
-        } else {
-          //  Log.e("Home", "Error in creating fragment");
         }
     }
 

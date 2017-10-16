@@ -23,6 +23,7 @@ public class fragment_purchase_successful extends Fragment {
     TextView txtPlanDescription;
     Button bt_install;
     FrameLayout rootPaymentSuccess;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,12 +43,12 @@ public class fragment_purchase_successful extends Fragment {
         MainActivity.animator(getActivity(), MainActivity.secondimgMainPrev);
         MainActivity.tv_main_second.setText(R.string.toolbar_payment);
         txtPlanDescription = (TextView) v.findViewById(R.id.plan_description);
-        txtPlanDescription.setText("\nNow your app has been Published and Live\n\t"+"App name :"+getArguments().getString("APP_NAME").trim()+"\n\tPublish ID :"+getArguments().getString("PUBLISH_ID").trim());
+        txtPlanDescription.setText("\nNow your app has been Published and Live\n\t" + "App name :" + getArguments().getString("APP_NAME").trim() + "\n\tPublish ID :" + getArguments().getString("PUBLISH_ID").trim());
 
         bt_install.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://goo.gl/jXuS77?appname="+getArguments().getString("APP_NAME").trim())));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://goo.gl/jXuS77?appname=" + getArguments().getString("APP_NAME").trim())));
             }
         });
 

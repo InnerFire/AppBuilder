@@ -6,34 +6,33 @@
 
     <!-- For self message -->
     <LinearLayout
-        android:background="#91d49a"
-        android:layout_margin="3dp"
-        android:layout_gravity="end"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_margin="3dp"
+        android:background="#91d49a">
 
         <LinearLayout
-            android:layout_margin="5dp"
-            android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textViewMessage"
-                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
                 android:layout_margin="2dp"
-                android:text="Hello how are you?" />
+                android:text="Hello how are you?"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/textViewTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Belal Khan, 2016-05-29 16:02:00?"
-                android:textSize="12sp"
-                />
+                android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
 

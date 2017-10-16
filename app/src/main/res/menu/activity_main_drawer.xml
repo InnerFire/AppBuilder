@@ -42,7 +42,7 @@
 
     </group>
 
-    <item android:title="@string/nav_communicate" >
+    <item android:title="@string/nav_communicate">
         <menu android:checkableBehavior="single">
             <item
                 android:id="@+id/nav_share"

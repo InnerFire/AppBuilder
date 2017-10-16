@@ -12,7 +12,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,23 +60,29 @@ import cz.msebera.android.httpclient.Header;
 
 public class fragment_sendPushNotification extends Fragment implements RadioGroup.OnCheckedChangeListener, View.OnClickListener {
 
-    private Button buttonSendPush;
-    private RadioGroup radioGroup;
-    private Spinner spinner;
+    public String imagepath;
     AppPrefs appPrefs;
     Common common;
-    private EditText editTextTitle, editTextMessage;
     ImageView imgPushNotification;
     FrameLayout frameImagePush;
-    private boolean isSendAllChecked;
-    private List<String> devices;
     Bitmap UniversalBitmap;
-    private int REQUEST_CAMERA = 112, SELECT_FILE = 115;
-    public String imagepath;
     DisplayImageOptions options;
     ImageLoader imageLoader;
     Switch switchImageUpload;
     ScrollView rootPushNotify;
+    //  ####################   Load Register APP User Api   ###################
+    AsyncHttpClient callLoadRegisterAppUserAPIRequest;
+    //  ####################   Token Register Api   ###################
+    AsyncHttpClient callSendMultiplePushAPIRequest;
+    //  ####################   Token Register Api   ###################
+    AsyncHttpClient callSendSinglePushAPIRequest;
+    private Button buttonSendPush;
+    private RadioGroup radioGroup;
+    private Spinner spinner;
+    private EditText editTextTitle, editTextMessage;
+    private boolean isSendAllChecked;
+    private List<String> devices;
+    private int REQUEST_CAMERA = 112, SELECT_FILE = 115;
 
     @Nullable
     @Override
@@ -161,7 +166,6 @@ public class fragment_sendPushNotification extends Fragment implements RadioGrou
         return v;
     }
 
-
     //method to load all the devices from database
     private void loadRegisteredDevices() {
         common.showProgressDialog(getString(R.string.progress_loading));
@@ -179,9 +183,6 @@ public class fragment_sendPushNotification extends Fragment implements RadioGrou
         }
     }
 
-    //  ####################   Load Register APP User Api   ###################
-    AsyncHttpClient callLoadRegisterAppUserAPIRequest;
-
     public void CallLoadRegisterAppUsersApi(String appid) {
         if (callLoadRegisterAppUserAPIRequest != null) {
             callLoadRegisterAppUserAPIRequest.cancelRequests(getActivity(), true);
@@ -197,50 +198,6 @@ public class fragment_sendPushNotification extends Fragment implements RadioGrou
 
         return params;
     }
-
-    public class Request_Load_App_Users extends AsyncHttpResponseHandler {
-
-
-        @Override
-        public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
-            common.hideProgressDialog();
-          //  Log.e("$$$", "On Success");
-            JSONObject obj = null;
-            try {
-                String str = new String(responseBody, "UTF-8");
-
-                obj = new JSONObject(str);
-              //  Log.e("Hello=>", obj.toString());
-
-                //  if (!obj.getBoolean("ERROR")) {
-                JSONArray jsonDevices = obj.getJSONArray("emails");
-                if (!jsonDevices.getJSONObject(0).getString("email").equals("ERROR")) {
-                    for (int i = 0; i < jsonDevices.length(); i++) {
-                        JSONObject d = jsonDevices.getJSONObject(i);
-                        devices.add(d.getString("email"));
-                    }
-
-                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                            getActivity(),
-                            android.R.layout.simple_spinner_dropdown_item,
-                            devices);
-
-                    spinner.setAdapter(arrayAdapter);
-                }
-            } catch (JSONException | UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
-          //  Log.e("###", "Something went wrong");
-            common.hideProgressDialog();
-        }
-    }
-
-    //  ####################   Token Register Api   ###################
-    AsyncHttpClient callSendMultiplePushAPIRequest;
 
     public void CallSendMultiplePushApi(String title, String message, String image, String app_id) {
         if (callSendMultiplePushAPIRequest != null) {
@@ -259,26 +216,8 @@ public class fragment_sendPushNotification extends Fragment implements RadioGrou
             params.put("image", image);
         }
         params.put("app_id", app_id);
-       // Log.e("%%%", params.toString());
+        // Log.e("%%%", params.toString());
         return params;
-    }
-
-    public class Request_Send_Multiple_Push extends AsyncHttpResponseHandler {
-        @Override
-        public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
-         //   Log.e("$$$", "On Success");
-            try {
-                String str = new String(responseBody, "UTF-8");
-             //   Log.e("***********", "response is" + str);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
-          //  Log.e("###", "Something went wrong");
-        }
     }
 
     private void sendMultiplePush() {
@@ -359,7 +298,7 @@ public class fragment_sendPushNotification extends Fragment implements RadioGrou
             fo = new FileOutputStream(destination);
             fo.write(bytes.toByteArray());
             fo.close();
-          //  Log.e("!!!!!", destination.getPath());
+            //  Log.e("!!!!!", destination.getPath());
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -401,13 +340,13 @@ public class fragment_sendPushNotification extends Fragment implements RadioGrou
                     params.put("random_id", saltString);
                     params.put("uploaded_file", getStringImage(UniversalBitmap));
 
-                   // Log.e("!!!", params.toString());
+                    // Log.e("!!!", params.toString());
                     client.post("http://fadootutorial.com/appgenerator/pushimageupload.php", params, new AsyncHttpResponseHandler() {
                         @Override
                         public void onStart() {
                             super.onStart();
                             common.showProgressDialog(getString(R.string.progress_uploading));
-                          //  Log.e("$$$", "start");
+                            //  Log.e("$$$", "start");
                         }
 
                         @Override
@@ -417,7 +356,7 @@ public class fragment_sendPushNotification extends Fragment implements RadioGrou
                             try {
                                 str = new String(responseBody, "UTF-8");
                                 SignUpResponse response = new Gson().fromJson(str, SignUpResponse.class);
-                             //   Log.e("****SignUp*****", "" + response.result);
+                                //   Log.e("****SignUp*****", "" + response.result);
                                 if (response.result.equals("success")) {
                                     imagepath = "uploads/" + saltString + ".png";
                                     appPrefs.setTEMP_IMAGE(imagepath);
@@ -490,10 +429,6 @@ public class fragment_sendPushNotification extends Fragment implements RadioGrou
 
     }
 
-
-    //  ####################   Token Register Api   ###################
-    AsyncHttpClient callSendSinglePushAPIRequest;
-
     public void CallSendSinglePushApi(String title, String message, String image, String email) {
         if (callSendSinglePushAPIRequest != null) {
             callSendSinglePushAPIRequest.cancelRequests(getActivity(), true);
@@ -513,27 +448,6 @@ public class fragment_sendPushNotification extends Fragment implements RadioGrou
         params.put("email", email);
         return params;
     }
-
-    public class Request_Send_Single_Push extends AsyncHttpResponseHandler {
-
-
-        @Override
-        public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
-          //  Log.e("$$$", "On Success");
-            try {
-                String str = new String(responseBody, "UTF-8");
-               // Log.e("***********", "response is" + str);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
-          //  Log.e("###", "Something went wrong");
-        }
-    }
-
 
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -559,5 +473,84 @@ public class fragment_sendPushNotification extends Fragment implements RadioGrou
             editTextMessage.setError("Mesaage should not be empty");
         else
             sendPush();
+    }
+
+    public class Request_Load_App_Users extends AsyncHttpResponseHandler {
+
+
+        @Override
+        public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+            common.hideProgressDialog();
+            //  Log.e("$$$", "On Success");
+            JSONObject obj = null;
+            try {
+                String str = new String(responseBody, "UTF-8");
+
+                obj = new JSONObject(str);
+                //  Log.e("Hello=>", obj.toString());
+
+                //  if (!obj.getBoolean("ERROR")) {
+                JSONArray jsonDevices = obj.getJSONArray("emails");
+                if (!jsonDevices.getJSONObject(0).getString("email").equals("ERROR")) {
+                    for (int i = 0; i < jsonDevices.length(); i++) {
+                        JSONObject d = jsonDevices.getJSONObject(i);
+                        devices.add(d.getString("email"));
+                    }
+
+                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                            getActivity(),
+                            android.R.layout.simple_spinner_dropdown_item,
+                            devices);
+
+                    spinner.setAdapter(arrayAdapter);
+                }
+            } catch (JSONException | UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+            //  Log.e("###", "Something went wrong");
+            common.hideProgressDialog();
+        }
+    }
+
+    public class Request_Send_Multiple_Push extends AsyncHttpResponseHandler {
+        @Override
+        public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+            //   Log.e("$$$", "On Success");
+            try {
+                String str = new String(responseBody, "UTF-8");
+                //   Log.e("***********", "response is" + str);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+            //  Log.e("###", "Something went wrong");
+        }
+    }
+
+    public class Request_Send_Single_Push extends AsyncHttpResponseHandler {
+
+
+        @Override
+        public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+            //  Log.e("$$$", "On Success");
+            try {
+                String str = new String(responseBody, "UTF-8");
+                // Log.e("***********", "response is" + str);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+            //  Log.e("###", "Something went wrong");
+        }
     }
 }

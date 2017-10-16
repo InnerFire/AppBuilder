@@ -20,7 +20,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,16 +75,10 @@ import cz.msebera.android.httpclient.Header;
  * Created by Savaliya Imfotech on 04-12-2016.
  */
 public class fragment_design_two extends Fragment {
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager lmanagerDeesignTwo;
     List<Integer> listItems;
     Common common;
     DbHelper dbHelper;
     ScrollView rootDesignTwo;
-    private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
-    private ImageView imgAppIcon, imgSplash, imgUpload, imgUpload2;
-    private String userChoosenTask;
     Bitmap UniversalBitmap;
     LinearLayout llout_appthemecolor, llout_textcolor, root_llout_design_two;
     File destination;
@@ -103,6 +96,14 @@ public class fragment_design_two extends Fragment {
     // String[] name = {"Tabbed Activity", "Scrolling Activity", "Navigation Drawer Activity", "Master/Detail Flow", "Login Activity", "Fullscreen Activity", "Basic Activity"};
     // String[] image = {"https://developer.android.com/studio/images/projects/tabbed-activity-template_2-2_2x.png", "https://developer.android.com/studio/images/projects/scrolling-activity-template_2-2_2x.png", "https://developer.android.com/studio/images/projects/navigation-drawer-activity-template_2-2_2x.png", "https://developer.android.com/studio/images/projects/master-detail-flow-template_2-2_2x.png", "https://developer.android.com/studio/images/projects/login-activity-template_2-2_2x.png", "https://developer.android.com/studio/images/projects/fullscreen-activity-template_2-2_2x.png", "https://developer.android.com/studio/images/projects/basic-activity-template_2-2_2x.png"};
     int[] color = {R.color.firstColor, R.color.secondColor, R.color.thirdColor, R.color.fourthColor, R.color.fifthColor, R.color.sixthColor, R.color.firstColor, R.color.secondColor, R.color.thirdColor, R.color.fourthColor, R.color.fifthColor, R.color.sixthColor};
+    //  **************** Call Each Phase All_App_Details API ******************************//
+    AsyncHttpClient callEachPhaseAppDetailsAPIRequest;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager lmanagerDeesignTwo;
+    private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
+    private ImageView imgAppIcon, imgSplash, imgUpload, imgUpload2;
+    private String userChoosenTask;
 
     public String getStringImage(Bitmap bmp) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -122,7 +123,6 @@ public class fragment_design_two extends Fragment {
         }
         return salt.toString();
     }
-
 
     @Nullable
     @Override
@@ -178,7 +178,7 @@ public class fragment_design_two extends Fragment {
         spinnerCategory.setAdapter(adapter);
         spinnerCategory.setSelection(list.indexOf(dbHelper.SelectAttributeviseData(appPrefs.getAPP_ID(), DbHelper.APP_CATEGORY)));
         textfamilyselection = dbHelper.SelectAttributeviseData(appPrefs.getAPP_ID(), DbHelper.TEXT_COLOR);
-      //  Log.e("!!!!", textfamilyselection + "");
+        //  Log.e("!!!!", textfamilyselection + "");
         if (dbHelper.isNewApp(appPrefs.getAPP_ID())) {
             app_theme_color = dbHelper.SelectAttributeviseData(appPrefs.getAPP_ID(), DbHelper.THEME_COLOR);
             tvAppthemeColor.setTextColor(Integer.parseInt(app_theme_color));
@@ -267,7 +267,7 @@ public class fragment_design_two extends Fragment {
             @Override
             public void onClick(View view) {
                 if (edtAppnameDesigntwo.getText().toString().isEmpty()) {
-                    Snackbar snackbar=Snackbar.make(rootDesignTwo, R.string.message_appname_not_empty, Snackbar.LENGTH_LONG);
+                    Snackbar snackbar = Snackbar.make(rootDesignTwo, R.string.message_appname_not_empty, Snackbar.LENGTH_LONG);
                     snackbar.getView().setBackgroundColor(getResources().getColor(R.color.thirdColor));
                     snackbar.show();
                 } else {
@@ -327,7 +327,7 @@ public class fragment_design_two extends Fragment {
                                         .replace(R.id.frame_layout_main, fragment).setCustomAnimations(R.anim.slide_up, android.R.anim.fade_out).commit();
 
                             } else {
-                              //  Log.e("Home", "Error in creating fragment");
+                                //  Log.e("Home", "Error in creating fragment");
                             }
                         } else {
                             Snackbar snackbar = Snackbar.make(rootDesignTwo, R.string.message_turn_on_internet, Snackbar.LENGTH_SHORT);
@@ -357,7 +357,7 @@ public class fragment_design_two extends Fragment {
                     fragmentManager.beginTransaction()
                             .replace(R.id.frame_layout_main, fragment).setCustomAnimations(R.anim.slide_up, android.R.anim.fade_out).commit();
                 } else {
-                   //  Log.e("Home", "Error in creating fragment");
+                    //  Log.e("Home", "Error in creating fragment");
                 }
 
             }
@@ -371,7 +371,7 @@ public class fragment_design_two extends Fragment {
                 dialog.setColorListener(new ColorListener() {
                     @Override
                     public void OnColorClick(View v, int color) {
-                      //  Log.e("###", color + "");
+                        //  Log.e("###", color + "");
                         tvAppthemeColor.setTextColor(color);
                         app_theme_color = String.valueOf(color);
                     }
@@ -466,13 +466,13 @@ public class fragment_design_two extends Fragment {
                     final String saltString = getSaltString();
                     params.put("random_id", saltString);
 
-                   // Log.e("!!!", params.toString());
+                    // Log.e("!!!", params.toString());
                     client.post("http://fadootutorial.com/appgenerator/imgupload.php", params, new AsyncHttpResponseHandler() {
                         @Override
                         public void onStart() {
                             super.onStart();
                             common.showProgressDialog(getString(R.string.progress_uploading));
-                          //  Log.e("$$$", "start");
+                            //  Log.e("$$$", "start");
                         }
 
                         @Override
@@ -483,7 +483,7 @@ public class fragment_design_two extends Fragment {
                                 str = new String(responseBody, "UTF-8");
                                 // Log.e("***********", "response is" + str);
                                 SignUpResponse response = new Gson().fromJson(str, SignUpResponse.class);
-                               //  Log.e("****SignUp*****", "" + response.result);
+                                //  Log.e("****SignUp*****", "" + response.result);
 
                                 if (response.result.equals("success")) {
                                     if (imgString.equals("1")) {
@@ -517,7 +517,6 @@ public class fragment_design_two extends Fragment {
         });
         builder.show();
     }
-
 
     private void galleryIntent() {
         Intent intent = new Intent();
@@ -561,7 +560,7 @@ public class fragment_design_two extends Fragment {
             fo = new FileOutputStream(destination);
             fo.write(bytes.toByteArray());
             fo.close();
-          //  Log.e("!!!!!", destination.getPath());
+            //  Log.e("!!!!!", destination.getPath());
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -599,6 +598,31 @@ public class fragment_design_two extends Fragment {
                 }
                 break;
         }
+    }
+
+    public void CallEachPhaseAppDetailsApi(String UID, String APP_ID, String APP_NAME, String APP_ICON, String SPLASH_ICON, String APP_CATEGORY, String APP_THEME, String THEME_COLOR, String TEXT_COLOR, String PUBLISH_ID, String APP_PAGE, String APP_PAGES_ID) {
+        if (callEachPhaseAppDetailsAPIRequest != null) {
+            callEachPhaseAppDetailsAPIRequest.cancelRequests(getActivity(), true);
+        }
+        callEachPhaseAppDetailsAPIRequest = new AsyncHttpClient();
+        callEachPhaseAppDetailsAPIRequest.post("http://fadootutorial.com/appgenerator/eachphaseappdetails.php", RequestEachPhaseAppDetailsParams(UID, APP_ID, APP_NAME, APP_ICON, SPLASH_ICON, APP_CATEGORY, APP_THEME, THEME_COLOR, TEXT_COLOR, PUBLISH_ID, APP_PAGE, APP_PAGES_ID), new EACH_PHASE_All_APP_DETAILS_result());
+    }
+
+    public RequestParams RequestEachPhaseAppDetailsParams(String UID, String APP_ID, String APP_NAME, String APP_ICON, String SPLASH_ICON, String APP_CATEGORY, String APP_THEME, String THEME_COLOR, String TEXT_COLOR, String PUBLISH_ID, String APP_PAGE, String APP_PAGES_ID) {
+        RequestParams params = new RequestParams();
+        params.put("UID", UID);
+        params.put("APP_ID", APP_ID);
+        params.put("APP_NAME", APP_NAME);
+        params.put("APP_ICON", APP_ICON);
+        params.put("SPLASH_ICON", SPLASH_ICON);
+        params.put("APP_CATEGORY", APP_CATEGORY);
+        params.put("APP_THEME", APP_THEME);
+        params.put("THEME_COLOR", THEME_COLOR);
+        params.put("TEXT_COLOR", TEXT_COLOR);
+        params.put("PUBLISH_ID", PUBLISH_ID);
+        params.put("APP_PAGE", APP_PAGE);
+        params.put("APP_PAGES_ID", APP_PAGES_ID);
+        return params;
     }
 
     public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
@@ -720,35 +744,6 @@ public class fragment_design_two extends Fragment {
         }
     }
 
-
-    //  **************** Call Each Phase All_App_Details API ******************************//
-    AsyncHttpClient callEachPhaseAppDetailsAPIRequest;
-
-    public void CallEachPhaseAppDetailsApi(String UID, String APP_ID, String APP_NAME, String APP_ICON, String SPLASH_ICON, String APP_CATEGORY, String APP_THEME, String THEME_COLOR, String TEXT_COLOR, String PUBLISH_ID, String APP_PAGE, String APP_PAGES_ID) {
-        if (callEachPhaseAppDetailsAPIRequest != null) {
-            callEachPhaseAppDetailsAPIRequest.cancelRequests(getActivity(), true);
-        }
-        callEachPhaseAppDetailsAPIRequest = new AsyncHttpClient();
-        callEachPhaseAppDetailsAPIRequest.post("http://fadootutorial.com/appgenerator/eachphaseappdetails.php", RequestEachPhaseAppDetailsParams(UID, APP_ID, APP_NAME, APP_ICON, SPLASH_ICON, APP_CATEGORY, APP_THEME, THEME_COLOR, TEXT_COLOR, PUBLISH_ID, APP_PAGE, APP_PAGES_ID), new EACH_PHASE_All_APP_DETAILS_result());
-    }
-
-    public RequestParams RequestEachPhaseAppDetailsParams(String UID, String APP_ID, String APP_NAME, String APP_ICON, String SPLASH_ICON, String APP_CATEGORY, String APP_THEME, String THEME_COLOR, String TEXT_COLOR, String PUBLISH_ID, String APP_PAGE, String APP_PAGES_ID) {
-        RequestParams params = new RequestParams();
-        params.put("UID", UID);
-        params.put("APP_ID", APP_ID);
-        params.put("APP_NAME", APP_NAME);
-        params.put("APP_ICON", APP_ICON);
-        params.put("SPLASH_ICON", SPLASH_ICON);
-        params.put("APP_CATEGORY", APP_CATEGORY);
-        params.put("APP_THEME", APP_THEME);
-        params.put("THEME_COLOR", THEME_COLOR);
-        params.put("TEXT_COLOR", TEXT_COLOR);
-        params.put("PUBLISH_ID", PUBLISH_ID);
-        params.put("APP_PAGE", APP_PAGE);
-        params.put("APP_PAGES_ID", APP_PAGES_ID);
-        return params;
-    }
-
     public class EACH_PHASE_All_APP_DETAILS_result extends AsyncHttpResponseHandler {
         @Override
         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -758,9 +753,9 @@ public class fragment_design_two extends Fragment {
                 if (str != null) {
                     SignUpResponse response = new Gson().fromJson(str, SignUpResponse.class);
                     if (response.result.equals("success")) {
-                      //  Log.e("###", "Successfully data saved");
+                        //  Log.e("###", "Successfully data saved");
                     } else {
-                      //  Log.e("###", "Some thing went");
+                        //  Log.e("###", "Some thing went");
                     }
                 }
             } catch (UnsupportedEncodingException e) {

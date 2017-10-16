@@ -50,21 +50,94 @@ import cz.msebera.android.httpclient.Header;
 import static com.letsappbuilder.R.id.bt_trial1day;
 
 public class fragment_purchase_allappdetails extends Fragment {
+    //   App billing
+    private static final String TAG = "InAppBilling";
+    //  public static final String ITEM_SKU = "android.test.purchased";
+    //  public static final String ITEM_SKU = "trial.month1";
+    public String ITEM_SKU;
     ImageView imgAppIcon;
     TextView txtAppName;
     Button btfreetrial, btnmonth1, btnmonth3, btnmonth6, btnyear1, btnyear5, btnyear10;
     String PLAN_TYPE;
-    //   App billing
-    private static final String TAG = "InAppBilling";
     IabHelper mHelper;
     DbHelper dbHelper;
     Common common;
     AppPrefs appPrefs;
     ScrollView rootPurchaseAppDetails;
-    //  public static final String ITEM_SKU = "android.test.purchased";
-  //  public static final String ITEM_SKU = "trial.month1";
-    public String ITEM_SKU ;
     String APP_ID, APP_NAME, APP_ICON, SPLASH_ICON, APP_CATEGORY, APP_THEME, THEME_COLOR, TEXT_COLOR, PUBLISH_ID, APP_PAGE, APP_PAGES_ID;
+    //  **************** Call All_App_Details API ******************************//
+    AsyncHttpClient callAppDetailsAPIRequest;
+    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener =
+            new IabHelper.OnConsumeFinishedListener() {
+                @Override
+                public void onConsumeFinished(Purchase purchase, IabResult result) {
+                    if (result.isSuccess()) {
+                        //  Log.e("(((((", "Inside final success");
+                        dbHelper.UpdateAttributeDesignOnedata(getArguments().getString("APP_ID").trim(), DbHelper.PUBLISH_ID, getSaltString());
+                        SQLiteDatabase db = dbHelper.getWritableDatabase();
+                        try {
+                            String query = "SELECT * FROM " + DbHelper.TABLE_NAME + " WHERE " + DbHelper.APP_ID + " = '" + getArguments().getString("APP_ID").trim() + "'";
+                            Cursor resultset = db.rawQuery(query, null);
+
+                            if (resultset != null) {
+                                while (resultset.moveToNext()) {
+                                    APP_ID = resultset.getString(resultset.getColumnIndex(DbHelper.APP_ID));
+                                    APP_NAME = resultset.getString(resultset.getColumnIndex(DbHelper.APP_NAME));
+                                    APP_ICON = resultset.getString(resultset.getColumnIndex(DbHelper.APP_ICON));
+                                    SPLASH_ICON = resultset.getString(resultset.getColumnIndex(DbHelper.SPLASH_ICON));
+                                    APP_CATEGORY = resultset.getString(resultset.getColumnIndex(DbHelper.APP_CATEGORY));
+                                    APP_THEME = resultset.getString(resultset.getColumnIndex(DbHelper.APP_THEME));
+                                    THEME_COLOR = resultset.getString(resultset.getColumnIndex(DbHelper.THEME_COLOR));
+                                    TEXT_COLOR = resultset.getString(resultset.getColumnIndex(DbHelper.TEXT_COLOR));
+                                    PUBLISH_ID = resultset.getString(resultset.getColumnIndex(DbHelper.PUBLISH_ID));
+                                    APP_PAGE = resultset.getString(resultset.getColumnIndex(DbHelper.APP_PAGES));
+                                    APP_PAGES_ID = resultset.getString(resultset.getColumnIndex(DbHelper.APP_PAGES_ID));
+                                    resultset.close();
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        if (common.isConnected()) {
+                            common.showProgressDialog(getString(R.string.payment_in_progress));
+                            CallAppDetailsApi(appPrefs.getUserId(), appPrefs.getMAIL(), APP_ID, APP_NAME, APP_ICON, SPLASH_ICON, APP_CATEGORY, APP_THEME, THEME_COLOR, TEXT_COLOR, PUBLISH_ID, APP_PAGE, APP_PAGES_ID, PLAN_TYPE);
+                        } else {
+                            Snackbar snackbar = Snackbar.make(rootPurchaseAppDetails, R.string.message_turn_on_internet, Snackbar.LENGTH_LONG);
+                            snackbar.getView().setBackgroundColor(getResources().getColor(R.color.firstColor));
+                            snackbar.show();
+                        }
+                    } else {
+                        //  Log.e("@@@", "Consume error occurred");
+                    }
+                }
+            };
+    IabHelper.QueryInventoryFinishedListener mReceivedInventoryListener
+            = new IabHelper.QueryInventoryFinishedListener() {
+        @Override
+        public void onQueryInventoryFinished(IabResult result,
+                                             Inventory inventory) {
+
+            if (result.isFailure()) {
+                Toast.makeText(getActivity(), R.string.message_please_try_later, Toast.LENGTH_SHORT).show();
+            } else {
+                mHelper.consumeAsync(inventory.getPurchase(ITEM_SKU),
+                        mConsumeFinishedListener);
+            }
+        }
+    };
+    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener
+            = new IabHelper.OnIabPurchaseFinishedListener() {
+        public void onIabPurchaseFinished(IabResult result,
+                                          Purchase purchase) {
+            if (result.isFailure()) {
+                Toast.makeText(getActivity(), R.string.message_something_went_wrong, Toast.LENGTH_SHORT).show();
+            } else if (purchase.getSku().equals(ITEM_SKU)) {
+                //  buyButton.setEnabled(false);
+                consumeItem();
+            }
+        }
+    };
 
     @Nullable
     @Override
@@ -98,9 +171,9 @@ public class fragment_purchase_allappdetails extends Fragment {
         mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
             public void onIabSetupFinished(IabResult result) {
                 if (!result.isSuccess()) {
-                  //  Log.e(TAG, "In-app Billing setup failed: " +result);
+                    //  Log.e(TAG, "In-app Billing setup failed: " +result);
                 } else {
-                  //  Log.e(TAG, "In-app Billing is set up OK");
+                    //  Log.e(TAG, "In-app Billing is set up OK");
                 }
             }
         });
@@ -177,7 +250,7 @@ public class fragment_purchase_allappdetails extends Fragment {
             @Override
             public void onClick(View v) {
                 PLAN_TYPE = "1M";
-                ITEM_SKU="new_month1_upgrade";
+                ITEM_SKU = "new_month1_upgrade";
                 if (mHelper != null) {
                     try {
                         mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU, 10001,
@@ -194,7 +267,7 @@ public class fragment_purchase_allappdetails extends Fragment {
             @Override
             public void onClick(View v) {
                 PLAN_TYPE = "3M";
-                ITEM_SKU="new_month3_upgrade";
+                ITEM_SKU = "new_month3_upgrade";
                 if (mHelper != null) {
                     try {
                         mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU, 10001,
@@ -210,7 +283,7 @@ public class fragment_purchase_allappdetails extends Fragment {
             @Override
             public void onClick(View v) {
                 PLAN_TYPE = "6M";
-                ITEM_SKU="new_month6_upgrade";
+                ITEM_SKU = "new_month6_upgrade";
                 if (mHelper != null) {
                     try {
                         mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU, 10001,
@@ -226,7 +299,7 @@ public class fragment_purchase_allappdetails extends Fragment {
             @Override
             public void onClick(View v) {
                 PLAN_TYPE = "1Y";
-                ITEM_SKU="new_year1_upgrade";
+                ITEM_SKU = "new_year1_upgrade";
                 if (mHelper != null) {
                     try {
                         mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU, 10001,
@@ -242,7 +315,7 @@ public class fragment_purchase_allappdetails extends Fragment {
             @Override
             public void onClick(View v) {
                 PLAN_TYPE = "5Y";
-                ITEM_SKU="new_year5_upgrade";
+                ITEM_SKU = "new_year5_upgrade";
                 if (mHelper != null) {
                     try {
                         mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU, 10001,
@@ -258,7 +331,7 @@ public class fragment_purchase_allappdetails extends Fragment {
             @Override
             public void onClick(View v) {
                 PLAN_TYPE = "10Y";
-                ITEM_SKU="new_year10_upgrade";
+                ITEM_SKU = "new_year10_upgrade";
                 if (mHelper != null) {
                     try {
                         mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU, 10001,
@@ -273,20 +346,6 @@ public class fragment_purchase_allappdetails extends Fragment {
         return v;
     }
 
-
-    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener
-            = new IabHelper.OnIabPurchaseFinishedListener() {
-        public void onIabPurchaseFinished(IabResult result,
-                                          Purchase purchase) {
-            if (result.isFailure()) {
-                Toast.makeText(getActivity(), R.string.message_something_went_wrong, Toast.LENGTH_SHORT).show();
-            } else if (purchase.getSku().equals(ITEM_SKU)) {
-                //  buyButton.setEnabled(false);
-                consumeItem();
-            }
-        }
-    };
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (!mHelper.handleActivityResult(requestCode,
@@ -299,21 +358,6 @@ public class fragment_purchase_allappdetails extends Fragment {
         mHelper.queryInventoryAsync(mReceivedInventoryListener);
     }
 
-    IabHelper.QueryInventoryFinishedListener mReceivedInventoryListener
-            = new IabHelper.QueryInventoryFinishedListener() {
-        @Override
-        public void onQueryInventoryFinished(IabResult result,
-                                             Inventory inventory) {
-
-            if (result.isFailure()) {
-                Toast.makeText(getActivity(), R.string.message_please_try_later, Toast.LENGTH_SHORT).show();
-            } else {
-                mHelper.consumeAsync(inventory.getPurchase(ITEM_SKU),
-                        mConsumeFinishedListener);
-            }
-        }
-    };
-
     private String getSaltString() {
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         StringBuilder salt = new StringBuilder();
@@ -325,61 +369,12 @@ public class fragment_purchase_allappdetails extends Fragment {
         return salt.toString();
     }
 
-    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener =
-            new IabHelper.OnConsumeFinishedListener() {
-                @Override
-                public void onConsumeFinished(Purchase purchase, IabResult result) {
-                    if (result.isSuccess()) {
-                      //  Log.e("(((((", "Inside final success");
-                        dbHelper.UpdateAttributeDesignOnedata(getArguments().getString("APP_ID").trim(), DbHelper.PUBLISH_ID, getSaltString());
-                        SQLiteDatabase db = dbHelper.getWritableDatabase();
-                        try {
-                            String query = "SELECT * FROM " + DbHelper.TABLE_NAME + " WHERE " + DbHelper.APP_ID + " = '" + getArguments().getString("APP_ID").trim() + "'";
-                            Cursor resultset = db.rawQuery(query, null);
-
-                            if (resultset != null) {
-                                while (resultset.moveToNext()) {
-                                    APP_ID = resultset.getString(resultset.getColumnIndex(DbHelper.APP_ID));
-                                    APP_NAME = resultset.getString(resultset.getColumnIndex(DbHelper.APP_NAME));
-                                    APP_ICON = resultset.getString(resultset.getColumnIndex(DbHelper.APP_ICON));
-                                    SPLASH_ICON = resultset.getString(resultset.getColumnIndex(DbHelper.SPLASH_ICON));
-                                    APP_CATEGORY = resultset.getString(resultset.getColumnIndex(DbHelper.APP_CATEGORY));
-                                    APP_THEME = resultset.getString(resultset.getColumnIndex(DbHelper.APP_THEME));
-                                    THEME_COLOR = resultset.getString(resultset.getColumnIndex(DbHelper.THEME_COLOR));
-                                    TEXT_COLOR = resultset.getString(resultset.getColumnIndex(DbHelper.TEXT_COLOR));
-                                    PUBLISH_ID = resultset.getString(resultset.getColumnIndex(DbHelper.PUBLISH_ID));
-                                    APP_PAGE = resultset.getString(resultset.getColumnIndex(DbHelper.APP_PAGES));
-                                    APP_PAGES_ID = resultset.getString(resultset.getColumnIndex(DbHelper.APP_PAGES_ID));
-                                    resultset.close();
-                                }
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                        if (common.isConnected()) {
-                            common.showProgressDialog(getString(R.string.payment_in_progress));
-                            CallAppDetailsApi(appPrefs.getUserId(), appPrefs.getMAIL(), APP_ID, APP_NAME, APP_ICON, SPLASH_ICON, APP_CATEGORY, APP_THEME, THEME_COLOR, TEXT_COLOR, PUBLISH_ID, APP_PAGE, APP_PAGES_ID, PLAN_TYPE);
-                        } else {
-                            Snackbar snackbar = Snackbar.make(rootPurchaseAppDetails, R.string.message_turn_on_internet, Snackbar.LENGTH_LONG);
-                            snackbar.getView().setBackgroundColor(getResources().getColor(R.color.firstColor));
-                            snackbar.show();
-                        }
-                    } else {
-                      //  Log.e("@@@", "Consume error occurred");
-                    }
-                }
-            };
-
     @Override
     public void onDestroy() {
         super.onDestroy();
         if (mHelper != null) mHelper.dispose();
         mHelper = null;
     }
-
-    //  **************** Call All_App_Details API ******************************//
-    AsyncHttpClient callAppDetailsAPIRequest;
 
     public void CallAppDetailsApi(String UID, String Email, String APP_ID, String APP_NAME, String APP_ICON, String SPLASH_ICON, String APP_CATEGORY, String APP_THEME, String THEME_COLOR, String TEXT_COLOR, String PUBLISH_ID, String APP_PAGE, String APP_PAGES_ID, String PLAN_TYPE) {
         if (callAppDetailsAPIRequest != null) {
@@ -415,7 +410,7 @@ public class fragment_purchase_allappdetails extends Fragment {
             common.hideProgressDialog();
             try {
                 String str = new String(responseBody, "UTF-8");
-              //  Log.e("$$$$", str + "");
+                //  Log.e("$$$$", str + "");
                 if (str != null) {
                     SignUpResponse response = new Gson().fromJson(str, SignUpResponse.class);
                     if (response.result.equals("success")) {
@@ -442,11 +437,11 @@ public class fragment_purchase_allappdetails extends Fragment {
 
                         } else {
                             // error in creating fragment
-                           // Log.e("Home", "Error in creating fragment");
+                            // Log.e("Home", "Error in creating fragment");
                         }
 
                     } else {
-                      //  Log.e("###", "Some thing went");
+                        //  Log.e("###", "Some thing went");
                     }
                 }
             } catch (UnsupportedEncodingException e) {

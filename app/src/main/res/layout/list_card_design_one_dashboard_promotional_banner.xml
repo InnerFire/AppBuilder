@@ -31,17 +31,17 @@
                 android:id="@+id/img_add_design"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
-                android:layout_margin="5dp"
                 android:layout_gravity="top|end"
+                android:layout_margin="5dp"
                 android:src="@drawable/plus" />
+
             <ImageView
                 android:id="@+id/img_delete_design"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
-                android:layout_margin="5dp"
                 android:layout_gravity="bottom|end"
+                android:layout_margin="5dp"
                 android:src="@drawable/delete_white" />
-
 
 
         </FrameLayout>

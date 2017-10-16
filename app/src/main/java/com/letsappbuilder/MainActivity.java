@@ -59,10 +59,6 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static DrawerLayout drawer;
-    List<Integer> listItems;
-    AppPrefs appPrefs;
-    DbHelper dbHelper;
-    Common common;
     public static FrameLayout frameToolbar;
     public static ImageView imgMainPrev, imgMainNext;
     public static TextView tv_main, tv_main_second;
@@ -70,6 +66,10 @@ public class MainActivity extends AppCompatActivity
     public static ImageView secondimgMainPrev, secondimgMainNext;
     public static String[] app_icon_set;
     public static String[] splash_image_set = {"splash0.jpg", "splash1.jpg", "splash2.jpg", "splash3.jpg", "splash4.jpg", "splash5.jpg", "splash6.jpg", "splash7.jpg", "splash8.jpg", "splash9.jpg", "splash10.jpg", "splash11.jpg", "splash12.jpg", "splash13.jpg", "splash14.jpg", "splash15.jpg", "splash16.jpg", "splash17.jpg", "splash18.jpg", "splash19.jpg", "splash20.jpg", "splash21.jpg", "splash22.jpg", "splash23.jpg", "splash24.jpg", "splash25.jpg", "splash26.jpg", "splash27.jpg", "splash28.jpg", "splash29.jpg", "splash30.jpg", "splash31.jpg", "splash32.jpg", "splash33.jpg", "splash34.jpg", "splash35.jpg"};
+    List<Integer> listItems;
+    AppPrefs appPrefs;
+    DbHelper dbHelper;
+    Common common;
 
     public static void animator(Context context, ImageView imageButton) {
         imageButton.setVisibility(View.INVISIBLE);
@@ -86,6 +86,14 @@ public class MainActivity extends AppCompatActivity
         imageButton.setAnimation(animation);
         imageButton.setVisibility(View.VISIBLE);
         animation.start();
+    }
+
+    public static Bitmap getScreenShot(View view) {
+        View screenView = view.getRootView();
+        screenView.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(screenView.getDrawingCache());
+        screenView.setDrawingCacheEnabled(false);
+        return bitmap;
     }
 
     public Dialog showRateDialog() {
@@ -140,7 +148,6 @@ public class MainActivity extends AppCompatActivity
         return dialog;
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -187,7 +194,7 @@ public class MainActivity extends AppCompatActivity
                     drawer.closeDrawer(Gravity.LEFT);
                 }
             } else {
-              //  Log.e("Home", "Error in creating fragment");
+                //  Log.e("Home", "Error in creating fragment");
             }
 
         }
@@ -211,7 +218,7 @@ public class MainActivity extends AppCompatActivity
                             .replace(R.id.frame_layout_main, fragment).setCustomAnimations(R.anim.slide_up, android.R.anim.fade_out).commit();
 
                 } else {
-                  //  Log.e("Home", "Error in creating fragment");
+                    //  Log.e("Home", "Error in creating fragment");
                 }
             }
         });
@@ -312,10 +319,9 @@ public class MainActivity extends AppCompatActivity
                 drawer.closeDrawer(Gravity.LEFT);
             }
         } else {
-          //  Log.e("Home", "Error in creating fragment");
+            //  Log.e("Home", "Error in creating fragment");
         }
     }
-
 
     @Override
     public void onBackPressed() {
@@ -335,7 +341,7 @@ public class MainActivity extends AppCompatActivity
                 fragmentManager.beginTransaction()
                         .replace(R.id.frame_layout_main, fragment).setCustomAnimations(R.anim.slide_up, android.R.anim.fade_out).commit();
             } else {
-              //  Log.e("Home", "Error in creating fragment");
+                //  Log.e("Home", "Error in creating fragment");
             }
         } else if (frag instanceof fragment_selection_two) {
             Fragment fragment = new fragment_selection_one();
@@ -344,7 +350,7 @@ public class MainActivity extends AppCompatActivity
                 fragmentManager.beginTransaction()
                         .replace(R.id.frame_layout_main, fragment).setCustomAnimations(R.anim.slide_up, android.R.anim.fade_out).commit();
             } else {
-              //  Log.e("Home", "Error in creating fragment");
+                //  Log.e("Home", "Error in creating fragment");
             }
         } else if (frag instanceof fragment_design_one) {
             Fragment fragment = new fragment_selection_two();
@@ -353,7 +359,7 @@ public class MainActivity extends AppCompatActivity
                 fragmentManager.beginTransaction()
                         .replace(R.id.frame_layout_main, fragment).setCustomAnimations(R.anim.slide_up, android.R.anim.fade_out).commit();
             } else {
-              //  Log.e("Home", "Error in creating fragment");
+                //  Log.e("Home", "Error in creating fragment");
             }
         } else if (frag instanceof fragment_design_two) {
             Fragment fragment = new fragment_design_one();
@@ -362,7 +368,7 @@ public class MainActivity extends AppCompatActivity
                 fragmentManager.beginTransaction()
                         .replace(R.id.frame_layout_main, fragment).setCustomAnimations(R.anim.slide_up, android.R.anim.fade_out).commit();
             } else {
-             //   Log.e("Home", "Error in creating fragment");
+                //   Log.e("Home", "Error in creating fragment");
             }
         } else {
             Fragment fragment = new fragment_main();
@@ -371,7 +377,7 @@ public class MainActivity extends AppCompatActivity
                 fragmentManager.beginTransaction()
                         .replace(R.id.frame_layout_main, fragment).setCustomAnimations(R.anim.slide_up, android.R.anim.fade_out).commit();
             } else {
-              //  Log.e("Home", "Error in creating fragment");
+                //  Log.e("Home", "Error in creating fragment");
             }
         }
     }
@@ -381,7 +387,6 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -405,7 +410,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_upgrade) {
             displayView(8);
         } else if (id == R.id.nav_rateus) {
-          showRateDialog().show();
+            showRateDialog().show();
         } else if (id == R.id.nav_tutorialmode) {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/channel/UCF2AYpddhQqXZAjzL7bsp4Q/videos?view=0&shelf_id=0&sort=dd")));
         } else if (id == R.id.nav_share) {
@@ -458,14 +463,6 @@ public class MainActivity extends AppCompatActivity
             salt.append(SALTCHARS.charAt(index));
         }
         return salt.toString();
-    }
-
-    public static Bitmap getScreenShot(View view) {
-        View screenView = view.getRootView();
-        screenView.setDrawingCacheEnabled(true);
-        Bitmap bitmap = Bitmap.createBitmap(screenView.getDrawingCache());
-        screenView.setDrawingCacheEnabled(false);
-        return bitmap;
     }
 
     public File store(Bitmap bm, String fileName) {

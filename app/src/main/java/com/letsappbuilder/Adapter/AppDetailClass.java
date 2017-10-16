@@ -4,14 +4,15 @@ package com.letsappbuilder.Adapter;
  * Created by Savaliya Imfotech on 14-12-2016.
  */
 public class AppDetailClass {
-    public AppDetailClass(){
-
-    }
     public String APP_ID;
     public String APP_NAME;
     public String APP_CATEGORY;
     public String APP_ICON;
     public String PUBLISH_ID;
+
+    public AppDetailClass() {
+
+    }
 
     public String getAPP_ID() {
         return APP_ID;

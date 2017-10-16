@@ -131,8 +131,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="25dp"
                     android:layout_weight="3"
-                    android:background="#c5c5c5"
-                     />
+                    android:background="#c5c5c5" />
 
                 <TextView
                     android:id="@+id/textView3"
@@ -142,8 +141,8 @@
                     android:layout_weight="4"
                     android:gravity="center"
                     android:text="OR"
-                    android:textColor="#c5c5c5"
                     android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="#c5c5c5"
                     android:textSize="16sp" />
 
                 <View
@@ -152,8 +151,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="25dp"
                     android:layout_weight="3"
-                    android:background="#c5c5c5"
-                     />
+                    android:background="#c5c5c5" />
 
             </LinearLayout>
 
@@ -164,25 +162,25 @@
                 android:layout_margin="8dp">
 
                 <LinearLayout
-                    android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/fb_login"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:layout_marginRight="5dp"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
                         android:src="@drawable/fb_login" />
 
                     <ImageView
                         android:id="@+id/google_login"
                         android:layout_width="45dp"
-                        android:layout_marginLeft="8dp"
                         android:layout_height="45dp"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="8dp"
                         android:src="@drawable/google_login" />
 
 
@@ -196,9 +194,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="8dp"
+                android:padding="2dp"
                 android:text="@string/forgot_your_password"
                 android:textColor="#9a9a9a"
-                android:padding="2dp"
                 android:textSize="14sp" />
         </LinearLayout>
     </android.support.v7.widget.CardView>

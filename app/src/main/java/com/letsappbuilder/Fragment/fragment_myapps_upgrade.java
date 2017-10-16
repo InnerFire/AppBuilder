@@ -12,7 +12,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +21,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.letsappbuilder.FCM_Package.fragment_sendPushNotification;
 import com.letsappbuilder.MainActivity;
 import com.letsappbuilder.R;
@@ -29,7 +29,6 @@ import com.letsappbuilder.Response.MyAppResponse;
 import com.letsappbuilder.Utils.AppPrefs;
 import com.letsappbuilder.Utils.Common;
 import com.letsappbuilder.Utils.DbHelper;
-import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -52,12 +51,14 @@ public class fragment_myapps_upgrade extends Fragment {
     DbHelper dbHelper;
     TextView tvErrorMsg;
     AppPrefs appPrefs;
+    Common common;
+    int[] color = {R.color.firstColor, R.color.secondColor, R.color.thirdColor, R.color.fourthColor, R.color.fifthColor, R.color.sixthColor};
+    //  *********************** Call MY_All_APP_DETAILS API ******************************//
+    AsyncHttpClient callMYAppDetailsAPIRequest;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
     private FrameLayout rootFragmetnMyApps;
-    Common common;
-    int[] color = {R.color.firstColor, R.color.secondColor, R.color.thirdColor, R.color.fourthColor, R.color.fifthColor, R.color.sixthColor};
 
     @Nullable
     @Override
@@ -65,7 +66,7 @@ public class fragment_myapps_upgrade extends Fragment {
         View v = inflater.inflate(R.layout.fragment_my_apps, container, false);
         MainActivity.frameToolbar.setVisibility(View.GONE);
         MainActivity.secondframeToolbar.setVisibility(View.VISIBLE);
-        rootFragmetnMyApps= (FrameLayout) v.findViewById(R.id.root_my_apps);
+        rootFragmetnMyApps = (FrameLayout) v.findViewById(R.id.root_my_apps);
         dbHelper = new DbHelper(getActivity());
         common = new Common(getActivity());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -95,6 +96,19 @@ public class fragment_myapps_upgrade extends Fragment {
         return v;
     }
 
+    public void CallMYFetchAppDetailsApi(String UID) {
+        if (callMYAppDetailsAPIRequest != null) {
+            callMYAppDetailsAPIRequest.cancelRequests(getActivity(), true);
+        }
+        callMYAppDetailsAPIRequest = new AsyncHttpClient();
+        callMYAppDetailsAPIRequest.post("http://fadootutorial.com/appgenerator/upgradeappslist.php", RequestFetchAppDetailsParams(UID), new FETCH_All_APP_DETAILS_result());
+    }
+
+    public RequestParams RequestFetchAppDetailsParams(String UID) {
+        RequestParams params = new RequestParams();
+        params.put("UID", UID);
+        return params;
+    }
 
     public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
@@ -137,7 +151,7 @@ public class fragment_myapps_upgrade extends Fragment {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        if(common.isConnected()) {
+                                        if (common.isConnected()) {
                                             Fragment fragment = new fragment_purchase();
                                             Bundle bundle = new Bundle();
                                             bundle.putString("APP_NAME", items.get(position).APP_NAME);
@@ -156,9 +170,9 @@ public class fragment_myapps_upgrade extends Fragment {
                                                 fragmentManager.beginTransaction()
                                                         .replace(R.id.frame_layout_main, fragment).setCustomAnimations(R.anim.slide_up, android.R.anim.fade_out).commit();
                                             } else {
-                                              //  Log.e("Home", "Error in creating fragment");
+                                                //  Log.e("Home", "Error in creating fragment");
                                             }
-                                        }else{
+                                        } else {
                                             Snackbar snackbar = Snackbar.make(rootFragmetnMyApps, R.string.message_turn_on_internet, Snackbar.LENGTH_LONG);
                                             snackbar.getView().setBackgroundColor(getResources().getColor(R.color.firstColor));
                                             snackbar.show();
@@ -172,7 +186,7 @@ public class fragment_myapps_upgrade extends Fragment {
                         dialog.show();
                     } else {
                         appPrefs.setCHAT_APP_ID(items.get(position).APP_ID);
-                      //  Log.e("@@@", appPrefs.getCHAT_APP_ID());
+                        //  Log.e("@@@", appPrefs.getCHAT_APP_ID());
                         Fragment fragment = new fragment_sendPushNotification();
                         if (fragment != null) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -186,7 +200,7 @@ public class fragment_myapps_upgrade extends Fragment {
                                     .replace(R.id.frame_layout_main, fragment).setCustomAnimations(R.anim.slide_up, android.R.anim.fade_out).commit();
 
                         } else {
-                          //  Log.e("Home", "Error in creating fragment");
+                            //  Log.e("Home", "Error in creating fragment");
                         }
                     }
                 }
@@ -201,7 +215,7 @@ public class fragment_myapps_upgrade extends Fragment {
                         fragmentManager.beginTransaction()
                                 .replace(R.id.frame_layout_main, fragment).setCustomAnimations(R.anim.slide_up, android.R.anim.fade_out).commit();
                     } else {
-                      //  Log.e("Home", "Error in creating fragment");
+                        //  Log.e("Home", "Error in creating fragment");
                     }
                 }
             });
@@ -278,23 +292,6 @@ public class fragment_myapps_upgrade extends Fragment {
         }
     }
 
-    //  *********************** Call MY_All_APP_DETAILS API ******************************//
-    AsyncHttpClient callMYAppDetailsAPIRequest;
-
-    public void CallMYFetchAppDetailsApi(String UID) {
-        if (callMYAppDetailsAPIRequest != null) {
-            callMYAppDetailsAPIRequest.cancelRequests(getActivity(), true);
-        }
-        callMYAppDetailsAPIRequest = new AsyncHttpClient();
-        callMYAppDetailsAPIRequest.post("http://fadootutorial.com/appgenerator/upgradeappslist.php", RequestFetchAppDetailsParams(UID), new FETCH_All_APP_DETAILS_result());
-    }
-
-    public RequestParams RequestFetchAppDetailsParams(String UID) {
-        RequestParams params = new RequestParams();
-        params.put("UID", UID);
-        return params;
-    }
-
     public class FETCH_All_APP_DETAILS_result extends AsyncHttpResponseHandler {
 
         @Override
@@ -302,7 +299,7 @@ public class fragment_myapps_upgrade extends Fragment {
             common.hideProgressDialog();
             try {
                 String str = new String(responseBody, "UTF-8");
-              //  Log.e("$$$", str);
+                //  Log.e("$$$", str);
                 if (str != null) {
                     MyAppResponse response = new Gson().fromJson(str, MyAppResponse.class);
                     if (!response.myAppLists.get(0).APP_ID.equals("ERROR")) {

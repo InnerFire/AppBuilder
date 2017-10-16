@@ -65,13 +65,13 @@
                     <Switch
                         android:id="@+id/switch_1A"
                         android:layout_width="wrap_content"
-                        android:hint="@string/switch1a_hint"
-                        android:textColorHint="#ffffff"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center_vertical"
                         android:backgroundTint="@color/white"
                         android:checked="false"
-                        android:foregroundTint="@color/white" />
+                        android:foregroundTint="@color/white"
+                        android:hint="@string/switch1a_hint"
+                        android:textColorHint="#ffffff" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -100,14 +100,14 @@
 
                     <Switch
                         android:id="@+id/switch_1B"
-                        android:hint="@string/switch1b_hint"
-                        android:textColorHint="#ffffff"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center_vertical"
                         android:backgroundTint="@color/white"
                         android:checked="false"
-                        android:foregroundTint="@color/white" />
+                        android:foregroundTint="@color/white"
+                        android:hint="@string/switch1b_hint"
+                        android:textColorHint="#ffffff" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -137,13 +137,13 @@
                     <Switch
                         android:id="@+id/switch_1C"
                         android:layout_width="wrap_content"
-                        android:textColorHint="#ffffff"
-                        android:hint="@string/switch1c_hint"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center_vertical"
                         android:backgroundTint="@color/white"
                         android:checked="false"
-                        android:foregroundTint="@color/white" />
+                        android:foregroundTint="@color/white"
+                        android:hint="@string/switch1c_hint"
+                        android:textColorHint="#ffffff" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -174,12 +174,12 @@
                         android:id="@+id/switch_1D"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColorHint="#ffffff"
-                        android:hint="@string/switch1d_hint"
                         android:layout_gravity="left|center_vertical"
                         android:backgroundTint="@color/white"
                         android:checked="false"
-                        android:foregroundTint="@color/white" />
+                        android:foregroundTint="@color/white"
+                        android:hint="@string/switch1d_hint"
+                        android:textColorHint="#ffffff" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -208,14 +208,14 @@
 
                     <Switch
                         android:id="@+id/switch_1E"
-                        android:textColorHint="#ffffff"
-                        android:hint="@string/switch1e_hint"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center_vertical"
                         android:backgroundTint="@color/white"
                         android:checked="false"
-                        android:foregroundTint="@color/white" />
+                        android:foregroundTint="@color/white"
+                        android:hint="@string/switch1e_hint"
+                        android:textColorHint="#ffffff" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -245,13 +245,13 @@
                     <Switch
                         android:id="@+id/switch_1F"
                         android:layout_width="wrap_content"
-                        android:hint="@string/switch1f_hint"
-                        android:textColorHint="#ffffff"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center_vertical"
                         android:backgroundTint="@color/white"
                         android:checked="false"
-                        android:foregroundTint="@color/white" />
+                        android:foregroundTint="@color/white"
+                        android:hint="@string/switch1f_hint"
+                        android:textColorHint="#ffffff" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -282,12 +282,12 @@
                         android:id="@+id/switch_1G"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="@string/switch1g_hint"
-                        android:textColorHint="#ffffff"
                         android:layout_gravity="left|center_vertical"
                         android:backgroundTint="@color/white"
                         android:checked="false"
-                        android:foregroundTint="@color/white" />
+                        android:foregroundTint="@color/white"
+                        android:hint="@string/switch1g_hint"
+                        android:textColorHint="#ffffff" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -318,12 +318,12 @@
                         android:id="@+id/switch_1H"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="@string/switch1h_hint"
-                        android:textColorHint="#ffffff"
                         android:layout_gravity="left|center_vertical"
                         android:backgroundTint="@color/white"
                         android:checked="false"
-                        android:foregroundTint="@color/white" />
+                        android:foregroundTint="@color/white"
+                        android:hint="@string/switch1h_hint"
+                        android:textColorHint="#ffffff" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -356,10 +356,10 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center_vertical"
                         android:backgroundTint="@color/white"
-                        android:hint="@string/switch1i_hint"
-                        android:textColorHint="#ffffff"
                         android:checked="false"
-                        android:foregroundTint="@color/white" />
+                        android:foregroundTint="@color/white"
+                        android:hint="@string/switch1i_hint"
+                        android:textColorHint="#ffffff" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -390,12 +390,12 @@
                         android:id="@+id/switch_1J"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="@string/switch1j_hint"
-                        android:textColorHint="#ffffff"
                         android:layout_gravity="left|center_vertical"
                         android:backgroundTint="@color/white"
                         android:checked="false"
-                        android:foregroundTint="@color/white" />
+                        android:foregroundTint="@color/white"
+                        android:hint="@string/switch1j_hint"
+                        android:textColorHint="#ffffff" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -427,11 +427,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|center_vertical"
-                        android:textColorHint="#ffffff"
-                        android:hint="@string/switch1k_hint"
                         android:backgroundTint="@color/white"
                         android:checked="false"
-                        android:foregroundTint="@color/white" />
+                        android:foregroundTint="@color/white"
+                        android:hint="@string/switch1k_hint"
+                        android:textColorHint="#ffffff" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -462,12 +462,12 @@
                         android:id="@+id/switch_1L"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColorHint="#ffffff"
-                        android:hint="@string/switch1l_hint"
                         android:layout_gravity="left|center_vertical"
                         android:backgroundTint="@color/white"
                         android:checked="false"
-                        android:foregroundTint="@color/white" />
+                        android:foregroundTint="@color/white"
+                        android:hint="@string/switch1l_hint"
+                        android:textColorHint="#ffffff" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"

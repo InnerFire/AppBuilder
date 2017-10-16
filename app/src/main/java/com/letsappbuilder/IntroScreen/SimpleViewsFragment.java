@@ -12,21 +12,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.letsappbuilder.*;
 import com.cleveroad.splittransformation.SquareViewPagerIndicator;
 import com.cleveroad.splittransformation.TransformationAdapterWrapper;
+import com.letsappbuilder.R;
 
 /**
  * Fragment with inner view pager and implementation of pager adapter with views.
  */
 public class SimpleViewsFragment extends Fragment {
 
+    private ViewPager viewPager;
+    private SquareViewPagerIndicator indicator;
+
     public static SimpleViewsFragment instance() {
         return new SimpleViewsFragment();
     }
-
-    private ViewPager viewPager;
-    private SquareViewPagerIndicator indicator;
 
     @Nullable
     @Override

@@ -4,16 +4,16 @@ package com.letsappbuilder.Adapter;
  * Created by Savaliya Imfotech on 29-12-2016.
  */
 public class ProductDetailsAdapter {
-    public ProductDetailsAdapter() {
-
-    }
-
     public String Imagename;
     public String Product_Name;
     public String Product_MRP_Price;
     public String Product_Selling_Price;
     public String Product_Discount;
     public String Product_Specification;
+
+    public ProductDetailsAdapter() {
+
+    }
 
     public String getImagename() {
         return Imagename;

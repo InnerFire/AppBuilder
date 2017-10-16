@@ -22,7 +22,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         if (remoteMessage.getData().size() > 0) {
-          //  Log.e(TAG, "Data Payload: " + remoteMessage.getData().toString());
+            //  Log.e(TAG, "Data Payload: " + remoteMessage.getData().toString());
             try {
                 JSONObject json = new JSONObject(remoteMessage.getData().toString());
                 JSONObject data = json.getJSONObject("data");
@@ -32,10 +32,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 sendNotification(message, title, id);
 
             } catch (Exception e) {
-              //  Log.e(TAG, "Exception: " + e.getMessage());
+                //  Log.e(TAG, "Exception: " + e.getMessage());
             }
         }
     }
+
     private void sendNotification(String message, String title, String id) {
         //Creating a broadcast intent
         Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);

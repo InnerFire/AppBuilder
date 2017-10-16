@@ -24,8 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/editTextMessage"
@@ -39,10 +38,9 @@
             <ImageView
                 android:id="@+id/buttonSend"
                 android:layout_width="30dp"
-                android:layout_margin="5dp"
                 android:layout_height="30dp"
-                android:src="@drawable/chat_send"
-                 />
+                android:layout_margin="5dp"
+                android:src="@drawable/chat_send" />
         </LinearLayout>
 
     </RelativeLayout>
